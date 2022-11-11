@@ -1,12 +1,11 @@
 import keyboard
 import turtle
-
+stop = 0
 
 player = turtle.Turtle()
 player.shape("square")
 
 def which(stop):
-
     # Put any new objects here
 
     dis0 = object("square","blue",player, obj1,-50,20,stop)
@@ -90,31 +89,77 @@ def which(stop):
 #         player.speed(speed)
 #         player.goto(x,y)
 
-
+def dis(li):
+    # TRYING A NOTHER WAY, ADD 
 
 
 # V2, go back to origanal if it doesnot work
 def playermove(speed,movement,walkthrough, offset, stop,li):
     
     # Hopfully imporved laggy ness
+
+    # Creates the list in dis, x,y formate
     mi = []
+    full = []
+    # for help in range(len(which(stop))):
+    #     ny = help + 1
+    #     dist = player.distance((li[help],li[ny]))
+    #     x = li[help]
+    #     y = li[ny]
+    #     full.append(dist)
+    #     full.append(x)
+    #     full.append(y)
+    #     print(full)
+
+
+    # For loop for object positions shit balls
+    # for de in range(len(which(stop))):
+    #     new = de + 1
+    #     mi.append(player.distance(li[de],li[new]))
+       
+
+      
     mi.append(player.distance((li[0],li[1])))
+    mi.append(li[0])
+    mi.append(li[1])
+
     mi.append(player.distance((li[2],li[3])))
+    mi.append(li[2])
+    mi.append(li[3])
+
     mi.append(player.distance((li[4],li[5])))
+    mi.append(li[4])
+    mi.append(li[5])
+
     mi.append(player.distance((li[6],li[7])))
+    mi.append(li[6])
+    mi.append(li[7])
+
     mi.append(player.distance((li[8],li[9])))
+    mi.append(li[8])
+    mi.append(li[9])
+
     mi.append(player.distance((li[10],li[11])))
+    mi.append(li[10])
+    mi.append(li[11])
+    print(mi)
+
+    dis1 = [li[0],li[1]]
+    dis2 = [li[2],li[3]]
+    dis3 = [li[4],li[5]]
+    dis4 = [li[6],li[7]]
+    dis5 = [li[8],li[9]]
+    dis6 = [li[10],li[11]]
     
     dis = min(mi)
    
     
     print(dis)
-
-
     f = True
     l = True
     r = True
     b = True
+    
    
      
 
@@ -143,6 +188,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
 
 
 # Put all turtles below
+
 obj1 = turtle.Turtle()
 obj2 = turtle.Turtle()
 obj3 = turtle.Turtle()
@@ -172,7 +218,7 @@ def object(shape,coler,colition,name,x,y, stop):
     
 
 
-stop = 0
+
 li = []
 for i in range(len(which(stop))):
     li.append((which(stop)[i])[0])

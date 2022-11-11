@@ -18,78 +18,128 @@ def which(stop):
     
    
     mins = min([dis0,dis1,dis2,dis3,dis4,dis5])
-    return mins
+    return dis0,dis1,dis2,dis3,dis4,dis5
     
 
-def playermove(speed,movement,walkthrough, offset, stop):
+# def playermove(speed,movement,walkthrough, offset, stop):
     
-    dis = which(stop)
+#     dis = which(stop)
     
   
+
+
+#     f = True
+#     l = True
+#     r = True
+#     b = True
+#     if dis[0] == "Null" or walkthrough == "Yes":
+#         f = True 
+#         l = True
+#         r = True
+#         b = True
+#         ny = 0
+#         nx = 0
+#         py = 0
+#         px = 0
+
+#     else:
+        
+        
+#         x = player.xcor()
+#         y = player.ycor()
+        
+#         ny = y + 20
+#         nx = x - 20
+#         py = y - 20
+#         px = x + 20
+
+      
+    
+#     # Prevents going through objects
+#     if dis[0] <offset and dis[2] ==ny and walkthrough == "No":
+#         f = False
+
+#     elif dis[0] <offset and dis[1] == nx and walkthrough == "No":
+#         l = False
+
+#     elif dis[0] <offset and dis[2] == py and walkthrough == "No":
+#         b = False
+#     elif dis[0] <offset and dis[1] == px and walkthrough == "No":
+#         r = False
+
+# # NOTE TO SELF, ADD INDEVIDUAL DETECTIONS
+   
+  
+#     if key == "w" and f == True:
+#         player.forward(movement)
+
+#     if key == "s" and b == True:
+#         player.forward(-(movement))
+
+#     if key == "a" and l == True:
+#         x = player.xcor()
+#         y = player.ycor()
+#         x = x - movement
+#         player.speed(speed)
+#         player.goto(x,y)
+
+#     if key == "d" and r == True:
+#         x = player.xcor()
+#         y = player.ycor()
+#         x = x + movement
+#         player.speed(speed)
+#         player.goto(x,y)
+
+
+
+
+# V2, go back to origanal if it doesnot work
+def playermove(speed,movement,walkthrough, offset, stop,li):
+    
+    # Hopfully imporved laggy ness
+    mi = []
+    mi.append(player.distance((li[0],li[1])))
+    mi.append(player.distance((li[2],li[3])))
+    mi.append(player.distance((li[4],li[5])))
+    mi.append(player.distance((li[6],li[7])))
+    mi.append(player.distance((li[8],li[9])))
+    mi.append(player.distance((li[10],li[11])))
+    
+    dis = min(mi)
+   
+    
+    print(dis)
 
 
     f = True
     l = True
     r = True
     b = True
-    if dis[0] == "Null" or walkthrough == "Yes":
-        f = True 
-        l = True
-        r = True
-        b = True
-        ny = 0
-        nx = 0
-        py = 0
-        px = 0
+   
+     
 
-    else:
-        
-        
-        x = player.xcor()
-        y = player.ycor()
-        
-        ny = y + 20
-        nx = x - 20
-        py = y - 20
-        px = x + 20
-
-      
-    
-    # Prevents going through objects
-    if dis[0] <offset and dis[2] ==ny and walkthrough == "No":
-        f = False
-
-    elif dis[0] <offset and dis[1] == nx and walkthrough == "No":
-        l = False
-
-    elif dis[0] <offset and dis[2] == py and walkthrough == "No":
-        b = False
-    elif dis[0] <offset and dis[1] == px and walkthrough == "No":
-        r = False
-
-
-    key = keyboard.read_key()
-    print(key)
-    if key == "w" and f == True:
+# NOTE TO SELF, ADD INDEVIDUAL DETECTIONS
+   
+  
+    if keyboard.is_pressed("W") and f == True:
         player.forward(movement)
 
-    if key == "s" and b == True:
+    if keyboard.is_pressed("S") and b == True:
         player.forward(-(movement))
 
-    if key == "a" and l == True:
+    if keyboard.is_pressed("A") and l == True:
         x = player.xcor()
         y = player.ycor()
         x = x - movement
         player.speed(speed)
         player.goto(x,y)
 
-    if key == "d" and r == True:
+    if keyboard.is_pressed("D") and r == True:
         x = player.xcor()
         y = player.ycor()
         x = x + movement
         player.speed(speed)
         player.goto(x,y)
-
 
 
 # Put all turtles below
@@ -118,15 +168,21 @@ def object(shape,coler,colition,name,x,y, stop):
         dis = name.distance(colition)
         x = name.xcor()
         y = name.ycor()
-        return dis, x,y
+        return x,y
     
 
 
-
+stop = 0
+li = []
+for i in range(len(which(stop))):
+    li.append((which(stop)[i])[0])
+    
+    li.append((which(stop)[i])[1])
+    print(li)
     
 # Main start function
-def start(speed, movement,chunk,offset,stop):
-    playermove(speed,movement,"No",offset,stop)
+def start(speed, movement,chunk,offset,stop,li):
+    playermove(speed,movement,"No",offset,stop,li)
 
 
 
@@ -137,7 +193,7 @@ player.left(90)
 stop = 1
 # Main loop
 while True:
-    start(5,10, 1, 23,stop)
+    start(5,10, 1, 23,stop,li)
     stop = 0
     
 

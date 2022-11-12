@@ -21,7 +21,7 @@ player.shape("square")
 buildspeed = 0
 
         
-
+# Draws the stat bar line
 how_obj = 1
 statcolor = "black"
 statyline = -300
@@ -37,7 +37,7 @@ def statline2(how_obj,stop,statcolor,statyline,buildspeed):
         how_obj = how_obj + 1
        
 
-    
+# Creats all of the objects based on the cords.txt, colli.txt, shape.txt, color.txt
 def obj_create(stop,buildspeed,many):
     # Put how many objects there
     li = []
@@ -74,6 +74,7 @@ def obj_create(stop,buildspeed,many):
 
 
 # V2, go back to origanal if it does not work
+# Basicly the start of the program, controls the player and its collitions with other objects
 def playermove(speed,movement,walkthrough, offset, stop,li):
     
     # Hopfully imporved laggy ness

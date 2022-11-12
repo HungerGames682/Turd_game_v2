@@ -4,17 +4,22 @@ import keyboard
 stop = 0
 
 
-stat_obj = 6
+
+
+# Put how many objects there are, only thing that is manual
+many = 3
+whole_many = many *2
+
+
+
+
+
 screen = turtle.Screen()
 screen.screensize(800,800)
 player = turtle.Turtle()
 player.shape("square")
 buildspeed = 0
-# Loop for creating a list of obj
-# for i in range(50, 1000):
-#     with open('obj.txt','a') as f:
-#         f.write('obj%i' %i)
-#         f.write('\n')
+
         
 
 how_obj = 1
@@ -32,11 +37,10 @@ def statline2(how_obj,stop,statcolor,statyline,buildspeed):
         how_obj = how_obj + 1
        
 
-
     
 def obj_create(stop,buildspeed,many):
     # Put how many objects there
-    
+    li = []
     which = 100
     x = 0
     y = 1
@@ -50,70 +54,50 @@ def obj_create(stop,buildspeed,many):
         # NOTE TO SELF, Finish auto create objects
         with open('cords.txt','r') as cord:
             main = cord.readlines()
-            newx = main[x]
-            newy = main[y]
+            newx = int(main[x])
+            newy = int(main[y])
             print(newx,newy)
+
         object("square",statcolor,player, line[which],newx,newy,stop)
-        x = x + 2
-        y = y + 2
+        
+        
 
         # Add the x and y add to list 
-
-
-    # # Put any new objects here
-
-    # dis0 = object("square","blue",player, obj1,-50,20,stop)
-    # dis1 = object("square","blue",player, obj2, -30,20,stop)
-    # dis2 = object("square","blue",player, obj3, -10,20,stop)
-    # dis3 = object("square","blue",player, obj4, 10,20,stop)
-    # dis4 = object("square","blue",player, obj5, 30,20,stop)
-    # dis5 = object("square","blue",player, obj6, 50,20,stop)
+        li.append(newx)
+        li.append(newy)
+        x = x + 2
+        y = y + 2
+        which = which + 1
+    return li
 
     
 
 
-
-    
-    
-   
-    # return dis0,dis1,dis2,dis3,dis4,dis5
-    
-
-
-# V2, go back to origanal if it doesnot work
+# V2, go back to origanal if it does not work
 def playermove(speed,movement,walkthrough, offset, stop,li):
     
     # Hopfully imporved laggy ness
+    
+    lis = []
+    for i in range(0, whole_many,2):
+        h = i + 1
+        d1 = player.distance(li[i],li[h])
+        diss = [d1, li[i], li[h]]
+        lis.append(diss)
+
+    dis = min(lis)
+ 
+        
+    
 
   
        
 
-    #   Going to have to make this auto matic later
-    # For now every object must be put here
-    # Its a pain but its better than watching you computer turn
-    # into a nuclear reactor
-    d1 = player.distance((li[0],li[1]))
-    d2 = player.distance((li[2],li[3]))
-    d3 = player.distance((li[4],li[5]))
-    d4 = player.distance((li[6],li[1]))
-    d5 = player.distance((li[8],li[9]))
-    d6 = player.distance((li[10],li[11]))
-    
 
-
-    dis1 = [d1, li[0],li[1]]
-    dis2 = [d2, li[2],li[3]]
-    dis3 = [d3, li[4],li[5]]
-    dis4 = [d4, li[6],li[7]]
-    dis5 = [d5, li[8],li[9]]
-    dis6 = [d6, li[10],li[11]]
-    full_dis = [dis1,dis2,dis3,dis4,dis5,dis6]
-    dis = min(full_dis)
-    print(dis1)
     
    
     
-    print(dis)
+    # print(dis)
     f = True
     l = True
     r = True
@@ -180,47 +164,15 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
         player.goto(x,y)
 
 
-# Put all turtles below
-
-obj1 = turtle.Turtle()
-obj2 = turtle.Turtle()
-obj3 = turtle.Turtle()
-obj4 = turtle.Turtle()
-obj5 = turtle.Turtle()
-obj6 = turtle.Turtle()
-
-# obj7 = turtle.Turtle()
-# obj8 = turtle.Turtle()
-# obj9 = turtle.Turtle()
-# obj10 = turtle.Turtle()
-# obj11 = turtle.Turtle()
-# obj12 = turtle.Turtle()
-
-# obj13 = turtle.Turtle()
-# obj14 = turtle.Turtle()
-# obj15 = turtle.Turtle()
-# obj16 = turtle.Turtle()
-# obj17 = turtle.Turtle()
-# obj18 = turtle.Turtle()
-
-# obj19 = turtle.Turtle()
-# obj20 = turtle.Turtle()
-# obj21 = turtle.Turtle()
-# obj22 = turtle.Turtle()
-# obj23 = turtle.Turtle()
-# obj24 = turtle.Turtle()
-
-
-# _______________________
 
 # Object creator
 def object(shape,coler,colition,name,x,y, stop):
     
-    if stop == 0:
-        name.penup()
-        name.shape(str(shape))
-        name.color(str(coler))
-        name.goto(x,y)
+    
+    name.penup()
+    name.shape(str(shape))
+    name.color(str(coler))
+    name.goto(x,y)
 
     if colition == 0:
         return "Null"
@@ -231,15 +183,6 @@ def object(shape,coler,colition,name,x,y, stop):
         return x,y
     
 
-
-statline2(how_obj,stop,"black",-300,buildspeed)
-li = []
-# Don't worry about this
-# for i in range(len(obj_create(stop,buildspeed,stat_obj))):
-#     li.append((obj_create(stop,buildspeed,stat_obj)[i])[0])
-    
-#     li.append((obj_create(stop,buildspeed,stat_obj)[i])[1])
-#     print(li)
     
 # Main start function
 def start(speed, movement,chunk,offset,stop,li):
@@ -252,9 +195,12 @@ player.penup()
 player.left(90)
 
 stop = 1
+statline2(how_obj,stop,"black",-300,buildspeed)
+li = obj_create(stop,buildspeed,many)
+
 # Main loop
 while True:
-    start(1,10, 1, 23.9,stop,li)
+    start(1,10, 1, 23,stop,li)
     stop = 0
     
 

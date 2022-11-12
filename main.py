@@ -2,6 +2,9 @@
 import turtle
 import keyboard
 stop = 0
+
+
+stat_obj = 6
 screen = turtle.Screen()
 screen.screensize(800,800)
 player = turtle.Turtle()
@@ -31,10 +34,12 @@ def statline2(how_obj,stop,statcolor,statyline,buildspeed):
 
 
     
-def obj_create(stop,buildspeed):
+def obj_create(stop,buildspeed,many):
     # Put how many objects there
-    many = 6
+    
     which = 100
+    x = 0
+    y = 1
     for ob in range(many):
         with open('obj.txt','r') as fs:
             line = fs.readlines()
@@ -43,18 +48,26 @@ def obj_create(stop,buildspeed):
         line[which].speed(buildspeed)
         
         # NOTE TO SELF, Finish auto create objects
-        with open('cords.txt','r')
-        object("square",statcolor,player, line[how_obj],0,statyline,stop)
+        with open('cords.txt','r') as cord:
+            main = cord.readlines()
+            newx = main[x]
+            newy = main[y]
+            print(newx,newy)
+        object("square",statcolor,player, line[which],newx,newy,stop)
+        x = x + 2
+        y = y + 2
+
+        # Add the x and y add to list 
 
 
-    # Put any new objects here
+    # # Put any new objects here
 
-    dis0 = object("square","blue",player, obj1,-50,20,stop)
-    dis1 = object("square","blue",player, obj2, -30,20,stop)
-    dis2 = object("square","blue",player, obj3, -10,20,stop)
-    dis3 = object("square","blue",player, obj4, 10,20,stop)
-    dis4 = object("square","blue",player, obj5, 30,20,stop)
-    dis5 = object("square","blue",player, obj6, 50,20,stop)
+    # dis0 = object("square","blue",player, obj1,-50,20,stop)
+    # dis1 = object("square","blue",player, obj2, -30,20,stop)
+    # dis2 = object("square","blue",player, obj3, -10,20,stop)
+    # dis3 = object("square","blue",player, obj4, 10,20,stop)
+    # dis4 = object("square","blue",player, obj5, 30,20,stop)
+    # dis5 = object("square","blue",player, obj6, 50,20,stop)
 
     
 
@@ -63,7 +76,7 @@ def obj_create(stop,buildspeed):
     
     
    
-    return dis0,dis1,dis2,dis3,dis4,dis5
+    # return dis0,dis1,dis2,dis3,dis4,dis5
     
 
 
@@ -222,11 +235,11 @@ def object(shape,coler,colition,name,x,y, stop):
 statline2(how_obj,stop,"black",-300,buildspeed)
 li = []
 # Don't worry about this
-for i in range(len(obj_create(stop))):
-    li.append((obj_create(stop)[i])[0])
+# for i in range(len(obj_create(stop,buildspeed,stat_obj))):
+#     li.append((obj_create(stop,buildspeed,stat_obj)[i])[0])
     
-    li.append((obj_create(stop)[i])[1])
-    print(li)
+#     li.append((obj_create(stop,buildspeed,stat_obj)[i])[1])
+#     print(li)
     
 # Main start function
 def start(speed, movement,chunk,offset,stop,li):

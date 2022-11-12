@@ -6,37 +6,47 @@ screen = turtle.Screen()
 screen.screensize(800,800)
 player = turtle.Turtle()
 player.shape("square")
-
-
-
-def statline(stop):
-    # # Stats bar objects
-    statcolor = "black"
-    statyline = -300
-    dis6 = object("square",statcolor,player, obj7,-400,statyline,stop)
-    dis7 = object("square",statcolor,player, obj8, -380,statyline,stop)
-    dis8 = object("square",statcolor,player, obj9, -360,statyline,stop)
-    dis9 = object("square",statcolor,player, obj10, -340,statyline,stop)
-    dis10 = object("square",statcolor,player, obj11, -320,statyline,stop)
-    dis11 = object("square",statcolor,player, obj12, -300,statyline,stop)
-
-    dis12 = object("square",statcolor,player, obj13,-280,statyline,stop)
-    dis13 = object("square",statcolor,player, obj14, -260,statyline,stop)
-    dis14 = object("square",statcolor,player, obj15, -240,statyline,stop)
-    dis15 = object("square",statcolor,player, obj16, -220,statyline,stop)
-    dis16 = object("square",statcolor,player, obj17, -200,statyline,stop)
-    dis17 = object("square",statcolor,player, obj18, -180,statyline,stop)
-
-    dis18 = object("square",statcolor,player, obj19,-160,statyline,stop)
-    dis19 = object("square",statcolor,player, obj20, -140,statyline,stop)
-    dis20 = object("square",statcolor,player, obj21, -120,statyline,stop)
-    dis21 = object("square",statcolor,player, obj22, -100,statyline,stop)
-    dis22 = object("square",statcolor,player, obj23, -80,statyline,stop)
-    dis23 = object("square",statcolor,player, obj24, -60,statyline,stop)
-   
+buildspeed = 0
+# Loop for creating a list of obj
+# for i in range(50, 1000):
+#     with open('obj.txt','a') as f:
+#         f.write('obj%i' %i)
+#         f.write('\n')
         
+
+how_obj = 1
+statcolor = "black"
+statyline = -300
+def statline2(how_obj,stop,statcolor,statyline,buildspeed):
+    for he in range(-500,500,20):
+        with open('obj.txt','r') as b:
+            line = b.readlines()
+            print(line[how_obj])
+        line[how_obj] = turtle.Turtle()
+        line[how_obj].speed(buildspeed)
+        object("square",statcolor,player, line[how_obj],he,statyline,stop)
+        
+        how_obj = how_obj + 1
+       
+
+
     
-def which(stop):
+def obj_create(stop,buildspeed):
+    # Put how many objects there
+    many = 6
+    which = 100
+    for ob in range(many):
+        with open('obj.txt','r') as fs:
+            line = fs.readlines()
+            print(line[which])
+        line[which] = turtle.Turtle()
+        line[which].speed(buildspeed)
+        
+        # NOTE TO SELF, Finish auto create objects
+        with open('cords.txt','r')
+        object("square",statcolor,player, line[how_obj],0,statyline,stop)
+
+
     # Put any new objects here
 
     dis0 = object("square","blue",player, obj1,-50,20,stop)
@@ -46,14 +56,13 @@ def which(stop):
     dis4 = object("square","blue",player, obj5, 30,20,stop)
     dis5 = object("square","blue",player, obj6, 50,20,stop)
 
-    statline(stop)
+    
 
 
 
     
     
    
-    mins = min([dis0,dis1,dis2,dis3,dis4,dis5])
     return dis0,dis1,dis2,dis3,dis4,dis5
     
 
@@ -127,7 +136,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
     elif dis[0] <offset and dis[1] == nx and walkthrough == "No":
         l = False
 
-    elif dis[0] <offset and dis[2] == py and walkthrough == "No" or y <= -320:
+    elif dis[0] <offset and dis[2] == py and walkthrough == "No" or y <= -280:
         b = False
     elif dis[0] <offset and dis[1] == px and walkthrough == "No":
         r = False
@@ -167,26 +176,26 @@ obj4 = turtle.Turtle()
 obj5 = turtle.Turtle()
 obj6 = turtle.Turtle()
 
-obj7 = turtle.Turtle()
-obj8 = turtle.Turtle()
-obj9 = turtle.Turtle()
-obj10 = turtle.Turtle()
-obj11 = turtle.Turtle()
-obj12 = turtle.Turtle()
+# obj7 = turtle.Turtle()
+# obj8 = turtle.Turtle()
+# obj9 = turtle.Turtle()
+# obj10 = turtle.Turtle()
+# obj11 = turtle.Turtle()
+# obj12 = turtle.Turtle()
 
-obj13 = turtle.Turtle()
-obj14 = turtle.Turtle()
-obj15 = turtle.Turtle()
-obj16 = turtle.Turtle()
-obj17 = turtle.Turtle()
-obj18 = turtle.Turtle()
+# obj13 = turtle.Turtle()
+# obj14 = turtle.Turtle()
+# obj15 = turtle.Turtle()
+# obj16 = turtle.Turtle()
+# obj17 = turtle.Turtle()
+# obj18 = turtle.Turtle()
 
-obj19 = turtle.Turtle()
-obj20 = turtle.Turtle()
-obj21 = turtle.Turtle()
-obj22 = turtle.Turtle()
-obj23 = turtle.Turtle()
-obj24 = turtle.Turtle()
+# obj19 = turtle.Turtle()
+# obj20 = turtle.Turtle()
+# obj21 = turtle.Turtle()
+# obj22 = turtle.Turtle()
+# obj23 = turtle.Turtle()
+# obj24 = turtle.Turtle()
 
 
 # _______________________
@@ -210,13 +219,13 @@ def object(shape,coler,colition,name,x,y, stop):
     
 
 
-
+statline2(how_obj,stop,"black",-300,buildspeed)
 li = []
 # Don't worry about this
-for i in range(len(which(stop))):
-    li.append((which(stop)[i])[0])
+for i in range(len(obj_create(stop))):
+    li.append((obj_create(stop)[i])[0])
     
-    li.append((which(stop)[i])[1])
+    li.append((obj_create(stop)[i])[1])
     print(li)
     
 # Main start function

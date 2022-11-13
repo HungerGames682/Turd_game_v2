@@ -10,6 +10,7 @@ stop = 0
 with open('cords.txt','r') as howlines:
     length = howlines.readlines()
     length = len(length)
+    length = length - 1
     length = length / 2
     length = int(length)
 howlines.close()

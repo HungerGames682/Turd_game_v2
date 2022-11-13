@@ -6,14 +6,23 @@ stop = 0
 
 
 
-# Put how many objects there are, only thing that is manual
-many = 3
-whole_many = many *2
+# NOW THE CODE IS FULLY AUTOMATIC BESIDES HAVE TO SPECIFY WHERE THE OBJECT IS AND STUFF LIKE THAT 
+with open('cords.txt','r') as howlines:
+    length = howlines.readlines()
+    length = len(length)
+    length = length / 2
+    length = int(length)
+howlines.close()
+many = length
+whole_many = many * 2
 
 
 
 
 
+
+
+# Customize some settings here
 screen = turtle.Screen()
 screen.screensize(800,800)
 player = turtle.Turtle()
@@ -40,34 +49,62 @@ def statline2(how_obj,stop,statcolor,statyline,buildspeed):
 # Creats all of the objects based on the cords.txt, colli.txt, shape.txt, color.txt
 def obj_create(stop,buildspeed,many):
     # Put how many objects there
+    # Your gonna have to define some varibles bro
     li = []
     which = 100
+    coli_many = 0
     x = 0
     y = 1
+    # The for loop that does it all
     for ob in range(many):
         with open('obj.txt','r') as fs:
             line = fs.readlines()
-            print(line[which])
+           
         line[which] = turtle.Turtle()
         line[which].speed(buildspeed)
         
-        # NOTE TO SELF, Finish auto create objects
+        # Creats the object at the cords givin, every 2 lines is a pare of cords
+        # EX: line 1 = x-cord, line2 = y-cord, line 3 = x-cord, line 4 = y-cord
         with open('cords.txt','r') as cord:
             main = cord.readlines()
             newx = int(main[x])
             newy = int(main[y])
             print(newx,newy)
 
-        object("square",statcolor,player, line[which],newx,newy,stop)
-        
-        
+        # Opens the collitions file, 0 = walkthrough, 1 = collitions
+        with open('colli.txt','r') as f:
+            mc = f.readlines()
+            coli = mc[coli_many]
+            
+        # Takes in color for the color.txt file and make the object color that is specified
+        with open('color.txt','r') as colo:
+            col =  colo.readlines()
+            color = col[coli_many]
+            color = color.strip('\n')
+          
 
+
+        # Actully creats the object and the saves it to see if has colliotion or not(Clearly)
+        has_colition = object("square",color,coli, line[which],newx,newy,stop)
+        print(has_colition)
+        # Sees if the object can be walked through or not
+        if has_colition == "No":
+            x = x + 2
+            y = y + 2
+            which = which + 1
+            coli_many = coli_many + 1
+            li.append("No")
+            li.append("No")
+            
+        else:
         # Add the x and y add to list 
-        li.append(newx)
-        li.append(newy)
-        x = x + 2
-        y = y + 2
-        which = which + 1
+            li.append(newx)
+            li.append(newy)
+        # Updates the varibles
+            x = x + 2
+            y = y + 2
+            which = which + 1
+            coli_many = coli_many + 1
     return li
 
     
@@ -78,16 +115,19 @@ def obj_create(stop,buildspeed,many):
 def playermove(speed,movement,walkthrough, offset, stop,li):
     
     # Hopfully imporved laggy ness
-    
+    print(li)
     lis = []
     for i in range(0, whole_many,2):
         h = i + 1
-        d1 = player.distance(li[i],li[h])
-        diss = [d1, li[i], li[h]]
-        lis.append(diss)
+        if li[i] == "No" or li[h] == "No":
+            print("")
+        else:
+            d1 = player.distance(li[i],li[h])
+            diss = [d1, li[i], li[h]]
+            lis.append(diss)
 
     dis = min(lis)
- 
+  
         
     
 
@@ -175,10 +215,9 @@ def object(shape,coler,colition,name,x,y, stop):
     name.color(str(coler))
     name.goto(x,y)
 
-    if colition == 0:
-        return "Null"
+    if colition == "0" or colition == 0 or colition == "0\n":
+        return "No"
     else:
-        dis = name.distance(colition)
         x = name.xcor()
         y = name.ycor()
         return x,y

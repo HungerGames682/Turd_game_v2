@@ -126,7 +126,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
             d1 = player.distance(li[i],li[h])
             diss = [d1, li[i], li[h]]
             lis.append(diss)
-
+    print(lis)
     dis = min(lis)
   
         

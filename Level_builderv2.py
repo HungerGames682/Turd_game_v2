@@ -81,6 +81,16 @@ def blockplace(x, y,curcolor,collition):
                     k = k + '\n'
                     c.write(k)
 
+            
+            with open('colli.txt','w') as co:
+                for b in range(len(collition_list)):
+                    print(collition_list)
+                    yo = collition_list[b]
+                    yo = str(yo)
+                    yo = yo + '\n'
+                    co.write(yo)
+
+
 
 
             sleep(3)

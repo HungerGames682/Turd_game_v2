@@ -164,20 +164,20 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
         py = y - 20
         px = x + 20
     
-    if dis[0] <= 15:
-        player.goto(0,0)
-
+    
+        
+    error_bound =  21
 
     # Prevents going through objects
-    if dis[0] <offset and dis[2] ==ny and walkthrough == "No":
+    if dis[0] <offset and dis[2] ==ny and walkthrough == "No" or dis[0] <= error_bound:
         f = False
 
-    elif dis[0] <offset and dis[1] == nx and walkthrough == "No":
+    elif dis[0] <offset and dis[1] == nx and walkthrough == "No" or dis[0] <= error_bound:
         l = False
 
-    elif dis[0] <offset and dis[2] == py and walkthrough == "No" or y <= -280:
+    elif dis[0] <offset and dis[2] == py and walkthrough == "No" or y <= -280 or dis[0] <= error_bound:
         b = False
-    elif dis[0] <offset and dis[1] == px and walkthrough == "No":
+    elif dis[0] <offset and dis[1] == px and walkthrough == "No" or dis[0] <= error_bound:
         r = False
    
      

@@ -1,5 +1,6 @@
 import turtle
 import keyboard
+from time import sleep
 
 
 # This is the builder for building those levels
@@ -16,6 +17,7 @@ ws = turtle.Screen()
 
 
 obj_list = []
+color_list = []
 # Draws the statline
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     for he in range(-500,500,20):
@@ -51,11 +53,11 @@ def object(shape,coler,colition,name,x,y, stop):
     
 
 # Places the blocks... like minecraft 
-def blockplace(x, y):
+def blockplace(x, y,curcolor):
 
     
     # If these keys are pressed when click then all blocks will be saved for the game
-    if keyboard.is_pressed("tab"):
+    if keyboard.is_pressed("b"):
             print(obj_list)
             print("Overiting save list bitch")
             with open('cords.txt', 'w') as ba:
@@ -66,6 +68,13 @@ def blockplace(x, y):
                     cl = str(cl)
                     cl = cl + '\n'
                     ba.write(cl)
+
+            with open('color.txt') as c:
+                for j in range(len(color_list)):
+                    print(color_list[i])
+                    k = color-list
+
+            sleep(3)
                     
                 
     else:
@@ -82,6 +91,7 @@ def blockplace(x, y):
             line = f.readlines()
             b = line[which]
             b = turtle.Turtle()
+            b.color(curcolor)
             b.speed(0)
             b.shape("square")
             b.penup()
@@ -89,9 +99,13 @@ def blockplace(x, y):
             which = which + 1
 
 
+        
+
+
             # Adds the x and y values to the list
             obj_list.append(x)
             obj_list.append(y)
+            color_list.append(curcolor)
 
 # Movement function dumbass
 def movement(speed):
@@ -114,17 +128,64 @@ def movement(speed):
         nx = x + speed
         builder.goto(nx,y)
 
+# Just switches colors whenever it is called upon
+def colorswitcher():
+    cc = builder.color()
+    print(cc)
+    if cc[0] == "black":
+        coloricon.color("red")
+        builder.color("red")
+        sleep(.1)
+        return"red"
 
-def colorchecker():
-    if 
+    if cc[0] == "red":
+        coloricon.color("blue")
+        builder.color("blue")
+        sleep(.1)
+        return"blue"
+
+    if cc[0] == "blue":
+        coloricon.color("yellow")
+        builder.color("yellow")
+        sleep(.1)
+        return"yellow"
+
+    if cc[0] == "yellow":
+        coloricon.color("green")
+        builder.color("green")
+        sleep(.1)
+        return"green"
+
+    if cc[0] == "green":
+        coloricon.color("brown")
+        builder.color("brown")
+        sleep(.1)
+        return"brown"
+
+    if cc[0] == "brown":
+        coloricon.color("black")
+        builder.color("black")
+        sleep(.1)
+        return"black"
+
+
+
+    
+
+
+
+
 
 
 # start function.....
-def start(speed):
+def start(speed,curcolor):
     movement(speed)
     # Places the block
+
     if keyboard.is_pressed("space"):
-        blockplace(builder.xcor(),builder.ycor())
+        blockplace(builder.xcor(),builder.ycor(),curcolor)
+
+    
 
 
   
@@ -136,19 +197,28 @@ coloricon = turtle.Turtle()
 coloricon.penup()
 coloricon.shape("square")
 coloricon.goto(-410,-350)
+
+
+curcolor = "black"
 # Main loop
 while True:
+    # Switches the color
+    if keyboard.is_pressed("tab"):
+        curcolor = colorswitcher()
+        print(curcolor)
+
+
     # Sprint button
     if keyboard.is_pressed("shift"):
         speed = 10
-        start(speed)
+        start(speed,curcolor)
     
     if keyboard.is_pressed("shift") and keyboard.is_pressed("space"):
         speed = 21
-        start(speed)
+        start(speed,curcolor)
 
     else:    
         speed = 1
-        start(speed)
+        start(speed,curcolor)
         
 

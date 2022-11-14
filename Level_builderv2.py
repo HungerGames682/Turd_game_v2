@@ -13,11 +13,13 @@ builder.speed(0)
 builder.left(90)
 
 ws = turtle.Screen()
+collition = 1
 
 
 
 obj_list = []
 color_list = []
+collition_list = []
 # Draws the statline
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     for he in range(-500,500,20):
@@ -53,13 +55,14 @@ def object(shape,coler,colition,name,x,y, stop):
     
 
 # Places the blocks... like minecraft 
-def blockplace(x, y,curcolor):
+def blockplace(x, y,curcolor,collition):
 
     
     # If these keys are pressed when click then all blocks will be saved for the game
     if keyboard.is_pressed("b"):
             print(obj_list)
-            print("Overiting save list bitch")
+            print("Overiting save list")
+            # Writes the cords for the objects
             with open('cords.txt', 'w') as ba:
                 for i in range(len(obj_list)):
                     print(obj_list[i])
@@ -69,12 +72,19 @@ def blockplace(x, y,curcolor):
                     cl = cl + '\n'
                     ba.write(cl)
 
-            with open('color.txt') as c:
+            # Writes the colors for the objects
+            with open('color.txt','w') as c:
                 for j in range(len(color_list)):
-                    print(color_list[i])
-                    k = color-list
+                    print(color_list[j])
+                    k = color_list[j]
+                    k = str(k)
+                    k = k + '\n'
+                    c.write(k)
+
+
 
             sleep(3)
+            exit()
                     
                 
     else:
@@ -102,10 +112,12 @@ def blockplace(x, y,curcolor):
         
 
 
-            # Adds the x and y values to the list
+            # Adds the different values to a list
             obj_list.append(x)
             obj_list.append(y)
             color_list.append(curcolor)
+            collition_list.append(collition)
+            print(collition_list)
 
 # Movement function dumbass
 def movement(speed):
@@ -168,7 +180,22 @@ def colorswitcher():
         sleep(.1)
         return"black"
 
+# Switches the colition from on to off
+def colitionswitch(collition):
+    if collition == 1:
+        collition = 0
+        colitionicon.clear()
+        colitionicon.write("Colitions are off")
+        sleep(.2)
+        return collition
 
+    elif collition == 0:
+        collition = 1
+        colitionicon.clear()
+        colitionicon.write("Colitions are on")
+        sleep(.2)
+        return collition
+    
 
     
 
@@ -178,12 +205,12 @@ def colorswitcher():
 
 
 # start function.....
-def start(speed,curcolor):
+def start(speed,curcolor,collition):
     movement(speed)
     # Places the block
 
     if keyboard.is_pressed("space"):
-        blockplace(builder.xcor(),builder.ycor(),curcolor)
+        blockplace(builder.xcor(),builder.ycor(),curcolor,collition)
 
     
 
@@ -192,8 +219,16 @@ def start(speed,curcolor):
 
 # statline2(1,0,"black",-300,10)
 
-
+# Colition icon Turtle
 coloricon = turtle.Turtle()
+colitionicon = turtle.Turtle()
+colitionicon.penup()
+colitionicon.goto(-300,-200)
+colitionicon.write("Collition is on")
+
+colitionicon.hideturtle()
+
+# Color Icon turtle
 coloricon.penup()
 coloricon.shape("square")
 coloricon.goto(-410,-350)
@@ -207,18 +242,21 @@ while True:
         curcolor = colorswitcher()
         print(curcolor)
 
+    if keyboard.is_pressed("c"):
+        collition = colitionswitch(collition)
+
 
     # Sprint button
     if keyboard.is_pressed("shift"):
         speed = 10
-        start(speed,curcolor)
+        start(speed,curcolor,collition)
     
     if keyboard.is_pressed("shift") and keyboard.is_pressed("space"):
         speed = 21
-        start(speed,curcolor)
+        start(speed,curcolor,collition)
 
     else:    
         speed = 1
-        start(speed,curcolor)
+        start(speed,curcolor,collition)
         
 

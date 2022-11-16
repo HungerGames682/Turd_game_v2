@@ -262,11 +262,12 @@ while True:
         start(speed,curcolor,collition)
     
     if keyboard.is_pressed("shift") and keyboard.is_pressed("space"):
-        speed = 21
+        speed = 20
         start(speed,curcolor,collition)
 
     else:    
-        speed = 1
+        speed = 10
         start(speed,curcolor,collition)
+        sleep(.2)
         
 

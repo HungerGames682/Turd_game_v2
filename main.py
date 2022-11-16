@@ -116,7 +116,7 @@ def obj_create(stop,buildspeed,many):
 def playermove(speed,movement,walkthrough, offset, stop,li):
     
     # Hopfully imporved laggy ness
-    print(li)
+    
     lis = []
     for i in range(0, whole_many,2):
         h = i + 1
@@ -124,10 +124,14 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
             print("")
         else:
             d1 = player.distance(li[i],li[h])
+            
             diss = [d1, li[i], li[h]]
             lis.append(diss)
-    print(lis)
+    # print(li)
+    # print(lis)
+    # Gets the distance, x,y of the closest block
     dis = min(lis)
+    # print(dis)
   
         
     
@@ -159,28 +163,57 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
         x = player.xcor()
         y = player.ycor()
         
+        obj_x = dis[1]
+        obj_yy = dis[2]
+
+        obj_x = int(obj_x)
+        obj_yy = int(obj_yy)
+
+        obj_y = obj_yy - y
+        p_obj_y = y  - obj_yy
+
         ny = y + 20
         nx = x - 20
         py = y - 20
         px = x + 20
-    
-    
+
+        ny = int(ny)
+        py = int(py)
+
         
-    error_bound =  21
+   
+    # TURN dis{2} into a int
+    
+    # Inside Perimiter Blocker
+    error_bound =  15
+
+    # Outside perimiter blocker
+    less_error_bound = 15
+
+    # offset is the offset on how close you can get to an object or something
 
     # Prevents going through objects
-    if dis[0] <offset and dis[2] ==ny and walkthrough == "No" or dis[0] <= error_bound:
-        f = False
+       
+    if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No" or dis[0] <= error_bound or dis[0] <= less_error_bound:
+         f = False
+         a = 0
 
-    elif dis[0] <offset and dis[1] == nx and walkthrough == "No" or dis[0] <= error_bound:
-        l = False
+        
 
-    elif dis[0] <offset and dis[2] == py and walkthrough == "No" or y <= -280 or dis[0] <= error_bound:
-        b = False
-    elif dis[0] <offset and dis[1] == px and walkthrough == "No" or dis[0] <= error_bound:
-        r = False
-   
-     
+    elif int(dis[0]) <= offset and dis[1] == nx and walkthrough == "No" or dis[0] <= error_bound or dis[0] <= less_error_bound:
+         l = False
+         a = 0
+
+    elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -280 or dis[0] <= error_bound or dis[0] <= less_error_bound:
+            b = False
+            a = 0
+        
+       
+    
+    elif int(dis[0]) <= offset and dis[1] == px and walkthrough == "No" or dis[0] <= error_bound or dis[0] <= less_error_bound:
+            r = False
+            a = 0
+       
 
 
    
@@ -236,12 +269,12 @@ player.penup()
 player.left(90)
 
 stop = 1
-statline2(how_obj,stop,"black",-300,buildspeed)
+# statline2(how_obj,stop,"black",-300,buildspeed)
 li = obj_create(stop,buildspeed,many)
 
 # Main loop
 while True:
-    start(1,10, 1, 23,stop,li)
+    start(1,10, 1, 21,stop,li)
     stop = 0
     
 

@@ -276,9 +276,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
     error_bound =  17
 
     # Outside perimiter blocker
-    less_error_bound = 24
+    less_error_bound = 18
 
-    # offset is the offset on how close you can get to an object or something
 
     # Prevents going through objects
    
@@ -290,10 +289,11 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
 
     else:
         # Detects if you glitch through a wall
+       
         if dis[0] <= error_bound:
-            print('\n' * 100)
-            print("Error code: Glitch through wall")
-            exit()
+                print('\n' * 100)
+                print("Error code: Glitch through wall")
+                player.goto(0,0)
             
     #    The colition detection code, allows you to walkthrough a block or not
         if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":

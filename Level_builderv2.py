@@ -284,6 +284,6 @@ while True:
     else:    
         speed = 10
         start(speed,curcolor,collition)
-        sleep(.2)
+        sleep(.05)
         
 

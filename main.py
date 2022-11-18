@@ -109,7 +109,11 @@ def obj_create(stop,buildspeed,many):
     return li
 
     
-
+stuck = False
+d_stuck = False
+a_stuck = False
+w_stuck = False
+s_stuck = False
 
 # V2, go back to origanal if it does not work
 # Basicly the start of the program, controls the player and its collitions with other objects
@@ -185,32 +189,39 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
     # TURN dis{2} into a int
     
     # Inside Perimiter Blocker
-    error_bound =  15
+    error_bound =  17
 
     # Outside perimiter blocker
-    less_error_bound = 15
+    less_error_bound = 24
 
     # offset is the offset on how close you can get to an object or something
 
     # Prevents going through objects
-       
-    if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No" or dis[0] <= error_bound or dis[0] <= less_error_bound:
+   
+    
+    
+
+
+    if walkthrough == "Yes":
+        print("Walk")
+
+    else:
+        # Detects if you glitch through a wall
+        if dis[0] <= error_bound:
+            print("Error code: Glitch through wall")
+            exit()
+            
+    #    The colition detection code, allows you to walkthrough a block or not
+        if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":
          f = False
          a = 0
-
-        
-
-    elif int(dis[0]) <= offset and dis[1] == nx and walkthrough == "No" or dis[0] <= error_bound or dis[0] <= less_error_bound:
+        elif int(dis[0]) <= offset and dis[1] == nx and walkthrough == "No":
          l = False
          a = 0
-
-    elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -280 or dis[0] <= error_bound or dis[0] <= less_error_bound:
+        elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -280:
             b = False
             a = 0
-        
-       
-    
-    elif int(dis[0]) <= offset and dis[1] == px and walkthrough == "No" or dis[0] <= error_bound or dis[0] <= less_error_bound:
+        elif int(dis[0]) <= offset and dis[1] == px and walkthrough == "No":
             r = False
             a = 0
        
@@ -219,24 +230,28 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
    
     # Makes player move and shit
     if keyboard.is_pressed("W") and f == True:
-        player.forward(movement)
-
+             player.forward(movement)
     if keyboard.is_pressed("S") and b == True:
-        player.forward(-(movement))
-
+            player.forward(-(movement))
     if keyboard.is_pressed("A") and l == True:
-        x = player.xcor()
-        y = player.ycor()
-        x = x - movement
-        player.speed(speed)
-        player.goto(x,y)
-
+    
+            x = player.xcor()
+            y = player.ycor()
+            x = x - movement
+            player.speed(speed)
+            player.goto(x,y)
     if keyboard.is_pressed("D") and r == True:
-        x = player.xcor()
-        y = player.ycor()
-        x = x + movement
-        player.speed(speed)
-        player.goto(x,y)
+      
+            x = player.xcor()
+            y = player.ycor()
+            x = x + movement
+            player.speed(speed)
+            player.goto(x,y)
+
+
+
+
+
 
 
 
@@ -274,7 +289,7 @@ li = obj_create(stop,buildspeed,many)
 
 # Main loop
 while True:
-    start(1,10, 1, 21,stop,li)
+    start(1,10, 1, 23,stop,li)
     stop = 0
     
 

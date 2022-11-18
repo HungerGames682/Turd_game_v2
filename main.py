@@ -295,6 +295,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
                 print("Error code: Glitch through wall")
                 player.goto(0,0)
             
+
+            
     #    The colition detection code, allows you to walkthrough a block or not
         if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":
          f = False

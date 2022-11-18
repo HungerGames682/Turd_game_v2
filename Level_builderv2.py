@@ -171,37 +171,37 @@ def colorswitcher():
     cc = builder.color()
     print(cc)
     if cc[0] == "black":
-        coloricon.color("red")
+        # coloricon.color("red")
         builder.color("red")
         sleep(.1)
         return"red"
 
     if cc[0] == "red":
-        coloricon.color("blue")
+        # coloricon.color("blue")
         builder.color("blue")
         sleep(.1)
         return"blue"
 
     if cc[0] == "blue":
-        coloricon.color("yellow")
+        # coloricon.color("yellow")
         builder.color("yellow")
         sleep(.1)
         return"yellow"
 
     if cc[0] == "yellow":
-        coloricon.color("green")
+        # coloricon.color("green")
         builder.color("green")
         sleep(.1)
         return"green"
 
     if cc[0] == "green":
-        coloricon.color("brown")
+        # coloricon.color("brown")
         builder.color("brown")
         sleep(.1)
         return"brown"
 
     if cc[0] == "brown":
-        coloricon.color("black")
+        # coloricon.color("black")
         builder.color("black")
         sleep(.1)
         return"black"
@@ -245,8 +245,9 @@ def start(speed,curcolor,collition):
 
 # statline2(1,0,"black",-300,10)
 
+
 # Colition icon Turtle
-coloricon = turtle.Turtle()
+
 colitionicon = turtle.Turtle()
 colitionicon.penup()
 colitionicon.goto(-300,-200)
@@ -255,9 +256,19 @@ colitionicon.write("Collition is on")
 colitionicon.hideturtle()
 
 # Color Icon turtle
+coloricon = turtle.Turtle()
 coloricon.penup()
-coloricon.shape("square")
-coloricon.goto(-410,-350)
+coloricon.hideturtle()
+coloricon.goto(-300,-225)
+coloricon.write("Coler is: Black")
+
+
+# Erease status turtle
+eraseicon = turtle.Turtle()
+eraseicon.penup()
+eraseicon.hideturtle()
+eraseicon.goto(-300,-250)
+eraseicon.write("E = Erase all")
 
 
 curcolor = "black"
@@ -266,17 +277,36 @@ while True:
     # Switches the color
     if keyboard.is_pressed("tab"):
         curcolor = colorswitcher()
-        print(curcolor)
+        coloricon.clear()
+        coloricon.write("Color is: " + str(curcolor))
 
+    # Swithces the colition of the objects
     if keyboard.is_pressed("c"):
         collition = colitionswitch(collition)
 
+# Enables erease mode
+    if keyboard.is_pressed("e"):
+        eraseicon.clear()
+        eraseicon.write("Press E to confirm")
+        sleep(.2)
+        a = 0
+        while a < 100:
+            if keyboard.is_pressed("e"):
+                eraseicon.clear()
+                eraseicon.write("NO going back")
+                sleep(2)
+                break
+            else:
+                sleep(.01)
+                a = a + 1
+        eraseicon.clear()
+        eraseicon.write("E = erase all")
 
     # Sprint button
     if keyboard.is_pressed("shift"):
         speed = 10
         start(speed,curcolor,collition)
-    
+    # Sprint and place button
     if keyboard.is_pressed("shift") and keyboard.is_pressed("space"):
         speed = 20
         start(speed,curcolor,collition)

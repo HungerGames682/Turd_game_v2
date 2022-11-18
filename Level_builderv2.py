@@ -62,8 +62,24 @@ def blockplace(x, y,curcolor,collition):
     if keyboard.is_pressed("b"):
             print(obj_list)
             print("Overiting save list")
+            while True:
+                # Gonna have to add more levels by adding to this if statment :)
+                if keyboard.is_pressed("0"):
+                    level = 0
+                    cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt'
+                    colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/colli.txt'
+                    coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/color.txt'
+                    break
+                if keyboard.is_pressed("1"):
+                    level = 1
+                    cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/cords.txt'
+                    colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/colli.txt'
+                    coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/color.txt'
+                    break
+
+            
             # Writes the cords for the objects
-            with open('cords.txt', 'w') as ba:
+            with open(cords, 'w') as ba:
                 for i in range(len(obj_list)):
                     print(obj_list[i])
                     cl = obj_list[i]
@@ -73,7 +89,7 @@ def blockplace(x, y,curcolor,collition):
                     ba.write(cl)
 
             # Writes the colors for the objects
-            with open('color.txt','w') as c:
+            with open(coller,'w') as c:
                 for j in range(len(color_list)):
                     print(color_list[j])
                     k = color_list[j]
@@ -82,7 +98,7 @@ def blockplace(x, y,curcolor,collition):
                     c.write(k)
 
             
-            with open('colli.txt','w') as co:
+            with open(colli,'w') as co:
                 for b in range(len(collition_list)):
                     print(collition_list)
                     yo = collition_list[b]

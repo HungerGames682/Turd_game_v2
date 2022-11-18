@@ -4,7 +4,7 @@ import keyboard
 stop = 0
 
 
-
+created_turd = []
 
 # NOW THE CODE IS FULLY AUTOMATIC BESIDES HAVE TO SPECIFY WHERE THE OBJECT IS AND STUFF LIKE THAT 
 with open('cords.txt','r') as howlines:
@@ -62,6 +62,7 @@ def obj_create(stop,buildspeed,many):
             line = fs.readlines()
            
         line[which] = turtle.Turtle()
+        created_turd.append(line[which])
         line[which].speed(buildspeed)
         
         # Creats the object at the cords givin, every 2 lines is a pare of cords
@@ -109,19 +110,103 @@ def obj_create(stop,buildspeed,many):
     return li
 
     
-stuck = False
-d_stuck = False
-a_stuck = False
-w_stuck = False
-s_stuck = False
+# Switches the map to a new level design speicifided in the folder :)
+def level_switch(stop,buildspeed,level):
+    # Put how many objects there
+    # Your gonna have to define some varibles bro
+    cur_level = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/'
+    cords = cur_level + 'cords.txt'
+    colli = cur_level + 'colli.txt'
+    coller = cur_level + 'color.txt'
+    print(cords)
+    print(colli)
+    print(coller)
+    print(created_turd)
+   
+    li = []
+    with open(cords,'r') as howlines:
+        length = howlines.readlines()
+        
+        length = len(length)
+        length = length - 1
+        length = length / 2
+        length = int(length)
+    
+    howlines.close()
+    many = length
+    whole_many = many * 2
+    which = 100
+    coli_many = 0
+    x = 0
+    y = 1
+    print(many)
+    # The for loop that does it all
+    for o in range(many):
+        
+            
+        with open('obj.txt','r') as fs:
+            line = fs.readlines()
+        if o >= len(created_turd):
+            line[which] = turtle.Turtle()
+        else:
+            line[which] = created_turd[o]
+        line[which].speed(buildspeed)
+        
+        # Creats the object at the cords givin, every 2 lines is a pare of cords
+        # EX: line 1 = x-cord, line2 = y-cord, line 3 = x-cord, line 4 = y-cord
+        with open(cords,'r') as cord:
+            main = cord.readlines()
+            newx = int(main[x])
+            newy = int(main[y])
+            print(newx,newy)
+
+        # Opens the collitions file, 0 = walkthrough, 1 = collitions
+        with open(colli,'r') as f:
+            mc = f.readlines()
+            coli = mc[coli_many]
+            
+        # Takes in color for the color.txt file and make the object color that is specified
+        with open(coller,'r') as colo:
+            col =  colo.readlines()
+            color = col[coli_many]
+            color = color.strip('\n')
+          
+
+
+        # Actully creats the object and the saves it to see if has colliotion or not(Clearly)
+        has_colition = object("square",color,coli, line[which],newx,newy,stop)
+        print(has_colition)
+        # Sees if the object can be walked through or not
+        if has_colition == "No":
+            x = x + 2
+            y = y + 2
+            which = which + 1
+            coli_many = coli_many + 1
+            li.append("No")
+            li.append("No")
+            
+        else:
+        # Add the x and y add to list 
+            li.append(newx)
+            li.append(newy)
+        # Updates the varibles
+            x = x + 2
+            y = y + 2
+            which = which + 1
+            coli_many = coli_many + 1
+    return li
+
+
+
+
 
 # V2, go back to origanal if it does not work
 # Basicly the start of the program, controls the player and its collitions with other objects
 def playermove(speed,movement,walkthrough, offset, stop,li):
     
     # Hopfully imporved laggy ness
-    
     lis = []
+    whole_many = len(li)
     for i in range(0, whole_many,2):
         h = i + 1
         if li[i] == "No" or li[h] == "No":
@@ -131,8 +216,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
             
             diss = [d1, li[i], li[h]]
             lis.append(diss)
-    # print(li)
-    # print(lis)
+
     # Gets the distance, x,y of the closest block
     dis = min(lis)
     # print(dis)
@@ -198,8 +282,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
 
     # Prevents going through objects
    
-    
-    
+ 
 
 
     if walkthrough == "Yes":
@@ -208,6 +291,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
     else:
         # Detects if you glitch through a wall
         if dis[0] <= error_bound:
+            print('\n' * 100)
             print("Error code: Glitch through wall")
             exit()
             
@@ -275,6 +359,9 @@ def object(shape,coler,colition,name,x,y, stop):
     
 # Main start function
 def start(speed, movement,chunk,offset,stop,li):
+
+      
+        
     playermove(speed,movement,"No",offset,stop,li)
 
 
@@ -289,6 +376,13 @@ li = obj_create(stop,buildspeed,many)
 
 # Main loop
 while True:
+           # Level Switch button, only temporary for testing
+    if keyboard.is_pressed("T"):
+        li = level_switch(stop,0,1)
+    
+    print(li)
+    print(len(li))
+
     start(1,10, 1, 23,stop,li)
     stop = 0
     

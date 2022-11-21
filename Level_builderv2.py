@@ -20,6 +20,7 @@ collition = 1
 obj_list = []
 color_list = []
 collition_list = []
+big_del = []
 # Draws the statline
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     for he in range(-500,500,20):
@@ -126,12 +127,16 @@ def blockplace(x, y,curcolor,collition):
         with open('obj.txt', 'r') as f:
             line = f.readlines()
             b = line[which]
+            name = line[which]
             b = turtle.Turtle()
             b.color(curcolor)
             b.speed(0)
             b.shape("square")
             b.penup()
             b.goto(x,y)
+            hehe = [name]
+            big_del.append(hehe)
+
             which = which + 1
 
 
@@ -286,21 +291,22 @@ while True:
 
 # Enables erease mode
     if keyboard.is_pressed("e"):
-        eraseicon.clear()
-        eraseicon.write("Press E to confirm")
-        sleep(.2)
-        a = 0
-        while a < 100:
-            if keyboard.is_pressed("e"):
-                eraseicon.clear()
-                eraseicon.write("NO going back")
-                sleep(2)
-                break
-            else:
-                sleep(.01)
-                a = a + 1
-        eraseicon.clear()
-        eraseicon.write("E = erase all")
+     era_list = []
+     print("TBA")
+    #  for i in range(0,len(obj_list),2):
+    #     b = i + 1
+    #     di = builder.distance(obj_list[i],obj_list[b])
+    #     diss = [di, obj_list[i], obj_list[b]]
+    #     era_list.append(diss)
+
+    #  close = min(era_list)
+    #  print(close)
+    #  print(big_del)
+    #  turd = big_del[0]
+    #  turds  = turd[0]
+    #  turds = turtle.Turtle()
+    #  turds.goto(90,20)
+
 
     # Sprint button
     if keyboard.is_pressed("shift"):

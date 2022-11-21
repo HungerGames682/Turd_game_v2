@@ -10,13 +10,15 @@ created_turd = []
 with open('cords.txt','r') as howlines:
     length = howlines.readlines()
     length = len(length)
-    length = length - 1
+   
     length = length / 2
     length = int(length)
 howlines.close()
 many = length
 whole_many = many * 2
-
+name_list = []
+name_list_num = 0
+obj_num = length
 
 
 
@@ -89,10 +91,11 @@ def obj_create(stop,buildspeed,many):
         # Actully creats the object and the saves it to see if has colliotion or not(Clearly)
         has_colition = object("square",color,coli, line[which],newx,newy,stop)
         print(has_colition)
+        name_list.append(line[which])
         # Sees if the object can be walked through or not
         if has_colition == "No":
             x = x + 2
-            y = y + 2
+            y = x + 1
             which = which + 1
             coli_many = coli_many + 1
             li.append("No")
@@ -104,7 +107,7 @@ def obj_create(stop,buildspeed,many):
             li.append(newy)
         # Updates the varibles
             x = x + 2
-            y = y + 2
+            y = x + 1
             which = which + 1
             coli_many = coli_many + 1
     return li
@@ -128,15 +131,16 @@ def level_switch(stop,buildspeed,level):
         length = howlines.readlines()
         
         length = len(length)
-        length = length - 1
         length = length / 2
         length = int(length)
     
     howlines.close()
     many = length
     whole_many = many * 2
+    new_obj_num = length
     which = 100
     coli_many = 0
+    obj_count_num = 0
     x = 0
     y = 1
     print(many)
@@ -176,6 +180,8 @@ def level_switch(stop,buildspeed,level):
         # Actully creats the object and the saves it to see if has colliotion or not(Clearly)
         has_colition = object("square",color,coli, line[which],newx,newy,stop)
         print(has_colition)
+        obj_count_num = obj_count_num + 1
+
         # Sees if the object can be walked through or not
         if has_colition == "No":
             x = x + 2
@@ -194,6 +200,21 @@ def level_switch(stop,buildspeed,level):
             y = y + 2
             which = which + 1
             coli_many = coli_many + 1
+
+    # gets rid of any exxsess objects if the previouse level had more objest than the current level
+    if obj_num > new_obj_num:
+        new_obj_nums = new_obj_num 
+        obj_nums = obj_num  
+        
+        for i in range(new_obj_nums,obj_nums,1):
+            print(i)
+            name_list[i].hideturtle()
+            
+            
+           
+            
+
+        
     return li
 
 
@@ -378,15 +399,21 @@ li = obj_create(stop,buildspeed,many)
 
 # Main loop
 while True:
-           # Level Switch button, only temporary for testing
+           # Level Switch button, only temporary for testing, will make it when you go off screen of something
     if keyboard.is_pressed("T"):
         li = level_switch(stop,0,1)
+
+    elif keyboard.is_pressed("esc"):
+        print("Trying to make a menue of something")
+   
     
     print(li)
     print(len(li))
+    print(name_list)
 
     start(1,10, 1, 23,stop,li)
     stop = 0
+    
     
 
 

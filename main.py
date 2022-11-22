@@ -1,6 +1,7 @@
 
 import turtle
 import keyboard
+from time import sleep
 stop = 0
 
 
@@ -14,11 +15,15 @@ with open('cords.txt','r') as howlines:
     length = length / 2
     length = int(length)
 howlines.close()
+# Defines a bunch of varibles for the game and stuff bc i am too lazy
 many = length
 whole_many = many * 2
 name_list = []
 name_list_num = 0
 obj_num = length
+heath_turd_name = ["1","2","3","4","5","6","7","8","9","10"]
+cur_health = 5
+max_health = 10
 
 
 
@@ -219,8 +224,6 @@ def level_switch(stop,buildspeed,level):
 
 
 
-
-
 # V2, go back to origanal if it does not work
 # Basicly the start of the program, controls the player and its collitions with other objects
 def playermove(speed,movement,walkthrough, offset, stop,li):
@@ -228,14 +231,22 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
     # Hopfully imporved laggy ness
     lis = []
     whole_many = len(li)
+    dd = 0
     for i in range(0, whole_many,2):
+        
+        with open('damage.txt', 'r') as chi:
+            dam = chi.readlines()
+            sh = int(dam[dd])
+        
+            dd = dd + 1
+        
         h = i + 1
         if li[i] == "No" or li[h] == "No":
             print("")
         else:
             d1 = player.distance(li[i],li[h])
             
-            diss = [d1, li[i], li[h]]
+            diss = [d1, li[i], li[h],sh]
             lis.append(diss)
 
     # Gets the distance, x,y of the closest block
@@ -316,7 +327,9 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
                 print("Error code: Glitch through wall")
                 player.goto(0,0)
             
-
+        if dis[0] <= offset and dis[3] == 1:
+            print("Damage taken")
+            cur_health = cur_health - 1
             
     #    The colition detection code, allows you to walkthrough a block or not
         if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":
@@ -325,7 +338,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
         elif int(dis[0]) <= offset and dis[1] == nx and walkthrough == "No":
          l = False
          a = 0
-        elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -280:
+        elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -230:
             b = False
             a = 0
         elif int(dis[0]) <= offset and dis[1] == px and walkthrough == "No":
@@ -356,12 +369,6 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
             player.goto(x,y)
 
 
-
-
-
-
-
-
 # Object creator
 def object(shape,coler,colition,name,x,y, stop):
     
@@ -378,14 +385,90 @@ def object(shape,coler,colition,name,x,y, stop):
         y = name.ycor()
         return x,y
     
-
-    
 # Main start function
 def start(speed, movement,chunk,offset,stop,li):
 
       
         
     playermove(speed,movement,"No",offset,stop,li)
+
+# Draws the heath bar
+def health_bar(x,y,max_health,cur_health):
+    heath_created_turd = []
+    # Creats little heath things
+    HI = turtle.Turtle()
+    HI.penup()
+    new_x = x - 40
+    HI.speed(0)
+    HI.goto(new_x,y)
+    HI.write("Health |")
+    HI.hideturtle()
+    heath_x = x - 20
+    heath_y = y + 5
+    # Generates the max heath bars
+    for i in range(max_health):
+        heath_x = heath_x + 10
+        b = heath_turd_name[i]
+        b = turtle.Turtle()
+        b.penup()
+        b.speed(0)
+        b.goto(heath_x,heath_y)
+        b.shapesize(.5)
+        b.shape("square")
+        b.color("red")
+        heath_created_turd.append(b)
+
+
+    # Hids the turds based on the heath
+   
+    for d in range(cur_health, max_health,1):
+        turd = heath_created_turd[d]
+        turd.hideturtle()
+
+    return heath_created_turd
+
+# It is the function that allows you to add or subtract from the health bar
+def heath_change(HCT,cur_health,add, max_health):
+    if cur_health == max_health and add == 1:
+        print("Max health reached")
+
+    elif cur_health == -1 and add == -1:
+        print("You are dead")
+        print("Game Over")
+        cur_health = -1
+        return cur_health
+        
+
+
+    elif add == 1:
+        
+        HCT[cur_health].showturtle()
+       
+        cur_health = cur_health + 1
+        print(cur_health)
+
+
+        
+
+
+    elif add == -1:
+        if cur_health == max_health:
+            cur_health = cur_health - 1
+        print("-1")
+        HCT[cur_health].hideturtle()
+       
+        cur_health = cur_health - 1
+        print(cur_health)
+
+
+    return cur_health
+
+
+
+
+
+
+
 
 
 
@@ -394,23 +477,43 @@ player.penup()
 player.left(90)
 
 stop = 1
-# statline2(how_obj,stop,"black",-300,buildspeed)
+# Draws the like stat line for all of the stats 
+# statline2(how_obj,stop,"black",-250,0)
+# Draws and creats the heath bar
+HCT = health_bar(-280,-280,max_health,cur_health)
+
+
 li = obj_create(stop,buildspeed,many)
+
+
+
 
 # Main loop
 while True:
-           # Level Switch button, only temporary for testing, will make it when you go off screen of something
+    # ends the game if there health is zero
+    if cur_health == -1:
+        print('\n' * 20)
+        print("Game Over")
+        print("You died...")
+        exit()
+
+    # Level Switch button, only temporary for testing, will make it when you go off screen of something
     if keyboard.is_pressed("T"):
         li = level_switch(stop,0,1)
 
     elif keyboard.is_pressed("esc"):
         print("Trying to make a menue of something")
-   
     
-    print(li)
-    print(len(li))
-    print(name_list)
-
+    # Give and take away health, just here for testing feaetures
+    if keyboard.is_pressed("R"):
+        cur_health = heath_change(HCT, cur_health, 1,max_health)
+       
+        sleep(.2)
+    if keyboard.is_pressed("F"):
+        cur_health = heath_change(HCT, cur_health, -1,max_health)
+        
+        sleep(.2)
+ 
     start(1,10, 1, 23,stop,li)
     stop = 0
     

@@ -14,6 +14,7 @@ builder.left(90)
 
 ws = turtle.Screen()
 collition = 1
+damage = 1
 
 
 
@@ -21,6 +22,7 @@ obj_list = []
 color_list = []
 collition_list = []
 big_del = []
+damage_list = []
 # Draws the statline
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     for he in range(-500,500,20):
@@ -56,7 +58,7 @@ def object(shape,coler,colition,name,x,y, stop):
     
 
 # Places the blocks... like minecraft 
-def blockplace(x, y,curcolor,collition):
+def blockplace(x, y,curcolor,collition,damage):
 
     
     # If these keys are pressed when click then all blocks will be saved for the game
@@ -70,12 +72,14 @@ def blockplace(x, y,curcolor,collition):
                     cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt'
                     colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/colli.txt'
                     coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/color.txt'
+                    dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
                     break
                 if keyboard.is_pressed("1"):
                     level = 1
                     cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/cords.txt'
                     colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/colli.txt'
                     coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/color.txt'
+                    dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/damage.txt'
                     break
 
             
@@ -106,6 +110,14 @@ def blockplace(x, y,curcolor,collition):
                     yo = str(yo)
                     yo = yo + '\n'
                     co.write(yo)
+
+            with open(dam, 'w') as da:
+                for c in range(len(damage_list)):
+                    print(damage_list)
+                    dd = damage_list[c]
+                    dd = str(dd)
+                    dd = dd + '\n'
+                    da.write(dd)
 
 
 
@@ -148,6 +160,7 @@ def blockplace(x, y,curcolor,collition):
             obj_list.append(y)
             color_list.append(curcolor)
             collition_list.append(collition)
+            damage_list.append(damage)
             print(collition_list)
 
 # Movement function dumbass
@@ -227,6 +240,22 @@ def colitionswitch(collition):
         sleep(.2)
         return collition
     
+# Switches the damage on and off
+def damageswitch(damage):
+    if damage == 1:
+        damage = 0
+        damageicon.clear()
+        damageicon.write("Damage is off")
+        sleep(.2)
+        return damage
+
+    elif damage == 0:
+        damage = 1
+        damageicon.clear()
+        damageicon.write("Damage is on")
+        sleep(.2)
+        return damage
+    
 
     
 
@@ -236,12 +265,12 @@ def colitionswitch(collition):
 
 
 # start function.....
-def start(speed,curcolor,collition):
+def start(speed,curcolor,collition,damage):
     movement(speed)
     # Places the block
 
     if keyboard.is_pressed("space"):
-        blockplace(builder.xcor(),builder.ycor(),curcolor,collition)
+        blockplace(builder.xcor(),builder.ycor(),curcolor,collition,damage)
 
     
 
@@ -275,10 +304,32 @@ eraseicon.hideturtle()
 eraseicon.goto(-300,-250)
 eraseicon.write("E = Erase all")
 
+# Damage status turtle
+damageicon = turtle.Turtle()
+damageicon.penup()
+damageicon.hideturtle()
+damageicon.goto(-200,-200)
+damageicon.write("Damage is on")
+
 
 curcolor = "black"
 # Main loop
 while True:
+    # Prevents objects that have no collition from having damage
+    if collition == 0 and damage == 1:
+        damage == 0
+        damage = damageswitch(damage)
+        print(damage)
+        sleep(.2)
+
+    # Turns damage on and off
+    if keyboard.is_pressed("x"):
+   
+            
+        damage = damageswitch(damage)
+        print(damage)
+
+
     # Switches the color
     if keyboard.is_pressed("tab"):
         curcolor = colorswitcher()
@@ -287,39 +338,31 @@ while True:
 
     # Swithces the colition of the objects
     if keyboard.is_pressed("c"):
+        
         collition = colitionswitch(collition)
+
+
 
 # Enables erease mode
     if keyboard.is_pressed("e"):
      era_list = []
      print("TBA")
-    #  for i in range(0,len(obj_list),2):
-    #     b = i + 1
-    #     di = builder.distance(obj_list[i],obj_list[b])
-    #     diss = [di, obj_list[i], obj_list[b]]
-    #     era_list.append(diss)
 
-    #  close = min(era_list)
-    #  print(close)
-    #  print(big_del)
-    #  turd = big_del[0]
-    #  turds  = turd[0]
-    #  turds = turtle.Turtle()
-    #  turds.goto(90,20)
+
 
 
     # Sprint button
     if keyboard.is_pressed("shift"):
         speed = 10
-        start(speed,curcolor,collition)
+        start(speed,curcolor,collition,damage)
     # Sprint and place button
     if keyboard.is_pressed("shift") and keyboard.is_pressed("space"):
         speed = 20
-        start(speed,curcolor,collition)
+        start(speed,curcolor,collition,damage)
 
     else:    
         speed = 10
-        start(speed,curcolor,collition)
+        start(speed,curcolor,collition,damage)
         sleep(.05)
         
 

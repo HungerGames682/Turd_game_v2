@@ -67,6 +67,12 @@ def blockplace(x, y,curcolor,collition,damage):
             print("Overiting save list")
             while True:
                 # Gonna have to add more levels by adding to this if statment :)
+                if keyboard.is_pressed("s"):
+                    print("Exiting without saving")
+                    exit()
+
+
+
                 if keyboard.is_pressed("0"):
                     level = 0
                     cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt'

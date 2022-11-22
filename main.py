@@ -24,6 +24,8 @@ obj_num = length
 heath_turd_name = ["1","2","3","4","5","6","7","8","9","10"]
 cur_health = 5
 max_health = 10
+leavel = 0
+all_turd_obj = []
 
 
 
@@ -69,6 +71,7 @@ def obj_create(stop,buildspeed,many):
             line = fs.readlines()
            
         line[which] = turtle.Turtle()
+        all_turd_obj.append(line[which])
         created_turd.append(line[which])
         line[which].speed(buildspeed)
         
@@ -130,7 +133,7 @@ def level_switch(stop,buildspeed,level):
     print(colli)
     print(coller)
     print(created_turd)
-   
+    all_turd_obj = []
     li = []
     with open(cords,'r') as howlines:
         length = howlines.readlines()
@@ -157,6 +160,7 @@ def level_switch(stop,buildspeed,level):
             line = fs.readlines()
         if o >= len(created_turd):
             line[which] = turtle.Turtle()
+            all_turd_obj.append(line[which])
         else:
             line[which] = created_turd[o]
         line[which].speed(buildspeed)
@@ -220,21 +224,26 @@ def level_switch(stop,buildspeed,level):
             
 
         
-    return li
+    return li, all_turd_obj
 
 
 
 # V2, go back to origanal if it does not work
 # Basicly the start of the program, controls the player and its collitions with other objects
-def playermove(speed,movement,walkthrough, offset, stop,li):
+def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level):
     
     # Hopfully imporved laggy ness
     lis = []
     whole_many = len(li)
     dd = 0
+    if leavel == 1:
+        dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/damage.txt'
+
+    else:
+        dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
     for i in range(0, whole_many,2):
         
-        with open('damage.txt', 'r') as chi:
+        with open(dama, 'r') as chi:
             dam = chi.readlines()
             sh = int(dam[dd])
         
@@ -326,10 +335,11 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
                 print('\n' * 100)
                 print("Error code: Glitch through wall")
                 player.goto(0,0)
-            
+        
+        # Makes the player take damage if they are close to a obj that damages them
         if dis[0] <= offset and dis[3] == 1:
-            print("Damage taken")
-            cur_health = cur_health - 1
+            cur_health = heath_change(HCT, cur_health, -1,max_health)
+            sleep(.1)
             
     #    The colition detection code, allows you to walkthrough a block or not
         if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":
@@ -367,6 +377,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li):
             x = x + movement
             player.speed(speed)
             player.goto(x,y)
+    return cur_health
 
 
 # Object creator
@@ -386,11 +397,12 @@ def object(shape,coler,colition,name,x,y, stop):
         return x,y
     
 # Main start function
-def start(speed, movement,chunk,offset,stop,li):
+def start(speed, movement,chunk,offset,stop,li,cur_health,leavel):
 
       
         
-    playermove(speed,movement,"No",offset,stop,li)
+    cur_health = playermove(speed,movement,"No",offset,stop,li,cur_health,leavel)
+    return cur_health
 
 # Draws the heath bar
 def health_bar(x,y,max_health,cur_health):
@@ -499,7 +511,9 @@ while True:
 
     # Level Switch button, only temporary for testing, will make it when you go off screen of something
     if keyboard.is_pressed("T"):
-        li = level_switch(stop,0,1)
+        li, all_turd_obj = level_switch(stop,0,1)
+     
+        leavel = 1
 
     elif keyboard.is_pressed("esc"):
         print("Trying to make a menue of something")
@@ -513,8 +527,14 @@ while True:
         cur_health = heath_change(HCT, cur_health, -1,max_health)
         
         sleep(.2)
- 
-    start(1,10, 1, 23,stop,li)
+    
+
+    if keyboard.is_pressed("G"):
+        print(all_turd_obj)
+        for i in range(len(all_turd_obj)):
+            all_turd_obj[i].hideturtle()
+
+    cur_health = start(1,10, 1, 23,stop,li,cur_health,leavel)
     stop = 0
     
     

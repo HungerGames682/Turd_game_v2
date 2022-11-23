@@ -26,6 +26,8 @@ cur_health = 5
 max_health = 10
 leavel = 0
 all_turd_obj = []
+pin_locks = []
+erase_lock = []
 
 
 
@@ -475,6 +477,95 @@ def heath_change(HCT,cur_health,add, max_health):
 
     return cur_health
 
+# Makes the ouside of the lock shell
+def lock_shell(x,y):
+    lo = turtle.Turtle()
+    lo.speed(0)
+    lo.penup()
+    lo.goto(x,y)
+    lo.left(90)
+    lo.pendown()
+    lo.forward(100)
+    lo.right(90)
+    lo.forward(30)
+    lo.right(90)
+    lo.forward(100)
+    lo.hideturtle()
+    erase_lock.append(lo)
+
+# Makes the pins of the lock
+def lock_pin(x,y):
+    ls = turtle.Turtle()
+    ls.speed(0)
+    ls.penup()
+    ls.goto(x,y)
+    ls.left(90)
+    pin_locks.append(ls)
+    erase_lock.append(ls)
+# Makes the outside shell
+def lock_out_shell(x,y):
+    k = turtle.Turtle()
+    k.penup()
+
+    k.goto(x,y)
+    k.pendown()
+    k.forward(30)
+    k.hideturtle()
+    erase_lock.append(k)
+
+# Lockpick maker aka adds everything together
+def lockpick(locks):
+    hide = turtle.Turtle()
+    hide.shape("square")
+    hide.color("white")
+    hide.shapesize(50)
+    locked = True
+    x = -150
+    y = 0
+    ox = x
+    oy = y - 15
+    lx = x + 15
+    ly = y + 10
+    lox = x
+    loy = y - 30
+
+    # All the for loops draw the parts of the locks
+    for i in range(locks):
+        lock_shell(x,y)
+        x = x + 30
+    
+    for d in range(locks):
+        lock_pin(lx,ly)
+        lx = lx + 30
+    
+    for a in range(locks):
+        lock_out_shell(lox,loy)
+        lox = lox + 30
+
+
+    wall = turtle.Turtle()
+    wall.penup()
+    wall.goto(lox,loy)
+    wall.pendown()
+    wall.left(90)
+    wall.forward(30)
+    wall.hideturtle()
+    
+    l = turtle.Turtle()
+    l.penup()
+    l.goto(ox,oy)
+    l.shape("square")
+    l.shapesize(.5,2)
+    tip = turtle.Turtle()
+    tip.penup()
+    tip.goto(ox,oy)
+    tip.shape("square")
+    print(pin_locks)
+    
+    while locked == True:
+        print("TBA")
+
+
 
 
 
@@ -533,6 +624,16 @@ while True:
         print(all_turd_obj)
         for i in range(len(all_turd_obj)):
             all_turd_obj[i].hideturtle()
+
+    if keyboard.is_pressed("H"):
+        print(all_turd_obj)
+        for i in range(len(all_turd_obj)):
+            all_turd_obj[i].showturtle()
+
+    if keyboard.is_pressed("L"):
+      lockpick(3)
+
+        
 
     cur_health = start(1,10, 1, 23,stop,li,cur_health,leavel)
     stop = 0

@@ -506,7 +506,7 @@ def lock_pin(x,y):
 def lock_out_shell(x,y):
     k = turtle.Turtle()
     k.penup()
-
+    k.speed(0)
     k.goto(x,y)
     k.pendown()
     k.forward(30)
@@ -522,8 +522,10 @@ def lockpick(locks):
     locked = True
     x = -150
     y = 0
-    ox = x
+    ox = x - 180
     oy = y - 15
+    tx = x + 15
+    ty = y - 2
     lx = x + 15
     ly = y + 10
     lox = x
@@ -542,7 +544,7 @@ def lockpick(locks):
         lock_out_shell(lox,loy)
         lox = lox + 30
 
-
+    # The Turtle varibles for the pick itself
     wall = turtle.Turtle()
     wall.penup()
     wall.goto(lox,loy)
@@ -555,11 +557,12 @@ def lockpick(locks):
     l.penup()
     l.goto(ox,oy)
     l.shape("square")
-    l.shapesize(.5,2)
+    l.shapesize(.5,20)
     tip = turtle.Turtle()
     tip.penup()
-    tip.goto(ox,oy)
+    tip.goto(tx,ty)
     tip.shape("square")
+    tip.shapesize(.8,.5)
     print(pin_locks)
     
     while locked == True:
@@ -631,7 +634,7 @@ while True:
             all_turd_obj[i].showturtle()
 
     if keyboard.is_pressed("L"):
-      lockpick(3)
+      lockpick(5)
 
         
 

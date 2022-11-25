@@ -15,6 +15,10 @@ builder.left(90)
 ws = turtle.Screen()
 collition = 1
 damage = 1
+type = "Chest"
+lock_difficulty = 0
+
+
 
 
 
@@ -23,6 +27,8 @@ color_list = []
 collition_list = []
 big_del = []
 damage_list = []
+type_list = []
+lock_difficulty_list = []
 # Draws the statline
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     for he in range(-500,500,20):
@@ -58,7 +64,7 @@ def object(shape,coler,colition,name,x,y, stop):
     
 
 # Places the blocks... like minecraft 
-def blockplace(x, y,curcolor,collition,damage):
+def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
 
     
     # If these keys are pressed when click then all blocks will be saved for the game
@@ -67,6 +73,7 @@ def blockplace(x, y,curcolor,collition,damage):
             print("Overiting save list")
             while True:
                 # Gonna have to add more levels by adding to this if statment :)
+                # Also every new level that is added you will need to add it to the main and this code bitttch
                 if keyboard.is_pressed("s"):
                     print("Exiting without saving")
                     exit()
@@ -79,13 +86,18 @@ def blockplace(x, y,curcolor,collition,damage):
                     colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/colli.txt'
                     coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/color.txt'
                     dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
+                    ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
+                    lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
                     break
+
                 if keyboard.is_pressed("1"):
                     level = 1
                     cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/cords.txt'
                     colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/colli.txt'
                     coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/color.txt'
                     dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/damage.txt'
+                    ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/type.txt'
+                    lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/lock.txt'
                     break
 
             
@@ -108,7 +120,7 @@ def blockplace(x, y,curcolor,collition,damage):
                     k = k + '\n'
                     c.write(k)
 
-            
+            # Writes the colitions
             with open(colli,'w') as co:
                 for b in range(len(collition_list)):
                     print(collition_list)
@@ -116,7 +128,7 @@ def blockplace(x, y,curcolor,collition,damage):
                     yo = str(yo)
                     yo = yo + '\n'
                     co.write(yo)
-
+            # Writes the damage values
             with open(dam, 'w') as da:
                 for c in range(len(damage_list)):
                     print(damage_list)
@@ -124,6 +136,22 @@ def blockplace(x, y,curcolor,collition,damage):
                     dd = str(dd)
                     dd = dd + '\n'
                     da.write(dd)
+            # Writes the type values
+            with open(ty, 'w') as ltt:
+                for lit in range(len(type_list)):
+                    print(type_list)
+                    ttt = type_list[lit]
+                    ttt = str(ttt)
+                    ttt = ttt + '\n'
+                    ltt.write(ttt)
+            # Writes the lock difficulty values
+            with open(lik, 'w') as differ:
+                for ah in range(len(lock_difficulty_list)):
+                    print(lock_difficulty_list)
+                    lll = lock_difficulty_list[ah]
+                    lll = str(lll)
+                    lll = lll + '\n'
+                    differ.write(lll)
 
 
 
@@ -167,6 +195,8 @@ def blockplace(x, y,curcolor,collition,damage):
             color_list.append(curcolor)
             collition_list.append(collition)
             damage_list.append(damage)
+            type_list.append(type)
+            lock_difficulty_list.append(lock_difficulty)
             print(collition_list)
 
 # Movement function dumbass
@@ -261,9 +291,63 @@ def damageswitch(damage):
         damageicon.write("Damage is on")
         sleep(.2)
         return damage
-    
 
+# Switches the type of interactibel it is or something
+def typeswitch(type):
+    if type == "Chest":
+        type = "Null"
+
+    elif type == "Null":
+        type = "Chest"
+    typeicon.clear()
+    typeicon.write("Type is " + type)
+    return type
+
+# Changes the difficulty of lock it is
+def lockswitch(lock_difficulty):
+    if lock_difficulty == 0:
+        lock_stat = "Pins = 1"
+        lock_difficulty = 1
+
+    elif lock_difficulty == 1:
+        lock_stat = "Pins = 2"
+        lock_difficulty = 2
     
+    elif lock_difficulty == 2:
+        lock_stat = "Pins = 3"
+        lock_difficulty = 3
+
+    elif lock_difficulty == 3:
+        lock_stat = "Pins = 4"
+        lock_difficulty = 4
+
+    elif lock_difficulty == 4:
+        lock_stat = "Pins = 5"
+        lock_difficulty = 5
+    
+    elif lock_difficulty == 5:
+        lock_stat = "Pins = 6"
+        lock_difficulty = 6
+    
+    elif lock_difficulty == 6:
+        lock_stat = "Pins = 7"
+        lock_difficulty = 7
+
+    elif lock_difficulty == 7:
+        lock_stat = "Pins = 8"
+        lock_difficulty = 8
+
+    elif lock_difficulty == 8:
+        lock_stat = "Pins = 9"
+        lock_difficulty = 9
+
+    elif lock_difficulty == 9:
+        lock_stat = "Pins = 0"
+        lock_difficulty = 0
+
+    chest.clear()
+    chest.write(lock_stat)
+    return lock_difficulty
 
 
 
@@ -271,12 +355,12 @@ def damageswitch(damage):
 
 
 # start function.....
-def start(speed,curcolor,collition,damage):
+def start(speed,curcolor,collition,damage,type,lock_difficulty):
     movement(speed)
     # Places the block
 
     if keyboard.is_pressed("space"):
-        blockplace(builder.xcor(),builder.ycor(),curcolor,collition,damage)
+        blockplace(builder.xcor(),builder.ycor(),curcolor,collition,damage,type,lock_difficulty)
 
     
 
@@ -317,8 +401,22 @@ damageicon.hideturtle()
 damageicon.goto(-200,-200)
 damageicon.write("Damage is on")
 
+# Type Status turtle
+typeicon = turtle.Turtle()
+typeicon.penup()
+typeicon.hideturtle()
+typeicon.goto(-200,-225)
+typeicon.write("Type is Chest")
+
+# Chest attribute icon
+chest = turtle.Turtle()
+chest.penup()
+chest.hideturtle()
+chest.goto(-200,-250)
+
 
 curcolor = "black"
+
 # Main loop
 while True:
     # Prevents objects that have no collition from having damage
@@ -354,21 +452,28 @@ while True:
      era_list = []
      print("TBA")
 
+    if keyboard.is_pressed("r") and keyboard.is_pressed("shift") and type == "Chest":
+        lock_difficulty = lockswitch(lock_difficulty)
 
+    # Switches the type of object
+    elif keyboard.is_pressed("r"):
+        type = typeswitch(type)
+        chest.clear()
+        sleep(.2)
 
 
     # Sprint button
     if keyboard.is_pressed("shift"):
         speed = 10
-        start(speed,curcolor,collition,damage)
+        start(speed,curcolor,collition,damage,type,lock_difficulty)
     # Sprint and place button
     if keyboard.is_pressed("shift") and keyboard.is_pressed("space"):
         speed = 20
-        start(speed,curcolor,collition,damage)
+        start(speed,curcolor,collition,damage,type,lock_difficulty)
 
     else:    
         speed = 10
-        start(speed,curcolor,collition,damage)
+        start(speed,curcolor,collition,damage,type,lock_difficulty)
         sleep(.05)
         
 

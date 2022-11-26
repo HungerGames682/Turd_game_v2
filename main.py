@@ -27,6 +27,8 @@ cur_health = 5
 max_health = 10
 leavel = 0
 all_turd_obj = []
+# For now 1 is lowest and 2 is highest... idk why you would need this, im just board
+game_quality = 2
 
 pin_locks = []
 erase_lock = []
@@ -35,13 +37,14 @@ picked_list = [["False",3921039210,145743535]]
 sc = turtle.Screen()
 
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/bottom_pick.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/pins.gif']
+shape_list = ['/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/bottom_pick.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/pins.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/stats_line.gif']
 for kjh in range(len(shape_list)):
     sc.register_shape(shape_list[kjh])
 
-
+# Defines all of the skins here
 bottem_lock_pick = shape_list[0]
 pins_skin = shape_list[1]
+stat_line_skin = shape_list[2]
 
 
 # Customize some settings here
@@ -57,15 +60,16 @@ how_obj = 1
 statcolor = "black"
 statyline = -300
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
-    for he in range(-500,500,20):
-        with open('obj.txt','r') as b:
-            line = b.readlines()
-            print(line[how_obj])
-        line[how_obj] = turtle.Turtle()
-        line[how_obj].speed(buildspeed)
-        object("square",statcolor,player, line[how_obj],he,statyline,stop)
+    # for he in range(-500,500,20):
+    #     with open('obj.txt','r') as b:
+    #         line = b.readlines()
+    #         print(line[how_obj])
+    #     line[how_obj] = turtle.Turtle()
+    #     line[how_obj].speed(buildspeed)
+        balls = turtle.Turtle()
+        object(stat_line_skin,statcolor,player, balls,0,statyline,stop)
         
-        how_obj = how_obj + 1
+    #     how_obj = how_obj + 1
        
 
 # Creats all of the objects based on the cords.txt, colli.txt, shape.txt, color.txt
@@ -584,7 +588,10 @@ def lock_pin(x,y):
     ls.penup()
     ls.goto(x,y)
     ls.left(90)
-    ls.shape(pins_skin)
+    if game_quality == 1:
+        ls.shape("classic")
+    else:
+        ls.shape(pins_skin)
     pin_locks.append(ls)
     erase_lock.append(ls)
 # Makes the outside shell
@@ -661,8 +668,11 @@ def lockpick(locks,pick_speed):
     erase_lock.append(l)
     l.penup()
     l.goto(ox,oy)
-    l.shape(bottem_lock_pick)
-    l.shapesize(.1,1)
+    if game_quality == 1:
+        l.shape("square")
+    else:
+        l.shape(bottem_lock_pick)
+    l.shapesize(.5,20)
     tip = turtle.Turtle()
     erase_lock.append(tip)
     all_lock_turd_obj.append(tip)
@@ -670,7 +680,10 @@ def lockpick(locks,pick_speed):
     tx = tx -13
     ty = ty + 6
     tip.goto(tx,ty)
-    tip.hideturtle()
+    if game_quality == 1:
+        tip.showturtle()
+    else:
+        tip.hideturtle()
     tip.shape("square")
     tip.shapesize(.6,.5)
     print(pin_locks)
@@ -820,7 +833,7 @@ player.left(90)
 stop = 1
 # Draws the like stat line for all of the stats 
 # DEVILS NUMBER
-# statline2(how_obj,stop,"black",-250,0)
+statline2(how_obj,stop,"black",-250,0)
 # Draws and creats the heath bar
 HCT = health_bar(-280,-280,max_health,cur_health)
 

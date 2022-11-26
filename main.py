@@ -37,7 +37,7 @@ picked_list = [["False",3921039210,145743535]]
 sc = turtle.Screen()
 
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/bottom_pick.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/pins.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/stats_line.gif']
+shape_list = ['/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/bottom_pick.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/pins.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/stats_line.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/heart.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/Inventory Frame.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/Lock Pick.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/Selected Inventory Frame.gif']
 for kjh in range(len(shape_list)):
     sc.register_shape(shape_list[kjh])
 
@@ -45,6 +45,10 @@ for kjh in range(len(shape_list)):
 bottem_lock_pick = shape_list[0]
 pins_skin = shape_list[1]
 stat_line_skin = shape_list[2]
+heart_skin = shape_list[3]
+inventory_frame_skin = shape_list[4]
+lcok_pick_item_skin = shape_list[5]
+selected_inventory_frame_skin = shape_list[6]
 
 
 # Customize some settings here
@@ -503,7 +507,7 @@ def health_bar(x,y,max_health,cur_health):
     new_x = x - 40
     HI.speed(0)
     HI.goto(new_x,y)
-    HI.write("Health |")
+    HI.write("Health ")
     HI.hideturtle()
     heath_x = x - 20
     heath_y = y + 5
@@ -516,8 +520,12 @@ def health_bar(x,y,max_health,cur_health):
         b.speed(0)
         b.goto(heath_x,heath_y)
         b.shapesize(.5)
-        b.shape("square")
-        b.color("red")
+        if game_quality == 1:
+            b.shape("square")
+            b.color("red")
+
+        else:
+            b.shape(heart_skin)
         heath_created_turd.append(b)
 
 
@@ -821,12 +829,36 @@ def lockpick(locks,pick_speed):
     
     return True
 
+# Builds the inventory frame and the list of icons for the inventorys
+def inventory_frame():
+    icon_list = []
+    selected_slot_list = []
+    for i in range(100,400,100):
+        u = turtle.Turtle()
+        icon = turtle.Turtle()
+        icon_list.append(icon)
+        selected_slot_list.append(u)
+        u.speed(0)
+        icon.speed(0)
+        icon.penup()
+        icon.color("blue")
+        
+
+        if game_quality == 1:
+            u.hideturtle()
+        else:
+            u.shape(inventory_frame_skin)
+
+        u.penup()
+        u.goto(i,-290)
+        icon.goto(i,-290)
+        icon.forward(4)
+    return icon_list,selected_slot_list
 
 
 
-
-
-
+# Draws the inventory frames and the turtles
+icon_inventory_list,selected_slot_list = inventory_frame()
 player.penup()
 player.left(90)
 
@@ -853,6 +885,23 @@ while True:
         print("You died...")
         exit()
 
+    # Changes selected item
+    if keyboard.is_pressed("1"):
+        selected_item = icon_inventory_list[0].shape()
+        
+        selected_slot_list[0].shape(selected_inventory_frame_skin)
+        selected_slot_list[1].shape(inventory_frame_skin)
+        selected_slot_list[2].shape(inventory_frame_skin)  
+    if keyboard.is_pressed("2"):
+        selected_item = icon_inventory_list[1].shape()
+        selected_slot_list[1].shape(selected_inventory_frame_skin)
+        selected_slot_list[2].shape(inventory_frame_skin)
+        selected_slot_list[0].shape(inventory_frame_skin)
+    if keyboard.is_pressed("3"):
+        selected_item = icon_inventory_list[3].shape()
+        selected_slot_list[2].shape(selected_inventory_frame_skin)
+        selected_slot_list[1].shape(inventory_frame_skin)
+        selected_slot_list[0].shape(inventory_frame_skin)
     # Level Switch button, only temporary for testing, will make it when you go off screen of something
     if keyboard.is_pressed("T"):
         li, all_turd_obj = level_switch(stop,0,1)
@@ -874,9 +923,11 @@ while True:
     
 
     if keyboard.is_pressed("L"):
-      lockpick(10,5)
-      erase_lock = []
-      pin_locks = []
+        icon_inventory_list[0].shape(lcok_pick_item_skin)
+
+    #   lockpick(10,5)
+    #   erase_lock = []
+    #   pin_locks = []
 
         
 

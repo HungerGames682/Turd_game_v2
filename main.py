@@ -32,9 +32,16 @@ pin_locks = []
 erase_lock = []
 picked_list = [["False",3921039210,145743535]]
 
+sc = turtle.Screen()
+
+# All of this is addign custom skins into the game, i will have to make them tho
+shape_list = ['/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/bottom_pick.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/pins.gif']
+for kjh in range(len(shape_list)):
+    sc.register_shape(shape_list[kjh])
 
 
-
+bottem_lock_pick = shape_list[0]
+pins_skin = shape_list[1]
 
 
 # Customize some settings here
@@ -243,15 +250,18 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     whole_many = len(li)
     dd = 0
     ddd = 0
+    # Will have to add more levels here for this code to work bc thats how i desigend it to work
     if leavel == 1:
         dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/damage.txt'
         obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/type.txt'
         lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/lock.txt'
+        chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/chest_give.txt'
 
     else:
         dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
         lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
         obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
+        chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
 
     for i in range(0, whole_many,2):
         
@@ -284,7 +294,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
     # Gets the distance, x,y of the closest block
     dis = min(lis)
-    print(dis)
+    # print(dis)
   
         
     
@@ -370,10 +380,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             # for pp in range(len(picked_list)):
                 chosen = min(new_picked_list)
 
-                # print(chosen)
-                # print(dis)
-                # print(picked_list)
-                # print(new_picked_list)
+                print(chosen)
+                print(dis)
+                print(picked_list)
+                print(new_picked_list)
                 # Detects if you have already picked this chest
                 if dis[0] <= 24 and dis[4] == "Chest\n" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
                      player.write("      You have already picked this")
@@ -382,11 +392,20 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 # Lets you pick this chest
                 elif dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
                     unlocked = lockpick(dis[5],5)
-                
-                    unlockeds = [unlocked,dis[1],dis[2]]
-                    picked_list.append(unlockeds)
+                    if unlocked == True:
+                        # Gives them items based on what is determined in the list
+                        with open(chest_inventory,'r') as cinven:
+                            give_what = cinven.readlines()
+                            gives = give_what[dis[6]]
+                            player.write("Gained " + str(gives))
+                            sleep(1.2)
+                            player.clear()
+
+
+                            unlockeds = [unlocked,dis[1],dis[2]]
+                            picked_list.append(unlockeds)
                     
-                    eraselocks = True
+                            eraselocks = True
                     # There is no lock to pick
                 else:
                     player.write("      There is no lock to pick")
@@ -565,6 +584,7 @@ def lock_pin(x,y):
     ls.penup()
     ls.goto(x,y)
     ls.left(90)
+    ls.shape(pins_skin)
     pin_locks.append(ls)
     erase_lock.append(ls)
 # Makes the outside shell
@@ -599,7 +619,7 @@ def lockpick(locks,pick_speed):
     lx = x + 15
     ly = y + 10
     lox = x
-    loy = y - 30
+    loy = y - 50
     
     # Creates the list of all pins and stuff
     for lk in range(locks):
@@ -633,7 +653,7 @@ def lockpick(locks,pick_speed):
     wall.goto(lox,loy)
     wall.pendown()
     wall.left(90)
-    wall.forward(30)
+    wall.forward(50)
     wall.hideturtle()
     
     l = turtle.Turtle()
@@ -641,13 +661,16 @@ def lockpick(locks,pick_speed):
     erase_lock.append(l)
     l.penup()
     l.goto(ox,oy)
-    l.shape("square")
-    l.shapesize(.3,20)
+    l.shape(bottem_lock_pick)
+    l.shapesize(.1,1)
     tip = turtle.Turtle()
     erase_lock.append(tip)
     all_lock_turd_obj.append(tip)
     tip.penup()
+    tx = tx -13
+    ty = ty + 6
     tip.goto(tx,ty)
+    tip.hideturtle()
     tip.shape("square")
     tip.shapesize(.6,.5)
     print(pin_locks)
@@ -837,17 +860,6 @@ while True:
     #     sleep(.2)
     
 
-    if keyboard.is_pressed("G"):
-        print(all_turd_obj)
-        for i in range(len(all_turd_obj)):
-            all_turd_obj[i].hideturtle()
-
-    if keyboard.is_pressed("H"):
-        print(all_turd_obj)
-        for i in range(len(all_turd_obj)):
-            all_turd_obj[i].showturtle()
-
-
     if keyboard.is_pressed("L"):
       lockpick(10,5)
       erase_lock = []
@@ -856,7 +868,7 @@ while True:
         
 
     cur_health,eraselocks,picked_list = start(1,10, 1, 23,stop,li,cur_health,leavel,picked_list)
-    print(picked_list)
+    
     if eraselocks == True:
         erase_lock = []
         pin_locks = []

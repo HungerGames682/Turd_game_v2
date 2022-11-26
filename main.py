@@ -250,7 +250,7 @@ def level_switch(stop,buildspeed,level):
 
 # V2, go back to origanal if it does not work
 # Basicly the start of the program, controls the player and its collitions with other objects
-def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,picked_list):
+def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,picked_list,inventory):
     
     # Hopfully imporved laggy ness
     lis = []
@@ -406,6 +406,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                             give_what = cinven.readlines()
                             gives = give_what[dis[6]]
                             player.write("Gained " + str(gives))
+                            
+                            inventory = give_item(gives,icon_inventory_list,inventory)
                             sleep(1.2)
                             player.clear()
 
@@ -471,7 +473,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             x = x + movement
             player.speed(speed)
             player.goto(x,y)
-    return cur_health,eraselocks,picked_list
+    return cur_health,eraselocks,picked_list,inventory
 
 
 # Object creator
@@ -491,12 +493,12 @@ def object(shape,coler,colition,name,x,y, stop):
         return x,y
     
 # Main start function
-def start(speed, movement,chunk,offset,stop,li,cur_health,leavel,picked_list):
+def start(speed, movement,chunk,offset,stop,li,cur_health,leavel,picked_list,inventory):
 
       
         
-    cur_health,eraselocks,picked_list = playermove(speed,movement,"No",offset,stop,li,cur_health,leavel,picked_list)
-    return cur_health,eraselocks,picked_list
+    cur_health,eraselocks,picked_list,inventory = playermove(speed,movement,"No",offset,stop,li,cur_health,leavel,picked_list,inventory)
+    return cur_health,eraselocks,picked_list,inventory
 
 # Draws the heath bar
 def health_bar(x,y,max_health,cur_health):
@@ -829,7 +831,7 @@ def lockpick(locks,pick_speed):
     
     return True
 
-# Builds the inventory frame and the list of icons for the inventorys
+# Builds the inventory frame and the list of icons for the inventory
 def inventory_frame():
     icon_list = []
     selected_slot_list = []
@@ -855,10 +857,57 @@ def inventory_frame():
         icon.forward(4)
     return icon_list,selected_slot_list
 
+# Lets you give the them the item,
+# It is goofy, the skin is the item in the inventory list
+def give_item(item,icon_inventory_list,inventory):
+        if item == "lockpick\n":
+            print("Lockpick give")
+            item = lcok_pick_item_skin
+        elif item == "nothing\n":
+            print("give nothing")
+            return inventory
+
+        else:
+            error("Item is not defiened")
+
+
+
+
+        if inventory[0] == "classic":
+            inventory[0] = item
+            icon_inventory_list[0].shape(item)
+            print(inventory)
+
+        elif inventory[1] == "classic":
+            inventory[1] = item
+            icon_inventory_list[1].shape(item)
+            print(inventory)
+
+        elif inventory[2] == "classic":
+            inventory[2] = item
+            icon_inventory_list[2].shape(item)
+            print(inventory)
+
+        else:
+            error("Inventory is full")
+        return inventory
+
+# Got tired of writeng too many lines for each erorr message    
+def error(message):
+    print('\n' * 20)
+    print("Error Code: " + str(message))
+    exit()
 
 
 # Draws the inventory frames and the turtles
 icon_inventory_list,selected_slot_list = inventory_frame()
+inventory = []
+# Builds the inventory shit
+for hh in range(3):
+    j = icon_inventory_list[hh].shape()
+    inventory.append(j)
+
+
 player.penup()
 player.left(90)
 
@@ -869,7 +918,7 @@ statline2(how_obj,stop,"black",-250,0)
 # Draws and creats the heath bar
 HCT = health_bar(-280,-280,max_health,cur_health)
 
-
+# I forgot what this does, but its basicly coconnut.jpeg from TF2
 li = obj_create(stop,buildspeed,many)
 
 
@@ -898,7 +947,7 @@ while True:
         selected_slot_list[2].shape(inventory_frame_skin)
         selected_slot_list[0].shape(inventory_frame_skin)
     if keyboard.is_pressed("3"):
-        selected_item = icon_inventory_list[3].shape()
+        selected_item = icon_inventory_list[2].shape()
         selected_slot_list[2].shape(selected_inventory_frame_skin)
         selected_slot_list[1].shape(inventory_frame_skin)
         selected_slot_list[0].shape(inventory_frame_skin)
@@ -923,7 +972,7 @@ while True:
     
 
     if keyboard.is_pressed("L"):
-        icon_inventory_list[0].shape(lcok_pick_item_skin)
+        inventory = give_item(lcok_pick_item_skin,icon_inventory_list,inventory)
 
     #   lockpick(10,5)
     #   erase_lock = []
@@ -931,7 +980,7 @@ while True:
 
         
 
-    cur_health,eraselocks,picked_list = start(1,10, 1, 23,stop,li,cur_health,leavel,picked_list)
+    cur_health,eraselocks,picked_list,inventory = start(1,10, 1, 23,stop,li,cur_health,leavel,picked_list,inventory)
     
     if eraselocks == True:
         erase_lock = []

@@ -34,6 +34,9 @@ pin_locks = []
 erase_lock = []
 picked_list = [["False",3921039210,145743535]]
 selected_item = 0
+item_holder = turtle.Turtle()
+item_holder.penup()
+item_holder.speed(10)
 
 sc = turtle.Screen()
 
@@ -374,10 +377,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     else:
         # Lets you pick a lock if it is nearby
         if keyboard.is_pressed("e"):
-              fff = -1
-              new_picked_list = []
+            fff = -1
+            new_picked_list = []
               # Builds the list of locks that you have already picked
-              for shits in range(0,len(picked_list)):
+            for shits in range(0,len(picked_list)):
                     shitt = shits + 1
                     fff = fff + 1
                     holy = picked_list[fff]
@@ -387,8 +390,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                     new_picked_list.append(goofy)
                     
                 # for pp in range(len(picked_list)):
-              chosen = min(new_picked_list)
-              if dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] == 0:
+            chosen = min(new_picked_list)
+            if dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] == 0:
                        # Gives them items based on what is determined in the list
                             with open(chest_inventory,'r') as cinven:
                                 give_what = cinven.readlines()
@@ -400,6 +403,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                                 player.clear()
 
             #   Detects if you have the lockpick in your inventory
+            if dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
               if inventory[0] == lcok_pick_item_skin:
                         
 
@@ -435,7 +439,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                         player.write("      There is no lock to pick")
                         sleep(.2)
                         player.clear()
+                else:
+                    write("         Equip Lockpick",.2)           
               elif inventory[1] == lcok_pick_item_skin:
+
                                         
 
                 print(selected_item)
@@ -467,9 +474,9 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                                 eraselocks = True
                         # There is no lock to pick
                     else:
-                        player.write("      There is no lock to pick")
-                        sleep(.2)
-                        player.clear()
+                        write("         There is no lock to pick", .2)
+                else:
+                    write("         Equip Lockpick",.2)
               elif inventory[2] == lcok_pick_item_skin:
                                         
 
@@ -505,6 +512,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                         player.write("      There is no lock to pick")
                         sleep(.2)
                         player.clear()
+                else:
+                    write("         Equip Lockpick",.2)
               else:
                 player.write("          Need lock pick")
                 sleep(.2)
@@ -542,8 +551,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     # Makes player move and shit
     if keyboard.is_pressed("W") and f == True:
              player.forward(movement)
+             held_item(selected_item,item_holder)
     if keyboard.is_pressed("S") and b == True:
             player.forward(-(movement))
+            held_item(selected_item,item_holder)
     if keyboard.is_pressed("A") and l == True:
     
             x = player.xcor()
@@ -551,6 +562,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             x = x - movement
             player.speed(speed)
             player.goto(x,y)
+            held_item(selected_item,item_holder)
     if keyboard.is_pressed("D") and r == True:
       
             x = player.xcor()
@@ -558,6 +570,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             x = x + movement
             player.speed(speed)
             player.goto(x,y)
+            held_item(selected_item,item_holder)
+    
     return cur_health,eraselocks,picked_list,inventory,selected_item
 
 
@@ -987,9 +1001,23 @@ def error(message,fatal):
         print('\n' * 20)
         print("Error Code: " + str(message))
 
-
+# Hilights the slot specifided for ease of shit or something
 def select_item(slot):
-    if slot == 1:
+    # Lets you select and deselect items
+    if slot == 1 and selected_slot_list[0].shape() == selected_inventory_frame_skin:
+        selected_item = 0
+        selected_slot_list[0].shape(inventory_frame_skin)
+        
+
+    elif slot == 2 and selected_slot_list[1].shape() == selected_inventory_frame_skin:
+        selected_item = 0
+        selected_slot_list[1].shape(inventory_frame_skin)
+
+    elif slot == 3 and selected_slot_list[2].shape() == selected_inventory_frame_skin:
+        selected_item = 0
+        selected_slot_list[2].shape(inventory_frame_skin)
+        
+    elif slot == 1:
         selected_item = icon_inventory_list[0].shape()
         selected_slot_list[0].shape(selected_inventory_frame_skin)
         selected_slot_list[1].shape(inventory_frame_skin)
@@ -1009,7 +1037,28 @@ def select_item(slot):
 
     else:
         error("Funtion select_item number 'slot' invalid (1-3)")
+    
+    held_item(selected_item,item_holder)
+    sleep(.2)
     return selected_item
+
+# Go tiered, lets you write a message to a player
+def write(message,delay):
+    player.write(message)
+    sleep(delay)
+    player.clear()
+
+def held_item(selected_item,item_holder):
+    x = player.xcor()
+    y = player.ycor()
+    x = x + 20
+    item_holder.goto(x,y)
+    if selected_item == 0:
+        item_holder.hideturtle()
+    else:
+        item_holder.shape(selected_item)
+        item_holder.showturtle()
+
 
 
 # Draws the inventory frames and the turtles
@@ -1046,7 +1095,7 @@ while True:
         print("Game Over")
         print("You died...")
         exit()
-
+   
      # Changes selected item
     if keyboard.is_pressed("1"):
         selected_item = select_item(1)

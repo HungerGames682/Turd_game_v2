@@ -551,10 +551,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     # Makes player move and shit
     if keyboard.is_pressed("W") and f == True:
              player.forward(movement)
-             held_item(selected_item,item_holder)
+             held_item(selected_item,item_holder,"up")
     if keyboard.is_pressed("S") and b == True:
             player.forward(-(movement))
-            held_item(selected_item,item_holder)
+            held_item(selected_item,item_holder,"down")
     if keyboard.is_pressed("A") and l == True:
     
             x = player.xcor()
@@ -562,7 +562,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             x = x - movement
             player.speed(speed)
             player.goto(x,y)
-            held_item(selected_item,item_holder)
+            held_item(selected_item,item_holder,"left")
     if keyboard.is_pressed("D") and r == True:
       
             x = player.xcor()
@@ -570,7 +570,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             x = x + movement
             player.speed(speed)
             player.goto(x,y)
-            held_item(selected_item,item_holder)
+            held_item(selected_item,item_holder,"right")
     
     return cur_health,eraselocks,picked_list,inventory,selected_item
 
@@ -1036,29 +1036,82 @@ def select_item(slot):
         selected_slot_list[0].shape(inventory_frame_skin)
 
     else:
-        error("Funtion select_item number 'slot' invalid (1-3)")
+        error("Funtion select_item number 'slot' invalid (1-3)",1)
     
-    held_item(selected_item,item_holder)
+    held_item(selected_item,item_holder,0)
     sleep(.2)
     return selected_item
 
 # Go tiered, lets you write a message to a player
-def write(message,delay):
+def write(message,delay): 
     player.write(message)
     sleep(delay)
     player.clear()
 
-def held_item(selected_item,item_holder):
+# Changes the held item that you are currently holding
+def held_item(selected_item,item_holder,direction):
     x = player.xcor()
     y = player.ycor()
-    x = x + 20
-    item_holder.goto(x,y)
-    if selected_item == 0:
+
+    if direction == "right":
+        x = x + 20
+
+        item_holder.goto(x,y)
+    elif direction == "left":
+        x = x - 20
+        item_holder.goto(x,y)
+    elif direction == "up":
+        y = y + 20
+        item_holder.goto(x,y)
+    elif direction == "down":
+        y = y -20
+        item_holder.goto(x,y)
+    elif direction == 0:
+        x = x + 20
+        item_holder.goto(x,y)
+    
+    else:
+        error("Can only be 'right', 'left', 'up', 'down'",1)
+
+    if selected_item == 0 or selected_item == "classic":
         item_holder.hideturtle()
+
     else:
         item_holder.shape(selected_item)
         item_holder.showturtle()
 
+# Displays the open title for what ever in the hell I have created
+def opening_titles(title,creator,code):
+    # A little bit meassy or something
+    word = turtle.Turtle()
+    hide = turtle.Turtle()
+    hide.penup()
+    word.penup()
+    hide.shape("square")
+    hide.color("white")
+    hide.shapesize(200,200)
+    word.goto(0,260)
+    word.write(title,align="center",font=90)
+    word.goto(0,0)
+    word.write("Made by " + str(creator), align="center",font=10)
+    word.goto(70,250)
+    word.settiltangle(50)
+    word.write("Over " + str(code) + " Lines of Code!!")
+    word.goto(0,-200)
+    word.write("Press power button to start...",align="center")
+
+
+    while True:
+        if keyboard.is_pressed("space"):
+            break
+
+    word.clear()
+    word.hideturtle()
+    hide.hideturtle()
+
+    
+        
+   
 
 
 # Draws the inventory frames and the turtles
@@ -1069,27 +1122,28 @@ for hh in range(3):
     j = icon_inventory_list[hh].shape()
     inventory.append(j)
 
-
+# Stuff
 player.penup()
 player.left(90)
 
 stop = 1
 # Draws the like stat line for all of the stats 
-# DEVILS NUMBER
+
 statline2(how_obj,stop,"black",-250,0)
 # Draws and creats the heath bar
 HCT = health_bar(-280,-280,max_health,cur_health)
 
-# I forgot what this does, but its basicly coconnut.jpeg from TF2
+# I forgot what this does, but its basicly coconut.jpeg from TF2
 li = obj_create(stop,buildspeed,many)
 
 
-
+# Displays the opening of the game or something idk
+opening_titles("Insert 'Title' Here", "Ricker",1000)
 
 # Main loop
 # ALL BUTTONS ARE THERE FOR FEATURS THAT I CAN ADD, I WILL REMOVE THEM ONCE THEY ARE FULLY OPERATIONAL
 while True:
-    # ends the game if there health is zero
+    # ends the game if there health is zero... aka you died dumbass
     if cur_health == -1:
         print('\n' * 20)
         print("Game Over")

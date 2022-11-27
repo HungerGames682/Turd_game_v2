@@ -33,6 +33,7 @@ game_quality = 2
 pin_locks = []
 erase_lock = []
 picked_list = [["False",3921039210,145743535]]
+selected_item = 0
 
 sc = turtle.Screen()
 
@@ -250,7 +251,7 @@ def level_switch(stop,buildspeed,level):
 
 # V2, go back to origanal if it does not work
 # Basicly the start of the program, controls the player and its collitions with other objects
-def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,picked_list,inventory):
+def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,picked_list,inventory,selected_item):
     
     # Hopfully imporved laggy ness
     lis = []
@@ -373,10 +374,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     else:
         # Lets you pick a lock if it is nearby
         if keyboard.is_pressed("e"):
-                fff = -1
-                new_picked_list = []
-                # Builds the list of locks that you have already picked
-                for shits in range(0,len(picked_list)):
+              fff = -1
+              new_picked_list = []
+              # Builds the list of locks that you have already picked
+              for shits in range(0,len(picked_list)):
                     shitt = shits + 1
                     fff = fff + 1
                     holy = picked_list[fff]
@@ -385,51 +386,135 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                     goofy.insert(0,jfk)
                     new_picked_list.append(goofy)
                     
-            # for pp in range(len(picked_list)):
-                chosen = min(new_picked_list)
-
-                print(chosen)
-                print(dis)
-                print(picked_list)
-                print(new_picked_list)
-                # Detects if you have already picked this chest
-                if dis[0] <= 24 and dis[4] == "Chest\n" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
-                     player.write("      You have already picked this")
-                     sleep(.2)
-                     player.clear()
-                # Lets you pick this chest
-                elif dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
-                    unlocked = lockpick(dis[5],5)
-                    if unlocked == True:
-                        # Gives them items based on what is determined in the list
-                        with open(chest_inventory,'r') as cinven:
-                            give_what = cinven.readlines()
-                            gives = give_what[dis[6]]
-                            player.write("Gained " + str(gives))
+                # for pp in range(len(picked_list)):
+              chosen = min(new_picked_list)
+              if dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] == 0:
+                       # Gives them items based on what is determined in the list
+                            with open(chest_inventory,'r') as cinven:
+                                give_what = cinven.readlines()
+                                gives = give_what[dis[6]]
+                                player.write("Gained " + str(gives))
                             
-                            inventory = give_item(gives,icon_inventory_list,inventory)
-                            sleep(1.2)
-                            player.clear()
+                                inventory = give_item(gives,icon_inventory_list,inventory)
+                                sleep(1.2)
+                                player.clear()
+
+            #   Detects if you have the lockpick in your inventory
+              if inventory[0] == lcok_pick_item_skin:
+                        
+
+                print(selected_item)
+                if selected_item == lcok_pick_item_skin:
+
+                    # Detects if you have already picked this chest
+                    if dis[0] <= 24 and dis[4] == "Chest\n" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
+                        player.write("      You have already picked this")
+                        sleep(.2)
+                        player.clear()
+                    # Lets you pick this chest
+                    elif dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
+                        unlocked = lockpick(dis[5],5)
+                        if unlocked == True:
+                            # Gives them items based on what is determined in the list
+                            with open(chest_inventory,'r') as cinven:
+                                give_what = cinven.readlines()
+                                gives = give_what[dis[6]]
+                                player.write("Gained " + str(gives))
+                            
+                                inventory = give_item(gives,icon_inventory_list,inventory)
+                                sleep(1.2)
+                                player.clear()
 
 
-                            unlockeds = [unlocked,dis[1],dis[2]]
-                            picked_list.append(unlockeds)
+                                unlockeds = [unlocked,dis[1],dis[2]]
+                                picked_list.append(unlockeds)
                     
-                            eraselocks = True
-                    # There is no lock to pick
-                else:
-                    player.write("      There is no lock to pick")
-                    sleep(.2)
-                    player.clear()
-                   
-             
+                                eraselocks = True
+                        # There is no lock to pick
+                    else:
+                        player.write("      There is no lock to pick")
+                        sleep(.2)
+                        player.clear()
+              elif inventory[1] == lcok_pick_item_skin:
+                                        
 
-              
+                print(selected_item)
+                if selected_item == lcok_pick_item_skin:
+
+                    # Detects if you have already picked this chest
+                    if dis[0] <= 24 and dis[4] == "Chest\n" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
+                        player.write("      You have already picked this")
+                        sleep(.2)
+                        player.clear()
+                    # Lets you pick this chest
+                    elif dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
+                        unlocked = lockpick(dis[5],5)
+                        if unlocked == True:
+                            # Gives them items based on what is determined in the list
+                            with open(chest_inventory,'r') as cinven:
+                                give_what = cinven.readlines()
+                                gives = give_what[dis[6]]
+                                player.write("Gained " + str(gives))
+                            
+                                inventory = give_item(gives,icon_inventory_list,inventory)
+                                sleep(1.2)
+                                player.clear()
+
+
+                                unlockeds = [unlocked,dis[1],dis[2]]
+                                picked_list.append(unlockeds)
+                    
+                                eraselocks = True
+                        # There is no lock to pick
+                    else:
+                        player.write("      There is no lock to pick")
+                        sleep(.2)
+                        player.clear()
+              elif inventory[2] == lcok_pick_item_skin:
+                                        
+
+                print(selected_item)
+                if selected_item == lcok_pick_item_skin:
+
+                    # Detects if you have already picked this chest
+                    if dis[0] <= 24 and dis[4] == "Chest\n" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
+                        player.write("      You have already picked this")
+                        sleep(.2)
+                        player.clear()
+                    # Lets you pick this chest
+                    elif dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
+                        unlocked = lockpick(dis[5],5)
+                        if unlocked == True:
+                            # Gives them items based on what is determined in the list
+                            with open(chest_inventory,'r') as cinven:
+                                give_what = cinven.readlines()
+                                gives = give_what[dis[6]]
+                                player.write("Gained " + str(gives))
+                            
+                                inventory = give_item(gives,icon_inventory_list,inventory)
+                                sleep(1.2)
+                                player.clear()
+
+
+                                unlockeds = [unlocked,dis[1],dis[2]]
+                                picked_list.append(unlockeds)
+                    
+                                eraselocks = True
+                        # There is no lock to pick
+                    else:
+                        player.write("      There is no lock to pick")
+                        sleep(.2)
+                        player.clear()
+              else:
+                player.write("          Need lock pick")
+                sleep(.2)
+                player.clear()
+             
 
        # Detects if you glitch through a wall
         if dis[0] <= error_bound:
                 print('\n' * 100)
-                print("Error code: Glitch through wall")
+                error("Glitch Through wall",0)
                 player.goto(0,0)
         
         # Makes the player take damage if they are close to a obj that damages them
@@ -473,7 +558,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             x = x + movement
             player.speed(speed)
             player.goto(x,y)
-    return cur_health,eraselocks,picked_list,inventory
+    return cur_health,eraselocks,picked_list,inventory,selected_item
 
 
 # Object creator
@@ -493,12 +578,12 @@ def object(shape,coler,colition,name,x,y, stop):
         return x,y
     
 # Main start function
-def start(speed, movement,chunk,offset,stop,li,cur_health,leavel,picked_list,inventory):
+def start(speed, movement,chunk,offset,stop,li,cur_health,leavel,picked_list,inventory,selected_item):
 
       
         
-    cur_health,eraselocks,picked_list,inventory = playermove(speed,movement,"No",offset,stop,li,cur_health,leavel,picked_list,inventory)
-    return cur_health,eraselocks,picked_list,inventory
+    cur_health,eraselocks,picked_list,inventory,selected_item = playermove(speed,movement,"No",offset,stop,li,cur_health,leavel,picked_list,inventory,selected_item)
+    return cur_health,eraselocks,picked_list,inventory,selected_item
 
 # Draws the heath bar
 def health_bar(x,y,max_health,cur_health):
@@ -868,7 +953,7 @@ def give_item(item,icon_inventory_list,inventory):
             return inventory
 
         else:
-            error("Item is not defiened")
+            error("Item is not defiened",1)
 
 
 
@@ -889,14 +974,42 @@ def give_item(item,icon_inventory_list,inventory):
             print(inventory)
 
         else:
-            error("Inventory is full")
+            error("Inventory is full",0)
         return inventory
 
 # Got tired of writeng too many lines for each erorr message    
-def error(message):
-    print('\n' * 20)
-    print("Error Code: " + str(message))
-    exit()
+def error(message,fatal):
+    if fatal == 1:
+        print('\n' * 20)
+        print("Fatal Error Code: " + str(message))
+        exit()
+    else:
+        print('\n' * 20)
+        print("Error Code: " + str(message))
+
+
+def select_item(slot):
+    if slot == 1:
+        selected_item = icon_inventory_list[0].shape()
+        selected_slot_list[0].shape(selected_inventory_frame_skin)
+        selected_slot_list[1].shape(inventory_frame_skin)
+        selected_slot_list[2].shape(inventory_frame_skin)
+
+    elif slot == 2:
+        selected_item = icon_inventory_list[1].shape()
+        selected_slot_list[1].shape(selected_inventory_frame_skin)
+        selected_slot_list[2].shape(inventory_frame_skin)
+        selected_slot_list[0].shape(inventory_frame_skin)
+
+    elif slot == 3:
+        selected_item = icon_inventory_list[2].shape()
+        selected_slot_list[2].shape(selected_inventory_frame_skin)
+        selected_slot_list[1].shape(inventory_frame_skin)
+        selected_slot_list[0].shape(inventory_frame_skin)
+
+    else:
+        error("Funtion select_item number 'slot' invalid (1-3)")
+    return selected_item
 
 
 # Draws the inventory frames and the turtles
@@ -934,23 +1047,15 @@ while True:
         print("You died...")
         exit()
 
-    # Changes selected item
+     # Changes selected item
     if keyboard.is_pressed("1"):
-        selected_item = icon_inventory_list[0].shape()
-        
-        selected_slot_list[0].shape(selected_inventory_frame_skin)
-        selected_slot_list[1].shape(inventory_frame_skin)
-        selected_slot_list[2].shape(inventory_frame_skin)  
+        selected_item = select_item(1)
     if keyboard.is_pressed("2"):
-        selected_item = icon_inventory_list[1].shape()
-        selected_slot_list[1].shape(selected_inventory_frame_skin)
-        selected_slot_list[2].shape(inventory_frame_skin)
-        selected_slot_list[0].shape(inventory_frame_skin)
+        selected_item = select_item(2)
     if keyboard.is_pressed("3"):
-        selected_item = icon_inventory_list[2].shape()
-        selected_slot_list[2].shape(selected_inventory_frame_skin)
-        selected_slot_list[1].shape(inventory_frame_skin)
-        selected_slot_list[0].shape(inventory_frame_skin)
+        selected_item = select_item(3)
+              
+
     # Level Switch button, only temporary for testing, will make it when you go off screen of something
     if keyboard.is_pressed("T"):
         li, all_turd_obj = level_switch(stop,0,1)
@@ -980,7 +1085,7 @@ while True:
 
         
 
-    cur_health,eraselocks,picked_list,inventory = start(1,10, 1, 23,stop,li,cur_health,leavel,picked_list,inventory)
+    cur_health,eraselocks,picked_list,inventory,selected_item = start(1,10, 1, 23,stop,li,cur_health,leavel,picked_list,inventory,selected_item)
     
     if eraselocks == True:
         erase_lock = []

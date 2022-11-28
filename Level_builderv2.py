@@ -295,10 +295,17 @@ def damageswitch(damage):
 # Switches the type of interactibel it is or something
 def typeswitch(type):
     if type == "Chest":
-        type = "Null"
+        type = "Wall"
+        
+    elif type == "Wall":
+        type = "Door"
 
-    elif type == "Null":
+    elif type == "Door":
         type = "Chest"
+    
+
+
+   
     typeicon.clear()
     typeicon.write("Type is " + type)
     return type

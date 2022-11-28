@@ -39,6 +39,7 @@ selected_item = 0
 item_holder = turtle.Turtle()
 item_holder.penup()
 item_holder.speed(10)
+interact_dis = 50
 
 sc = turtle.Screen()
 
@@ -380,6 +381,9 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     else:
         # Lets you pick a lock if it is nearby
         if keyboard.is_pressed("e"):
+
+            # Detects if you are close to a chest
+          if dis[0] <= interact_dis and dis[4] == "Chest\n":
             fff = -1
             new_picked_list = []
               # Builds the list of locks that you have already picked
@@ -395,7 +399,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 
             chosen = min(new_picked_list)
             # Gives you the item in the cheast if it does not have a lock or something
-            if dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] == 0:
+            if dis[0] <= interact_dis and dis[4] == "Chest\n" and dis[5] == 0:
                        # Gives them items based on what is determined in the list
                             with open(chest_inventory,'r') as cinven:
                                 give_what = cinven.readlines()
@@ -428,7 +432,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                                         break
 
             #   Detects if you have the lockpick in your inventory
-            if dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
+            if dis[0] <= interact_dis and dis[4] == "Chest\n" and dis[5] != 0:
               if inventory[0] == lcok_pick_item_skin:
                         
 

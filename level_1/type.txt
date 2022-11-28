@@ -1,9 +1,7 @@
-Chest
-Chest
-Chest
-Chest
-Chest
-Chest
-Chest
-Null
-Null
+Wall
+Wall
+Wall
+Wall
+Wall
+Wall
+Wall

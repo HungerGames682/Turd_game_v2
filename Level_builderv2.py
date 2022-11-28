@@ -362,8 +362,136 @@ def start(speed,curcolor,collition,damage,type,lock_difficulty):
     if keyboard.is_pressed("space"):
         blockplace(builder.xcor(),builder.ycor(),curcolor,collition,damage,type,lock_difficulty)
 
-    
+# Lets you load a level to add to it
+def load_level(level):
+    if level == 0:
+        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt'
+        colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/colli.txt'
+        coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/color.txt'
+        dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
+        ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
+        lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
 
+
+    else:
+        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/cords.txt'
+        colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/colli.txt'
+        coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/color.txt'
+        dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/damage.txt'
+        ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/type.txt'
+        lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/lock.txt'
+
+
+# Draws them on screen
+    with open(cords,'r') as k:
+        with open(coller, 'r') as f:
+            val = k.readlines()
+            pcollar = f.readlines()
+            va = len(val)
+            va = va - 1
+            cj = 0
+            for obj in range(0,va,2):
+                bb = obj + 1
+                pcurcollor = pcollar[cj]
+                pcurcollor = pcurcollor.replace("\n","")
+                t = turtle.Turtle()
+                t.shape("square")
+                t.penup()
+                t.speed(0)
+                t.color(pcurcollor)
+                xx = val[obj]
+                yy = val[bb]
+                xx = xx.replace("\n","")
+                yy = yy.replace("\n","")
+                xx = int(xx)
+                yy = int(yy)
+                t.goto(xx,yy)
+                cj = cj + 1
+    k.close()
+    f.close()
+
+
+#    Adds the values to the list
+    with open(cords, 'r') as cok:
+        rd = cok.readlines()
+        ra = len(rd)
+        ra = ra - 1
+        mid = len(rd)
+        mid = mid / 2
+        mid = int(mid)
+        
+        for i in range(0,ra,2):
+    
+            b = i + 1
+            x = rd[i]
+            y = rd[b]
+            y = y.replace("\n", "")
+            x = x.replace("\n", "")
+            print(x,y)
+            obj_list.append(x)
+            obj_list.append(y)
+    cok.close()
+
+    with open(colli, 'r') as coli:
+        c = coli.readlines()
+        d = len(c)
+        
+        
+        for j in range(0,mid,1):
+            col = c[j]
+            print(col)
+            col = col.replace("\n","")
+            collition_list.append(col)
+            print(coli)
+    coli.close()
+
+    with open(coller, 'r') as cc:
+        ccc = cc.readlines()
+        for h in range(0,mid,1):
+            l = ccc[h]
+            l = l.replace("\n","")
+            print(l)
+            color_list.append(l)
+    cc.close()
+
+    with open(dam, 'r') as da:
+        daa = da.readlines()
+        ddd = len(daa)
+        for kj in range(0,mid,1):
+            cho = daa[kj]
+            cho = cho.replace("\n","")
+            damage_list.append(cho)
+            print(cho)
+    da.close()
+
+    with open(ty, 'r') as types:
+        red = types.readlines()
+        for er in range(0,mid,1):
+            choo = red[er]
+            choo = choo.replace("\n","")
+            print(choo)
+            type_list.append(choo)
+    types.close()
+
+    with open(lik, 'r') as lock:
+        ll = lock.readlines()
+        for gh in range(0,mid,1):
+            hi = ll[gh]
+            hi = int(hi)
+            print(hi)
+            lock_difficulty_list.append(hi)
+
+    print(obj_list)
+    print(collition_list)
+    print(color_list)
+    print(damage_list)
+    print(type_list)
+    print(lock_difficulty_list)
+
+
+    
+        
+    
 
   
 
@@ -417,6 +545,9 @@ chest.goto(-200,-250)
 
 curcolor = "black"
 
+
+
+
 # Main loop
 while True:
     # Prevents objects that have no collition from having damage
@@ -445,6 +576,15 @@ while True:
         
         collition = colitionswitch(collition)
 
+    if keyboard.is_pressed("l") and keyboard.is_pressed("space"):
+        while True:
+            if keyboard.is_pressed("0"):
+                load_level(0)
+                break
+            if keyboard.is_pressed("1"):
+                load_level(1)
+                break
+            
 
 
 # Enables erease mode

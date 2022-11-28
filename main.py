@@ -7,6 +7,7 @@ stop = 0
 
 
 created_turd = []
+gains = []
 
 # NOW THE CODE IS FULLY AUTOMATIC BESIDES HAVE TO SPECIFY WHERE THE OBJECT IS AND STUFF LIKE THAT 
 with open('cords.txt','r') as howlines:
@@ -31,6 +32,7 @@ all_turd_obj = []
 game_quality = 2
 
 pin_locks = []
+livet = []
 erase_lock = []
 picked_list = [["False",3921039210,145743535]]
 selected_item = 0
@@ -61,6 +63,7 @@ screen.screensize(800,800)
 player = turtle.Turtle()
 player.shape("square")
 buildspeed = 0
+indecator = []
 
         
 # Draws the stat bar line
@@ -306,7 +309,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
     # Gets the distance, x,y of the closest block
     dis = min(lis)
-    # print(dis)
+  
   
         
     
@@ -389,18 +392,40 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                     goofy.insert(0,jfk)
                     new_picked_list.append(goofy)
                     
-                # for pp in range(len(picked_list)):
+                
             chosen = min(new_picked_list)
+            # Gives you the item in the cheast if it does not have a lock or something
             if dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] == 0:
                        # Gives them items based on what is determined in the list
                             with open(chest_inventory,'r') as cinven:
                                 give_what = cinven.readlines()
                                 gives = give_what[dis[6]]
-                                player.write("Gained " + str(gives))
+                                
+                                # Sees if the player already has that item
+                                if len(gains) == 0:
+                                        player.write("Gained " + str(gives))
                             
-                                inventory = give_item(gives,icon_inventory_list,inventory)
-                                sleep(1.2)
-                                player.clear()
+                                        inventory = give_item(gives,icon_inventory_list,inventory)
+                                        sleep(1.2)
+                                        player.clear()
+                                        gains.append(dis[6])
+                                        print(gains)
+
+
+                                for help in range(len(gains)):
+                                    if gains[help] == dis[6]:
+                                        print("Already searched")
+                                        break
+                                    else:
+                                
+                                        player.write("Gained " + str(gives))
+                            
+                                        inventory = give_item(gives,icon_inventory_list,inventory)
+                                        sleep(1.2)
+                                        player.clear()
+                                        gains.append(dis[6])
+                                        print(gains)
+                                        break
 
             #   Detects if you have the lockpick in your inventory
             if dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
@@ -1109,10 +1134,49 @@ def opening_titles(title,creator,code):
     word.hideturtle()
     hide.hideturtle()
 
+# Draws the lives bar or something DONT USE
+def lives_bar(x,y,lives):
     
+    
+    lis = turtle.Turtle()
+    livet.append(lis)
+    lis.penup()
+    lis.speed(0)
+    new_x = x - 40
+    lis.hideturtle()
+    lis.goto(new_x,y)
+    lis.write("Lives =  " + str(lives))
+    
+  
+
+    return lives
+# DONT USE
+def lives_change(livet,value,lives):
+    if value < 0:
+        lives = lives - 1
+        lis = livet[0]
+        lis.clear()
+        lis.write("Lives = " + str(lives))
+
+    elif value > 0:
+        lives = lives -+1
+        lis = livet[0]
+        lis.clear()
+        lis.write("Lives = " + str(lives))
+
+    else:
+        error("Need value for lives or something", 1)
+
+    return lives
+    
+        
+
         
    
 
+
+# lives = lives_bar(-280,-300,3)
+# print(indecator)
 
 # Draws the inventory frames and the turtles
 icon_inventory_list,selected_slot_list = inventory_frame()
@@ -1138,7 +1202,7 @@ li = obj_create(stop,buildspeed,many)
 
 
 # Displays the opening of the game or something idk
-opening_titles("Insert 'Title' Here", "Ricker",1000)
+# opening_titles("Insert 'Title' Here", "Ricker",1000)
 
 # Main loop
 # ALL BUTTONS ARE THERE FOR FEATURS THAT I CAN ADD, I WILL REMOVE THEM ONCE THEY ARE FULLY OPERATIONAL
@@ -1146,10 +1210,10 @@ while True:
     # ends the game if there health is zero... aka you died dumbass
     if cur_health == -1:
         print('\n' * 20)
-        print("Game Over")
-        print("You died...")
+        print("Game over")
+        print("You Died bozo")
         exit()
-   
+
      # Changes selected item
     if keyboard.is_pressed("1"):
         selected_item = select_item(1)

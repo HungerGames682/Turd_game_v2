@@ -39,7 +39,8 @@ selected_item = 0
 item_holder = turtle.Turtle()
 item_holder.penup()
 item_holder.speed(10)
-interact_dis = 50
+interact_dis = 24
+door_interact_dis = interact_dis + 10
 
 sc = turtle.Screen()
 
@@ -379,7 +380,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         print("Walk")
 
     else:
-        # Lets you pick a lock if it is nearby
+        #This is the interact button :)
         if keyboard.is_pressed("e"):
 
             # Detects if you are close to a chest
@@ -547,7 +548,9 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 player.write("          Need lock pick")
                 sleep(.2)
                 player.clear()
-             
+          
+          if dis[0] <= door_interact_dis and dis[4] == "Door\n":
+            write("         This is a door",.2)
 
        # Detects if you glitch through a wall
         if dis[0] <= error_bound:

@@ -2,3 +2,6 @@ Chest
 Chest
 Chest
 Chest
+Door
+Wall
+Door

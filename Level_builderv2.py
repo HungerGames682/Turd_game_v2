@@ -296,7 +296,7 @@ def damageswitch(damage):
 def typeswitch(type):
     if type == "Chest":
         type = "Wall"
-        
+
     elif type == "Wall":
         type = "Door"
 
@@ -599,7 +599,7 @@ while True:
      era_list = []
      print("TBA")
 
-    if keyboard.is_pressed("r") and keyboard.is_pressed("shift") and type == "Chest":
+    if keyboard.is_pressed("r") and keyboard.is_pressed("shift") and type == "Chest" or keyboard.is_pressed("r") and keyboard.is_pressed("shift") and type == "Door":
         lock_difficulty = lockswitch(lock_difficulty)
 
     # Switches the type of object

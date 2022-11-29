@@ -384,6 +384,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         #This is the interact button :)
         if keyboard.is_pressed("e"):
             # NEXT TIME, make it so door has value or something
+            # Make the varible for the chest lock the same as the door
+
             # Detects if you are close to a chest
           if dis[0] <= interact_dis and dis[4] == "Chest\n":
             fff = -1
@@ -550,8 +552,13 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 sleep(.2)
                 player.clear()
           
+        #   Detects if you are close to a door
           if dis[0] <= door_interact_dis and dis[4] == "Door\n":
             write("         This is a door",.2)
+            if dis[5] != 0:
+                door_unlocked = lockpick(dis[5],5)
+                if door_unlocked == True:
+                    write("         Door unlocked",.2)
             
 
        # Detects if you glitch through a wall

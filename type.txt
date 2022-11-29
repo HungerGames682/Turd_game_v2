@@ -5,3 +5,5 @@ Chest
 Door
 Wall
 Door
+Door
+Door

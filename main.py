@@ -41,6 +41,7 @@ item_holder.penup()
 item_holder.speed(10)
 interact_dis = 24
 door_interact_dis = interact_dis + 10
+door_unlocked_list = []
 
 sc = turtle.Screen()
 
@@ -305,13 +306,13 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             print("")
         else:
             d1 = player.distance(li[i],li[h])
-            
+            # Chest_num also is used for doors and shit
             diss = [d1, li[i], li[h],sh,shi,chicken,chest_num]
             lis.append(diss)
 
     # Gets the distance, x,y of the closest block
     dis = min(lis)
-    print(dis)
+    # print(dis)
   
   
         
@@ -554,12 +555,38 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
           
         #   Detects if you are close to a door
           if dis[0] <= door_interact_dis and dis[4] == "Door\n":
-            write("         This is a door",.2)
-            if dis[5] != 0:
+            # print(inventory)
+            # print(door_unlocked_list.count(dis[6]))
+
+            # Sees if you alredy unlocked it
+            if door_unlocked_list.count(dis[6]) > 0:
+                write("         Door already unlocked",.2)
+
+            # Sees if you have a lock pick and its equiped
+            elif dis[5] != 0 and door_unlocked_list.count(dis[6]) == 0 and selected_item == lcok_pick_item_skin:
                 door_unlocked = lockpick(dis[5],5)
                 if door_unlocked == True:
                     write("         Door unlocked",.2)
+                    door_unlocked_list.append(dis[6])
+
+            # Looks and sees if you need a lockpick
+            elif inventory.count(lcok_pick_item_skin) == 0:
+                write("         Need Lock pick",.2)
+
+            # Seese if you need to select the lock pick
+            elif inventory.count(lcok_pick_item_skin) > 0 and selected_item != lcok_pick_item_skin:
+                write("         Select Lock pick",.2)
             
+                
+
+            else:
+                write("         Door already open",.2)
+                    
+            
+
+
+
+
 
        # Detects if you glitch through a wall
         if dis[0] <= error_bound:

@@ -2,8 +2,9 @@ brown
 brown
 brown
 black
-blue
 black
 blue
-red
-red
+blue
+blue
+blue
+blue

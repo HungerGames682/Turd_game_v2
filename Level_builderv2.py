@@ -29,6 +29,8 @@ big_del = []
 damage_list = []
 type_list = []
 lock_difficulty_list = []
+item_list = []
+chest_list = []
 # Draws the statline
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     for he in range(-500,500,20):
@@ -88,6 +90,7 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
                     dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
                     ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
                     lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
+                    give = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
                     break
 
                 if keyboard.is_pressed("1"):
@@ -98,6 +101,7 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
                     dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/damage.txt'
                     ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/type.txt'
                     lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/lock.txt'
+                    give = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/chest_give.txt'
                     break
 
             
@@ -152,6 +156,13 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
                     lll = str(lll)
                     lll = lll + '\n'
                     differ.write(lll)
+            # Wriets inventory values and shit
+            with open(give,'w') as gi:
+                for jojo in range(len(chest_list)):
+                    jotor = chest_list[jojo]
+                    jotor = str(jotor) + '\n'
+                    gi.write(jotor)
+                    
 
 
 
@@ -197,7 +208,15 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
             damage_list.append(damage)
             type_list.append(type)
             lock_difficulty_list.append(lock_difficulty)
+            chest_list.append(cur_item)
             print(collition_list)
+
+
+
+
+
+
+
 
 # Movement function dumbass
 def movement(speed):
@@ -293,22 +312,27 @@ def damageswitch(damage):
         return damage
 
 # Switches the type of interactibel it is or something
-def typeswitch(type):
+def typeswitch(type,cur_item):
     if type == "Chest":
         type = "Wall"
+        cur_item = "Wall"
 
     elif type == "Wall":
         type = "Door"
+        cur_item = "Door"
 
     elif type == "Door":
         type = "Chest"
+        cur_item = "Chest"
     
 
 
    
     typeicon.clear()
     typeicon.write("Type is " + type)
-    return type
+    itemicon.clear()
+    itemicon.write("Item_class is " + cur_item)
+    return type,cur_item
 
 # Changes the difficulty of lock it is
 def lockswitch(lock_difficulty):
@@ -378,6 +402,8 @@ def load_level(level):
         dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
         ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
         lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
+        give = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
+        
 
 
     else:
@@ -387,6 +413,7 @@ def load_level(level):
         dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/damage.txt'
         ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/type.txt'
         lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/lock.txt'
+        give = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_'  + str(level) + '/chest_give.txt'
 
 
 # Draws them on screen
@@ -487,13 +514,22 @@ def load_level(level):
             hi = int(hi)
             print(hi)
             lock_difficulty_list.append(hi)
+    lock.close()
 
+    with open(give,'r') as gg:
+        yo = gg.readlines()
+        for balls in range(0,mid,1):
+            g = yo[balls]
+            g = g.replace("\n","")
+            chest_list.append(g)
+    gg.close()
     print(obj_list)
     print(collition_list)
     print(color_list)
     print(damage_list)
     print(type_list)
     print(lock_difficulty_list)
+    print(chest_list)
 
 
     
@@ -508,6 +544,7 @@ def load_level(level):
 # Colition icon Turtle
 
 colitionicon = turtle.Turtle()
+colitionicon.speed(0)
 colitionicon.penup()
 colitionicon.goto(-300,-200)
 colitionicon.write("Collition is on")
@@ -516,6 +553,7 @@ colitionicon.hideturtle()
 
 # Color Icon turtle
 coloricon = turtle.Turtle()
+coloricon.speed(0)
 coloricon.penup()
 coloricon.hideturtle()
 coloricon.goto(-300,-225)
@@ -525,12 +563,14 @@ coloricon.write("Coler is: Black")
 # Erease status turtle
 eraseicon = turtle.Turtle()
 eraseicon.penup()
+eraseicon.speed(0)
 eraseicon.hideturtle()
 eraseicon.goto(-300,-250)
 eraseicon.write("E = Erase all")
 
 # Damage status turtle
 damageicon = turtle.Turtle()
+damageicon.speed(0)
 damageicon.penup()
 damageicon.hideturtle()
 damageicon.goto(-200,-200)
@@ -538,6 +578,7 @@ damageicon.write("Damage is on")
 
 # Type Status turtle
 typeicon = turtle.Turtle()
+typeicon.speed(0)
 typeicon.penup()
 typeicon.hideturtle()
 typeicon.goto(-200,-225)
@@ -545,9 +586,19 @@ typeicon.write("Type is Chest")
 
 # Chest attribute icon
 chest = turtle.Turtle()
+chest.speed(0)
 chest.penup()
 chest.hideturtle()
 chest.goto(-200,-250)
+
+# Adds the prefixes for the items in the chests and doors, bc im lazy and using the same list
+itemicon = turtle.Turtle()
+itemicon.speed(0)
+itemicon.penup()
+itemicon.hideturtle()
+itemicon.goto(-100,-200)
+itemicon.write("Item = Null")
+cur_item = "Null"
 
 
 curcolor = "black"
@@ -604,7 +655,7 @@ while True:
 
     # Switches the type of object
     elif keyboard.is_pressed("r"):
-        type = typeswitch(type)
+        type,cur_item = typeswitch(type,cur_item)
         chest.clear()
         sleep(.2)
 

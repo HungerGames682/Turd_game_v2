@@ -1,9 +1,10 @@
 Chest
 Chest
 Chest
-Chest
-Door
 Wall
+Wall
+Door
+Door
 Door
 Door
 Door

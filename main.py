@@ -311,6 +311,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
     # Gets the distance, x,y of the closest block
     dis = min(lis)
+    print(dis)
   
   
         
@@ -382,7 +383,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     else:
         #This is the interact button :)
         if keyboard.is_pressed("e"):
-
+            # NEXT TIME, make it so door has value or something
             # Detects if you are close to a chest
           if dis[0] <= interact_dis and dis[4] == "Chest\n":
             fff = -1
@@ -551,6 +552,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
           
           if dis[0] <= door_interact_dis and dis[4] == "Door\n":
             write("         This is a door",.2)
+            
 
        # Detects if you glitch through a wall
         if dis[0] <= error_bound:

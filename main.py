@@ -384,8 +384,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     else:
         #This is the interact button :)
         if keyboard.is_pressed("e"):
-            # NEXT TIME, make it so door has value or something
-            # Make the varible for the chest lock the same as the door
+           
 
             # Detects if you are close to a chest
           if dis[0] <= interact_dis and dis[4] == "Chest\n":
@@ -1034,8 +1033,13 @@ def give_item(item,icon_inventory_list,inventory):
             print("give nothing")
             return inventory
 
+        elif item == "Chest\n" or item == "Wall\n" or item == "Door\n":
+            error("Bypassing fatal error: Item is a null filler aka chest,wall,door in chest_give.txt",0)
+            return inventory
+
         else:
             error("Item is not defiened",1)
+            
 
 
 

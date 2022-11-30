@@ -1,3 +1,7 @@
+Door
+Door
+Door
+Door
 lockpick
-nothing
-Nothing
+Chest
+Chest

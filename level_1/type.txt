@@ -1,7 +1,7 @@
-Wall
-Wall
-Wall
-Wall
-Wall
-Wall
-Wall
+Door
+Door
+Door
+Door
+Chest
+Chest
+Chest

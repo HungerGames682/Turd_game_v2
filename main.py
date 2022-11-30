@@ -28,6 +28,7 @@ cur_health = 5
 max_health = 10
 leavel = 0
 all_turd_obj = []
+hacks = False
 # For now 1 is lowest and 2 is highest... idk why you would need this, im just board
 game_quality = 2
 
@@ -42,6 +43,7 @@ item_holder.speed(10)
 interact_dis = 24
 door_interact_dis = interact_dis + 10
 door_unlocked_list = []
+go_throught_door_dis = 23
 
 sc = turtle.Screen()
 
@@ -148,6 +150,10 @@ def obj_create(stop,buildspeed,many):
             y = x + 1
             which = which + 1
             coli_many = coli_many + 1
+
+    hehe = len(all_turd_obj)
+    hehe = hehe - 1
+    all_turd_obj.pop(hehe)
     return li
 
     
@@ -384,6 +390,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     else:
         #This is the interact button :)
         if keyboard.is_pressed("e"):
+        
+         
            
 
             # Detects if you are close to a chest
@@ -554,9 +562,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
           
         #   Detects if you are close to a door
           if dis[0] <= door_interact_dis and dis[4] == "Door\n":
-            # print(inventory)
-            # print(door_unlocked_list.count(dis[6]))
-
+          
             # Sees if you alredy unlocked it
             if door_unlocked_list.count(dis[6]) > 0:
                 write("         Door already unlocked",.2)
@@ -564,9 +570,11 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             # Sees if you have a lock pick and its equiped
             elif dis[5] != 0 and door_unlocked_list.count(dis[6]) == 0 and selected_item == lcok_pick_item_skin:
                 door_unlocked = lockpick(dis[5],5)
+
                 if door_unlocked == True:
                     write("         Door unlocked",.2)
                     door_unlocked_list.append(dis[6])
+                    eraselocks = True
 
             # Looks and sees if you need a lockpick
             elif inventory.count(lcok_pick_item_skin) == 0:
@@ -584,11 +592,23 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             
 
 
+        
 
 
+        # Lets you be ableto go through doors
+        if door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis:
+            walkthrough = "Yes"
+            hacks = True
+            
 
-       # Detects if you glitch through a wall
-        if dis[0] <= error_bound:
+        else:
+            print(door_unlocked_list)
+            print(dis)
+            walkthrough = "No"
+            hacks = False
+
+        # Detects if you glitch through a wall
+        if dis[0] <= error_bound and hacks == False:
                 print('\n' * 100)
                 error("Glitch Through wall",0)
                 player.goto(0,0)

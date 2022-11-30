@@ -602,8 +602,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             
 
         else:
-            print(door_unlocked_list)
-            print(dis)
+        
             walkthrough = "No"
             hacks = False
 

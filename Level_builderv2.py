@@ -173,6 +173,7 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
                 
     else:
         builder.goto(x, y)
+       
 
 
         # AHHHHHHHHHHHHHH
@@ -186,7 +187,10 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
             b = line[which]
             name = line[which]
             b = turtle.Turtle()
-            b.color(curcolor)
+            if type == "Spawn":
+                b.color("Gold")
+            else:
+                b.color(curcolor)
             b.speed(0)
             b.shape("square")
             b.penup()
@@ -326,6 +330,10 @@ def typeswitch(type,cur_item):
 
 
     elif type == "Door":
+        type = "Spawn"
+        cur_item = "Spawn"
+    
+    elif type == "Spawn":
         type = "Chest"
         cur_item = "Chest"
     

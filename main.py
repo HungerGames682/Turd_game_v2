@@ -1335,17 +1335,36 @@ def nothing():
 def goto_spawn(level):
     if level == 1:
         type = '/Users/rwilkes/vscode_projects/Turd_game_v2' + "/level_" + str(level) + "/type.txt"
+        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2' + "/level_" + str(level) + "/cords.txt"
     else:
         type = "/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt"
+        cords = "/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt"
 
     with open(type,'r') as jk:
         line = jk.readlines()
+        ll = 0
+        x = 0
         for i in range(0,len(line),1):
+
+            y = x + 1
             
-            if line[i] != "Spawn\n":
+            
+            if line[ll] != "Spawn\n":
                 print("pass")
             else:
                 print("balls")
+                with open(cords, 'r') as c:
+                    i = i * 2
+                    y = i + 1
+                    lines2 = c.readlines()
+                    xx = lines2[i]
+                    yy = lines2[y]
+                    print(xx,yy)
+                    player.goto(int(xx),int(yy))
+                    \
+
+            ll = ll + 1
+            x = x + 1
 
    
 

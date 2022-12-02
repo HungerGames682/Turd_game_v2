@@ -189,6 +189,8 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
             b = turtle.Turtle()
             if type == "Spawn":
                 b.color("Gold")
+                collition = 0
+                damage = 0
             else:
                 b.color(curcolor)
             b.speed(0)

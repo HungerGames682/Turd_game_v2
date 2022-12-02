@@ -29,6 +29,7 @@ max_health = 10
 leavel = 0
 all_turd_obj = []
 hacks = False
+goto_spawn_start = [1]
 # For now 1 is lowest and 2 is highest... idk why you would need this, im just board
 game_quality = 2
 
@@ -304,7 +305,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         with open(obj_type, 'r') as t:
             shit = t.readlines()
             shi = str(shit[ddd])
-            shi.strip()
+            
             shi = shi.replace("\n","")
             
 
@@ -321,39 +322,42 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             d1 = player.distance(li[i],li[h])
             # Chest_num also is used for doors and shit
             diss = [d1, li[i], li[h],sh,shi,chicken,chest_num]
+            
+            
             lis.append(diss)
+           
 
-    # Gets the distance, x,y of the closest block
+    # Gets All of the atributes of the closest block
     dis = min(lis)
     
 
 
-    min_3.append(dis)
-    lis.remove(dis)
+    # min_3.append(dis)
+    # lis.remove(dis)
 
-    diz = min(lis)
+    # diz = min(lis)
     
-    min_3.append(diz)
-    lis.remove(diz)
+    # min_3.append(diz)
+    # lis.remove(diz)
 
-    dix = min(lis)
-    min_3.append(dix)
+    # dix = min(lis)
+    # min_3.append(dix)
 
 
-    # print(min_3)
-    min1 = min_3[0]
-    min2 = min_3[1]
-    min3 = min_3[2]
+    # # print(min_3)
+    # min1 = min_3[0]
+    # min2 = min_3[1]
+    # min3 = min_3[2]
 
-    type1 = min1[4]
-    type1 = type1.replace("\n","")
-    type2 = min2[4]
-    type2 = type2.replace("\n","")
-    type3 = min3[4]
-    type3 = type3.replace("\n","")
+    # type1 = min1[4]
+    # type1 = type1.replace("\n","")
+    # type2 = min2[4]
+    # type2 = type2.replace("\n","")
+    # type3 = min3[4]
+    # type3 = type3.replace("\n","")
 
     # print(type1,type2,type3)
-    print(dis)
+    # print(dis)
   
   
         
@@ -414,7 +418,6 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     less_error_bound = 18
 
 
-    # Prevents going through objects
    
  
 
@@ -637,8 +640,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         
 
 
-        # Lets you be ableto go through doors
-        if door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis:
+        # Lets you be ableto go through doors that are unlocked
+        if (door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis) or (dis[0] <= go_throught_door_dis and dis[5] == 0):
             player_x = player.xcor()
             player_y = player.ycor()
             if dis[4] == "Door_ud":
@@ -666,7 +669,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         if dis[0] <= offset and dis[3] == 1:
             cur_health = heath_change(HCT, cur_health, -1,max_health)
             sleep(.1)
-            
+
         if l_and_r == True:
             print("L and R")
             f = False
@@ -700,7 +703,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
 
                 # Detects if you glitch through a wall
-        if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False:
+        if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn":
                 print('\n' * 100)
                 error("Glitch Through wall",0)
                 player.goto(0,0)
@@ -1304,6 +1307,7 @@ def lives_bar(x,y,lives):
   
 
     return lives
+
 # DONT USE
 def lives_change(livet,value,lives):
     if value < 0:
@@ -1322,14 +1326,30 @@ def lives_change(livet,value,lives):
         error("Need value for lives or something", 1)
 
     return lives
+
 # Just there as a place holder
 def nothing():
     print("")
 
-        
+# Make user goto the spawn set
+def goto_spawn(level):
+    if level == 1:
+        type = '/Users/rwilkes/vscode_projects/Turd_game_v2' + "/level_" + str(level) + "/type.txt"
+    else:
+        type = "/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt"
+
+    with open(type,'r') as jk:
+        line = jk.readlines()
+        for i in range(0,len(line),1):
+            
+            if line[i] != "Spawn\n":
+                print("pass")
+            else:
+                print("balls")
+
    
 
-
+# Scraped idea
 # lives = lives_bar(-280,-300,3)
 # print(indecator)
 
@@ -1359,6 +1379,10 @@ li = obj_create(stop,buildspeed,many)
 # Displays the opening of the game or something idk
 # opening_titles("Insert 'Title' Here", "Ricker",1000)
 
+
+
+
+goto_spawn(level=0)
 # Main loop
 # ALL BUTTONS ARE THERE FOR FEATURS THAT I CAN ADD, I WILL REMOVE THEM ONCE THEY ARE FULLY OPERATIONAL
 while True:
@@ -1408,7 +1432,7 @@ while True:
         
 
     cur_health,eraselocks,picked_list,inventory,selected_item = start(1,10, 1, 23,stop,li,cur_health,leavel,picked_list,inventory,selected_item)
-    
+    # This happends every time a lock is picked to restart the game
     if eraselocks == True:
         erase_lock = []
         pin_locks = []

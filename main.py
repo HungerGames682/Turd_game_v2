@@ -603,7 +603,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 player.clear()
           
         #   Detects if you are close to a door
-          if dis[0] <= door_interact_dis and type_s == "Door":
+          if dis[0] <= door_interact_dis and (type_s == "Door_lr" or type_s == "Door_ud"):
           
             # Sees if you alredy unlocked it
             if door_unlocked_list.count(dis[6]) > 0:
@@ -641,33 +641,13 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         if door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis:
             player_x = player.xcor()
             player_y = player.ycor()
-            if dis[4] == "Door_up_down":
+            if dis[4] == "Door_ud":
                 up_and_down = True
 
-            elif dis[4] == "Door_left_right":
+            elif dis[4] == "Door_lr":
                 l_and_r = True
 
-            # if dis[1] >= player_x and dis[2] == player_y:
-            #     l_and_r = True
-            #     up_and_down = False
-    
 
-            # elif dis[2] >= player_y or dis[1] == player_x:
-            #     up_and_down = True
-            #     l_and_r = False
-            # I NEED TO FIX THIS
-            
-            
-            
-
-            
-        
-
-            # FIX THIS RICKER
-
-            
-            # walkthrough = "Yes"
-            # hacks = True
             
 
 
@@ -686,6 +666,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         if dis[0] <= offset and dis[3] == 1:
             cur_health = heath_change(HCT, cur_health, -1,max_health)
             sleep(.1)
+            
         if l_and_r == True:
             print("L and R")
             f = False

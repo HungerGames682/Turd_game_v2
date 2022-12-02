@@ -201,6 +201,8 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
 
 
             # Adds the different values to a list
+            if type == "Door":
+                type = type + "_" + door_open
             obj_list.append(x)
             obj_list.append(y)
             color_list.append(curcolor)
@@ -320,6 +322,8 @@ def typeswitch(type,cur_item):
     elif type == "Wall":
         type = "Door"
         cur_item = "Door"
+        
+
 
     elif type == "Door":
         type = "Chest"
@@ -379,6 +383,17 @@ def lockswitch(lock_difficulty):
     chest.clear()
     chest.write(lock_stat)
     return lock_difficulty
+
+# Displays which way the door should open
+def door_switch(door_open):
+    if door_open == "lr":
+        door_open = "ud"
+    elif door_open == "ud":
+        door_open = "lr"
+
+    dooricon.clear()
+    dooricon.write("Door status is " + door_open)
+    return door_open
 
 
 
@@ -603,17 +618,30 @@ cur_item = "Null"
 
 curcolor = "black"
 
+# up or left door
+dooricon = turtle.Turtle()
+dooricon.speed(0)
+dooricon.penup()
+dooricon.hideturtle()
+dooricon.goto(-100,-225)
+dooricon.write("")
+door_open = "lr"
+
 
 
 
 # Main loop
 while True:
+    if type != "Door":
+        dooricon.clear()
+
     # Prevents objects that have no collition from having damage
     if collition == 0 and damage == 1:
         damage == 0
         damage = damageswitch(damage)
         print(damage)
         sleep(.2)
+
 
     # Turns damage on and off
     if keyboard.is_pressed("x"):
@@ -643,6 +671,10 @@ while True:
                 load_level(1)
                 break
             
+    # Door pos switch
+    if keyboard.is_pressed("v") and type == "Door":
+        door_open =  door_switch(door_open)
+
 
 
 # Enables erease mode

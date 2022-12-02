@@ -43,7 +43,7 @@ item_holder.speed(10)
 interact_dis = 24
 door_interact_dis = interact_dis + 10
 door_unlocked_list = []
-go_throught_door_dis = 23
+go_throught_door_dis = 22
 
 sc = turtle.Screen()
 
@@ -270,10 +270,16 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     
     # Hopfully imporved laggy ness
     lis = []
+    min_3 = []
+    min_type_list = []
+    noclip = False
+    l_and_r = False
+    up_and_down = False
     eraselocks = False
     whole_many = len(li)
     dd = 0
     ddd = 0
+    hacks = False
     # Will have to add more levels here for this code to work bc thats how i desigend it to work
     if leavel == 1:
         dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/damage.txt'
@@ -299,6 +305,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             shit = t.readlines()
             shi = str(shit[ddd])
             shi.strip()
+            shi = shi.replace("\n","")
             
 
         with open(lo, 'r') as los:
@@ -318,7 +325,35 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
     # Gets the distance, x,y of the closest block
     dis = min(lis)
-    # print(dis)
+    
+
+
+    min_3.append(dis)
+    lis.remove(dis)
+
+    diz = min(lis)
+    
+    min_3.append(diz)
+    lis.remove(diz)
+
+    dix = min(lis)
+    min_3.append(dix)
+
+
+    # print(min_3)
+    min1 = min_3[0]
+    min2 = min_3[1]
+    min3 = min_3[2]
+
+    type1 = min1[4]
+    type1 = type1.replace("\n","")
+    type2 = min2[4]
+    type2 = type2.replace("\n","")
+    type3 = min3[4]
+    type3 = type3.replace("\n","")
+
+    # print(type1,type2,type3)
+    print(dis)
   
   
         
@@ -395,7 +430,13 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
            
 
             # Detects if you are close to a chest
-          if dis[0] <= interact_dis and dis[4] == "Chest\n":
+          type_s = str(dis[4])
+          type_s = type_s.replace("\n","")
+          type_s = type_s.replace("_up_down","")
+          type_s = type_s.replace("_left_right","")
+          print(type_s)
+
+          if dis[0] <= interact_dis and type_s == "Chest":
             fff = -1
             new_picked_list = []
               # Builds the list of locks that you have already picked
@@ -411,11 +452,12 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 
             chosen = min(new_picked_list)
             # Gives you the item in the cheast if it does not have a lock or something
-            if dis[0] <= interact_dis and dis[4] == "Chest\n" and dis[5] == 0:
+            if dis[0] <= interact_dis and type_s == "Chest" and dis[5] == 0:
                        # Gives them items based on what is determined in the list
                             with open(chest_inventory,'r') as cinven:
                                 give_what = cinven.readlines()
                                 gives = give_what[dis[6]]
+                                
                                 
                                 # Sees if the player already has that item
                                 if len(gains) == 0:
@@ -444,7 +486,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                                         break
 
             #   Detects if you have the lockpick in your inventory
-            if dis[0] <= interact_dis and dis[4] == "Chest\n" and dis[5] != 0:
+            if dis[0] <= interact_dis and type_s == "Chest" and dis[5] != 0:
               if inventory[0] == lcok_pick_item_skin:
                         
 
@@ -452,12 +494,12 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 if selected_item == lcok_pick_item_skin:
 
                     # Detects if you have already picked this chest
-                    if dis[0] <= 24 and dis[4] == "Chest\n" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
+                    if dis[0] <= 24 and type_s == "Chest" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
                         player.write("      You have already picked this")
                         sleep(.2)
                         player.clear()
                     # Lets you pick this chest
-                    elif dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
+                    elif dis[0] <= 24 and type_s == "Chest" and dis[5] != 0:
                         unlocked = lockpick(dis[5],5)
                         if unlocked == True:
                             # Gives them items based on what is determined in the list
@@ -490,12 +532,12 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 if selected_item == lcok_pick_item_skin:
 
                     # Detects if you have already picked this chest
-                    if dis[0] <= 24 and dis[4] == "Chest\n" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
+                    if dis[0] <= 24 and type_s == "Chest" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
                         player.write("      You have already picked this")
                         sleep(.2)
                         player.clear()
                     # Lets you pick this chest
-                    elif dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
+                    elif dis[0] <= 24 and type_s == "Chest" and dis[5] != 0:
                         unlocked = lockpick(dis[5],5)
                         if unlocked == True:
                             # Gives them items based on what is determined in the list
@@ -525,12 +567,12 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 if selected_item == lcok_pick_item_skin:
 
                     # Detects if you have already picked this chest
-                    if dis[0] <= 24 and dis[4] == "Chest\n" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
+                    if dis[0] <= 24 and type_s == "Chest" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
                         player.write("      You have already picked this")
                         sleep(.2)
                         player.clear()
                     # Lets you pick this chest
-                    elif dis[0] <= 24 and dis[4] == "Chest\n" and dis[5] != 0:
+                    elif dis[0] <= 24 and type_s == "Chest" and dis[5] != 0:
                         unlocked = lockpick(dis[5],5)
                         if unlocked == True:
                             # Gives them items based on what is determined in the list
@@ -561,7 +603,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 player.clear()
           
         #   Detects if you are close to a door
-          if dis[0] <= door_interact_dis and dis[4] == "Door\n":
+          if dis[0] <= door_interact_dis and type_s == "Door":
           
             # Sees if you alredy unlocked it
             if door_unlocked_list.count(dis[6]) > 0:
@@ -597,51 +639,109 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
         # Lets you be ableto go through doors
         if door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis:
-            walkthrough = "Yes"
-            hacks = True
+            player_x = player.xcor()
+            player_y = player.ycor()
+            if dis[4] == "Door_up_down":
+                up_and_down = True
+
+            elif dis[4] == "Door_left_right":
+                l_and_r = True
+
+            # if dis[1] >= player_x and dis[2] == player_y:
+            #     l_and_r = True
+            #     up_and_down = False
+    
+
+            # elif dis[2] >= player_y or dis[1] == player_x:
+            #     up_and_down = True
+            #     l_and_r = False
+            # I NEED TO FIX THIS
             
+            
+            
+
+            
+        
+
+            # FIX THIS RICKER
+
+            
+            # walkthrough = "Yes"
+            # hacks = True
+            
+
+
 
         else:
         
             walkthrough = "No"
+            godoor = False
             hacks = False
 
-        # Detects if you glitch through a wall
-        if dis[0] <= error_bound and hacks == False:
-                print('\n' * 100)
-                error("Glitch Through wall",0)
-                player.goto(0,0)
+
+        
+
         
         # Makes the player take damage if they are close to a obj that damages them
         if dis[0] <= offset and dis[3] == 1:
             cur_health = heath_change(HCT, cur_health, -1,max_health)
             sleep(.1)
-            
-    #    The colition detection code, allows you to walkthrough a block or not
-        if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":
-         f = False
-         a = 0
-        elif int(dis[0]) <= offset and dis[1] == nx and walkthrough == "No":
-         l = False
-         a = 0
-        elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -230:
-            b = False
-            a = 0
-        elif int(dis[0]) <= offset and dis[1] == px and walkthrough == "No":
+        if l_and_r == True:
+            print("L and R")
+            f = False
+            l = False
             r = False
-            a = 0
+            b = False
+           
+            
+        elif up_and_down == True:
+            print("UP and down")
+            f = False
+            l = False
+            r = False
+            b = False
+            
+        else:   
+            #The colition detection code, allows you to walkthrough a block or not
+            if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":
+                f = False
+                a = 0
+            elif int(dis[0]) <= offset and dis[1] == nx and walkthrough == "No":
+                l = False
+                a = 0
+            elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -230:
+                b = False
+                a = 0
+            elif int(dis[0]) <= offset and dis[1] == px and walkthrough == "No":
+                r = False
+                a = 0
        
 
 
-   
+                # Detects if you glitch through a wall
+        if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False:
+                print('\n' * 100)
+                error("Glitch Through wall",0)
+                player.goto(0,0)
+
+        
     # Makes player move and shit
-    if keyboard.is_pressed("W") and f == True:
+    if keyboard.is_pressed("W") and f == True or up_and_down == True and keyboard.is_pressed("W"):
+        
              player.forward(movement)
              held_item(selected_item,item_holder,"up")
-    if keyboard.is_pressed("S") and b == True:
+             up_and_down = False
+            #  noclip = False
+
+
+    if keyboard.is_pressed("S") and b == True or up_and_down == True and keyboard.is_pressed("S"):
             player.forward(-(movement))
             held_item(selected_item,item_holder,"down")
-    if keyboard.is_pressed("A") and l == True:
+            up_and_down = False
+            # noclip = False
+
+
+    if keyboard.is_pressed("A") and l == True or l_and_r == True and keyboard.is_pressed("A"):
     
             x = player.xcor()
             y = player.ycor()
@@ -649,7 +749,11 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             player.speed(speed)
             player.goto(x,y)
             held_item(selected_item,item_holder,"left")
-    if keyboard.is_pressed("D") and r == True:
+            l_and_r = False
+            # noclip = False
+
+
+    if keyboard.is_pressed("D") and r == True or l_and_r == True and keyboard.is_pressed("D"):
       
             x = player.xcor()
             y = player.ycor()
@@ -657,7 +761,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             player.speed(speed)
             player.goto(x,y)
             held_item(selected_item,item_holder,"right")
-    
+            l_and_r = False
+            # noclip = False
+
+            
     return cur_health,eraselocks,picked_list,inventory,selected_item
 
 
@@ -1234,8 +1341,9 @@ def lives_change(livet,value,lives):
         error("Need value for lives or something", 1)
 
     return lives
-    
-        
+# Just there as a place holder
+def nothing():
+    print("")
 
         
    

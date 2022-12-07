@@ -76,6 +76,32 @@ indecator = []
 how_obj = 1
 statcolor = "black"
 statyline = -300
+
+# Defines all of the varibles for the files, just so i only have to configure this once, also gives all of the data needed
+def get_level_data(level):
+
+    if level == 0:
+        dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
+        lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
+        obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
+        chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
+        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt'
+
+    else:
+        dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) +'/damage.txt'
+        obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) +'/type.txt'
+        lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) +'/lock.txt'
+        chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) +'/chest_give.txt'
+        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2' + "/level_" + str(level) + "/cords.txt"
+
+
+    return dama,obj_type,lo,chest_inventory,cords
+
+
+
+
+
+
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     # for he in range(-500,500,20):
     #     with open('obj.txt','r') as b:
@@ -86,7 +112,7 @@ def statline2(how_obj,stop,statcolor,statyline,buildspeed):
         balls = turtle.Turtle()
         object(stat_line_skin,statcolor,player, balls,0,statyline,stop)
         
-    #     how_obj = how_obj + 1
+ 
        
 
 # Creats all of the objects based on the cords.txt, colli.txt, shape.txt, color.txt
@@ -255,6 +281,8 @@ def level_switch(stop,buildspeed,level):
         for i in range(new_obj_nums,obj_nums,1):
             print(i)
             name_list[i].hideturtle()
+
+    goto_spawn(level)
             
             
            
@@ -282,23 +310,26 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     ddd = 0
     hacks = False
     # Will have to add more levels here for this code to work bc thats how i desigend it to work
-    if leavel == 1:
-        dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/damage.txt'
-        obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/type.txt'
-        lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/lock.txt'
-        chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/chest_give.txt'
+    dama,obj_type,lo,chest_inventory,cords = get_level_data(leavel)
+    # if leavel == 1:
+    #     dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/damage.txt'
+    #     obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/type.txt'
+    #     lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/lock.txt'
+    #     chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/chest_give.txt'
 
-    else:
-        dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
-        lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
-        obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
-        chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
+    # else:
+    #     dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
+    #     lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
+    #     obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
+    #     chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
+        
 
     for i in range(0, whole_many,2):
         
         with open(dama, 'r') as chi:
             dam = chi.readlines()
             sh = int(dam[dd])
+            damage = sh
         
             dd = dd + 1
         
@@ -307,11 +338,13 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             shi = str(shit[ddd])
             
             shi = shi.replace("\n","")
+            type_of_object = shi
+
             
 
         with open(lo, 'r') as los:
             chicks = los.readlines()
-            chicken = int(chicks[ddd])
+            amout_of_pins = int(chicks[ddd])
             chest_num = ddd
             ddd = ddd + 1
         
@@ -321,7 +354,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         else:
             d1 = player.distance(li[i],li[h])
             # Chest_num also is used for doors and shit
-            diss = [d1, li[i], li[h],sh,shi,chicken,chest_num]
+            diss = [d1, li[i], li[h],damage,type_of_object,amout_of_pins,chest_num]
             
             
             lis.append(diss)
@@ -329,36 +362,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
     # Gets All of the atributes of the closest block
     dis = min(lis)
-    
-
-
-    # min_3.append(dis)
-    # lis.remove(dis)
-
-    # diz = min(lis)
-    
-    # min_3.append(diz)
-    # lis.remove(diz)
-
-    # dix = min(lis)
-    # min_3.append(dix)
-
-
-    # # print(min_3)
-    # min1 = min_3[0]
-    # min2 = min_3[1]
-    # min3 = min_3[2]
-
-    # type1 = min1[4]
-    # type1 = type1.replace("\n","")
-    # type2 = min2[4]
-    # type2 = type2.replace("\n","")
-    # type3 = min3[4]
-    # type3 = type3.replace("\n","")
-
-    # print(type1,type2,type3)
     # print(dis)
-  
   
         
     
@@ -370,7 +374,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     
    
     
-    # print(dis)
+   
     f = True
     l = True
     r = True
@@ -706,7 +710,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn":
                 print('\n' * 100)
                 error("Glitch Through wall",0)
-                player.goto(0,0)
+                goto_spawn(level)
 
         
     # Makes player move and shit
@@ -880,6 +884,7 @@ def lock_pin(x,y):
         ls.shape(pins_skin)
     pin_locks.append(ls)
     erase_lock.append(ls)
+
 # Makes the outside shell
 def lock_out_shell(x,y):
     k = turtle.Turtle()
@@ -1291,7 +1296,7 @@ def opening_titles(title,creator,code):
     word.hideturtle()
     hide.hideturtle()
 
-# Draws the lives bar or something DONT USE
+# Draws the lives bar or something DONT USE, bad idea 
 def lives_bar(x,y,lives):
     
     
@@ -1308,7 +1313,7 @@ def lives_bar(x,y,lives):
 
     return lives
 
-# DONT USE
+# DONT USE, It was a bad idea
 def lives_change(livet,value,lives):
     if value < 0:
         lives = lives - 1
@@ -1333,12 +1338,7 @@ def nothing():
 
 # Make user goto the spawn set
 def goto_spawn(level):
-    if level == 1:
-        type = '/Users/rwilkes/vscode_projects/Turd_game_v2' + "/level_" + str(level) + "/type.txt"
-        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2' + "/level_" + str(level) + "/cords.txt"
-    else:
-        type = "/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt"
-        cords = "/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt"
+    dama,type,lo,chest_inventory,cords = get_level_data(level)
 
     with open(type,'r') as jk:
         line = jk.readlines()
@@ -1351,8 +1351,8 @@ def goto_spawn(level):
             
             if line[ll] != "Spawn\n":
                 print("pass")
-            else:
-                print("balls")
+            elif line[ll] == "Spawn\n":
+                print("spawn Detected")
                 with open(cords, 'r') as c:
                     i = i * 2
                     y = i + 1
@@ -1361,12 +1361,18 @@ def goto_spawn(level):
                     yy = lines2[y]
                     print(xx,yy)
                     player.goto(int(xx),int(yy))
-                    \
+                    return
+            else:
+                error("Spawn is not defined and or found", 1)
+                    
 
             ll = ll + 1
             x = x + 1
+        error("Spawn is not defined",1)
 
    
+
+
 
 # Scraped idea
 # lives = lives_bar(-280,-300,3)
@@ -1412,7 +1418,7 @@ while True:
         print("You Died bozo")
         exit()
 
-     # Changes selected item
+     # Changes selected item aka lets you select the item of choic
     if keyboard.is_pressed("1"):
         selected_item = select_item(1)
     if keyboard.is_pressed("2"):

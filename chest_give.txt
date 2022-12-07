@@ -74,7 +74,7 @@ Wall
 Wall
 Wall
 Wall
-Chest
+lockpick
 Chest
 Chest
 Spawn

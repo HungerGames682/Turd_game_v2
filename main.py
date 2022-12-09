@@ -98,10 +98,7 @@ def get_level_data(level):
     return dama,obj_type,lo,chest_inventory,cords
 
 
-
-
-
-
+# Draws the stat line for the game
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     # for he in range(-500,500,20):
     #     with open('obj.txt','r') as b:
@@ -112,7 +109,112 @@ def statline2(how_obj,stop,statcolor,statyline,buildspeed):
         balls = turtle.Turtle()
         object(stat_line_skin,statcolor,player, balls,0,statyline,stop)
         
- 
+# Decides if the closest object if you can walkthrough it or not
+def walkthrough_list(dis,walkthrough):
+
+    if dis[0] == "Null" or walkthrough == "Yes":
+        f = True 
+        l = True
+        r = True
+        b = True
+        ny = 0
+        nx = 0
+        py = 0
+        px = 0
+
+    else:
+        f = True
+        l = True
+        r = True
+        b = True
+        
+        x = player.xcor()
+        y = player.ycor()
+        
+        obj_x = dis[1]
+        obj_yy = dis[2]
+
+        obj_x = int(obj_x)
+        obj_yy = int(obj_yy)
+
+
+        ny = y + 20
+        nx = x - 20
+        py = y - 20
+        px = x + 20
+
+        ny = int(ny)
+        py = int(py)
+
+    return f,l,b,r, nx,ny,px,py, x,y
+
+    
+
+
+
+
+
+#  Generates all of the objects list, then it will have to get sorted out
+def all_obj_list(lis,dama,obj_type,lo,):
+    dd =0
+    ddd = 0
+    for i in range(0, whole_many,2):
+        
+        with open(dama, 'r') as chi:
+            dam = chi.readlines()
+            sh = int(dam[dd])
+            damage = sh
+        
+            dd = dd + 1
+        
+        with open(obj_type, 'r') as t:
+            shit = t.readlines()
+            shi = str(shit[ddd])
+            
+            shi = shi.replace("\n","")
+            type_of_object = shi
+
+            
+
+        with open(lo, 'r') as los:
+            chicks = los.readlines()
+            amout_of_pins = int(chicks[ddd])
+            chest_num = ddd
+            ddd = ddd + 1
+        
+        h = i + 1
+        if li[i] == "No" or li[h] == "No":
+            print("")
+        else:
+            d1 = player.distance(li[i],li[h])
+            # Chest_num also is used for doors and shit
+            diss = [d1, li[i], li[h],damage,type_of_object,amout_of_pins,chest_num]
+            
+            
+            lis.append(diss)
+
+    return lis  
+
+
+
+# Takes the list made by all_obj_list and then gets the closest 3, aka sorts it out
+def get_closest_objectes(ls):
+    close1 = min(ls)
+    ind = ls.index(close1)
+    ls.pop(ind)
+
+
+    close2 = min(ls)
+    ind = ls.index(close2)
+    ls.pop(ind)
+
+    close3 = min(ls)
+    ind = ls.index(close3)
+    ls.pop(ind)
+    
+
+
+    return close1,close2,close3
        
 
 # Creats all of the objects based on the cords.txt, colli.txt, shape.txt, color.txt
@@ -152,6 +254,8 @@ def obj_create(stop,buildspeed,many):
             col =  colo.readlines()
             color = col[coli_many]
             color = color.strip('\n')
+
+            
           
 
 
@@ -299,131 +403,42 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     
     # Hopfully imporved laggy ness
     lis = []
-    min_3 = []
-    min_type_list = []
-    noclip = False
     l_and_r = False
     up_and_down = False
     eraselocks = False
-    whole_many = len(li)
-    dd = 0
-    ddd = 0
     hacks = False
-    # Will have to add more levels here for this code to work bc thats how i desigend it to work
+    
+    # gets and returns all of the data from the .txt files
     dama,obj_type,lo,chest_inventory,cords = get_level_data(leavel)
-    # if leavel == 1:
-    #     dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/damage.txt'
-    #     obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/type.txt'
-    #     lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/lock.txt'
-    #     chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_1/chest_give.txt'
-
-    # else:
-    #     dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
-    #     lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
-    #     obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
-    #     chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
-        
-
-    for i in range(0, whole_many,2):
-        
-        with open(dama, 'r') as chi:
-            dam = chi.readlines()
-            sh = int(dam[dd])
-            damage = sh
-        
-            dd = dd + 1
-        
-        with open(obj_type, 'r') as t:
-            shit = t.readlines()
-            shi = str(shit[ddd])
-            
-            shi = shi.replace("\n","")
-            type_of_object = shi
-
-            
-
-        with open(lo, 'r') as los:
-            chicks = los.readlines()
-            amout_of_pins = int(chicks[ddd])
-            chest_num = ddd
-            ddd = ddd + 1
-        
-        h = i + 1
-        if li[i] == "No" or li[h] == "No":
-            print("")
-        else:
-            d1 = player.distance(li[i],li[h])
-            # Chest_num also is used for doors and shit
-            diss = [d1, li[i], li[h],damage,type_of_object,amout_of_pins,chest_num]
-            
-            
-            lis.append(diss)
+ 
+    # Generates the entire obj_list
+    lis = all_obj_list(lis,dama,obj_type,lo)
            
-
+    close1,close2,close3 = get_closest_objectes(lis)
     # Gets All of the atributes of the closest block
-    dis = min(lis)
+    print(close1)
+    print(close2)
+    print(close3)
+
+
+    # I cant replace dis, to many things of the code rely on it.
+    dis = close1
     # print(dis)
   
         
     
 
   
-       
-
+    # Just here to chunk my code into functions
+    f,l,b,r, nx,ny,px,py, x,y = walkthrough_list(dis,walkthrough)
 
     
-   
-    
-   
-    f = True
-    l = True
-    r = True
-    b = True
-    if dis[0] == "Null" or walkthrough == "Yes":
-        f = True 
-        l = True
-        r = True
-        b = True
-        ny = 0
-        nx = 0
-        py = 0
-        px = 0
-
-    else:
-        
-        x = player.xcor()
-        y = player.ycor()
-        
-        obj_x = dis[1]
-        obj_yy = dis[2]
-
-        obj_x = int(obj_x)
-        obj_yy = int(obj_yy)
-
-        obj_y = obj_yy - y
-        p_obj_y = y  - obj_yy
-
-        ny = y + 20
-        nx = x - 20
-        py = y - 20
-        px = x + 20
-
-        ny = int(ny)
-        py = int(py)
-
-        
    
     
     
     # Inside Perimiter Blocker
     error_bound =  17
 
-    # Outside perimiter blocker
-    less_error_bound = 18
-
-
-   
- 
 
 
     if walkthrough == "Yes":
@@ -706,6 +721,12 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
        
 
 
+            # Colition part for corners
+            # Top left corners
+            if (int(dis[0]) <= offset and dis[1] == nx) and (close2[0] <= offset and dis[2] == ny) or (close3[0] <= offset and dis[2] == ny):
+                l = False
+                f = False
+
                 # Detects if you glitch through a wall
         if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn":
                 print('\n' * 100)
@@ -719,14 +740,14 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
              player.forward(movement)
              held_item(selected_item,item_holder,"up")
              up_and_down = False
-            #  noclip = False
+            
 
 
     if keyboard.is_pressed("S") and b == True or up_and_down == True and keyboard.is_pressed("S"):
             player.forward(-(movement))
             held_item(selected_item,item_holder,"down")
             up_and_down = False
-            # noclip = False
+            
 
 
     if keyboard.is_pressed("A") and l == True or l_and_r == True and keyboard.is_pressed("A"):
@@ -738,8 +759,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             player.goto(x,y)
             held_item(selected_item,item_holder,"left")
             l_and_r = False
-            # noclip = False
-
+            
 
     if keyboard.is_pressed("D") and r == True or l_and_r == True and keyboard.is_pressed("D"):
       
@@ -750,7 +770,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             player.goto(x,y)
             held_item(selected_item,item_holder,"right")
             l_and_r = False
-            # noclip = False
+            
 
             
     return cur_health,eraselocks,picked_list,inventory,selected_item

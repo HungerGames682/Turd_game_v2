@@ -145,6 +145,8 @@ def walkthrough_list(dis,walkthrough):
 
         ny = int(ny)
         py = int(py)
+        nx = int(nx)
+        px = int(px)
 
     return f,l,b,r, nx,ny,px,py, x,y
 
@@ -216,6 +218,30 @@ def get_closest_objectes(ls):
 
     return close1,close2,close3
        
+# Takes the objects and will return the 2 closest values
+def filter_closest_objects(close1,close2,close3):
+    if close1[0] == close2[0]:
+        print(close1,close2)
+        return(close1,close2)
+
+    elif close1[0] == close3[0]:
+        print(close1,close3)
+        return(close1,close3)
+    
+    elif close2[0] == close3[0]:
+        print(close2,close3)
+        return(close2,close3)
+
+
+
+
+    else:
+        error("Filter Failure",0)
+        return "null","null"
+        
+
+ 
+
 
 # Creats all of the objects based on the cords.txt, colli.txt, shape.txt, color.txt
 def obj_create(stop,buildspeed,many):
@@ -419,6 +445,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     print(close1)
     print(close2)
     print(close3)
+    # closest1,closest2 = filter_closest_objects(close1,close2,close3)
+    # print(closest1)
+    # print(closest2)
+  
 
 
     # I cant replace dis, to many things of the code rely on it.
@@ -723,9 +753,32 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
             # Colition part for corners
             # Top left corners
-            if (int(dis[0]) <= offset and dis[1] == nx) and (close2[0] <= offset and dis[2] == ny) or (close3[0] <= offset and dis[2] == ny):
+            print('\n' * 20)
+            
+            print(close1)
+            print(close2)
+
+            print(nx)
+            print(ny)
+            print(px)
+            print(py)
+            print('\n')
+            print(x)
+            print(y)
+            
+
+            # Detection for topleft corner
+            if (int(dis[0]) <= offset and dis[1] == nx) and (close2[0] <= offset and close2[2] == ny):
                 l = False
                 f = False
+                print("1")
+             
+            # Detection foro topright corner
+            if (int(dis[0]) <= offset and dis[2] ==ny) and (close2[0] <= offset and close2[2] ==px):
+                f = False
+                r = False
+                print("2")
+                
 
                 # Detects if you glitch through a wall
         if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn":

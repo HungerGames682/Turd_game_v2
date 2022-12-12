@@ -702,17 +702,10 @@ while True:
         sleep(.2)
 
 
-    # Sprint button
-    if keyboard.is_pressed("shift"):
-        speed = 10
-        start(speed,curcolor,collition,damage,type,lock_difficulty)
-    # Sprint and place button
-    if keyboard.is_pressed("shift") and keyboard.is_pressed("space"):
-        speed = 20
-        start(speed,curcolor,collition,damage,type,lock_difficulty)
+ 
 
     else:    
-        speed = 10
+        speed = 20
         start(speed,curcolor,collition,damage,type,lock_difficulty)
         sleep(.05)
         

@@ -49,18 +49,22 @@ go_throught_door_dis = 22
 sc = turtle.Screen()
 
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/bottom_pick.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/pins.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/stats_line.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/heart.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/Inventory Frame.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/Lock Pick.gif','/Users/rwilkes/vscode_projects/Turd_game_v2/sprits/Selected Inventory Frame.gif']
+shape_list = ['bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+edit_shape_list = []
 for kjh in range(len(shape_list)):
-    sc.register_shape(shape_list[kjh])
+    hehe = shape_list[kjh]
+    hehe = './sprits/' + hehe
+    edit_shape_list.append(hehe)
+    sc.register_shape(hehe)
 
 # Defines all of the skins here
-bottem_lock_pick = shape_list[0]
-pins_skin = shape_list[1]
-stat_line_skin = shape_list[2]
-heart_skin = shape_list[3]
-inventory_frame_skin = shape_list[4]
-lcok_pick_item_skin = shape_list[5]
-selected_inventory_frame_skin = shape_list[6]
+bottem_lock_pick = edit_shape_list[0]
+pins_skin = edit_shape_list[1]
+stat_line_skin = edit_shape_list[2]
+heart_skin = edit_shape_list[3]
+inventory_frame_skin = edit_shape_list[4]
+lcok_pick_item_skin = edit_shape_list[5]
+selected_inventory_frame_skin = edit_shape_list[6]
 
 
 # Customize some settings here
@@ -81,18 +85,18 @@ statyline = -300
 def get_level_data(level):
 
     if level == 0:
-        dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
-        lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
-        obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
-        chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
-        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt'
+        dama = './damage.txt'
+        lo = './lock.txt'
+        obj_type = './type.txt'
+        chest_inventory = './chest_give.txt'
+        cords = './cords.txt'
 
     else:
-        dama = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) +'/damage.txt'
-        obj_type = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) +'/type.txt'
-        lo = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) +'/lock.txt'
-        chest_inventory = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) +'/chest_give.txt'
-        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2' + "/level_" + str(level) + "/cords.txt"
+        dama = './level_' + str(level) +'/damage.txt'
+        obj_type = './level_' + str(level) +'/type.txt'
+        lo = './level_' + str(level) +'/lock.txt'
+        chest_inventory = './level_' + str(level) +'/chest_give.txt'
+        cords = "./level_" + str(level) + "/cords.txt"
 
 
     return dama,obj_type,lo,chest_inventory,cords
@@ -318,7 +322,7 @@ def obj_create(stop,buildspeed,many):
 def level_switch(stop,buildspeed,level):
     # Put how many objects there
     # Your gonna have to define some varibles bro
-    cur_level = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/'
+    cur_level = './level_' + str(level) + '/'
     cords = cur_level + 'cords.txt'
     colli = cur_level + 'colli.txt'
     coller = cur_level + 'color.txt'
@@ -376,6 +380,8 @@ def level_switch(stop,buildspeed,level):
             col =  colo.readlines()
             color = col[coli_many]
             color = color.strip('\n')
+
+        
           
 
 
@@ -419,7 +425,51 @@ def level_switch(stop,buildspeed,level):
             
 
         
-    return li, all_turd_obj
+    return li, all_turd_obj,whole_many
+
+
+def collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r):
+     #The colition detection code, allows you to walkthrough a block or not
+            if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":
+                f = False
+                a = 0
+            elif int(dis[0]) <= offset and dis[1] == nx and walkthrough == "No":
+                l = False
+                a = 0
+            elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -230:
+                b = False
+                a = 0
+            elif int(dis[0]) <= offset and dis[1] == px and walkthrough == "No":
+                r = False
+                a = 0
+       
+
+
+            # Colition part for corners
+            
+            # Detection for topleft corner
+            if (int(dis[0]) <= offset and dis[1] == nx) and (close2[0] <= offset and close2[2] == ny) and walkthrough == "No":
+                l = False
+                f = False
+                
+             
+            # Detection for topright corner
+            if (int(dis[0]) <= offset and dis[2] ==ny) and (close2[0] <= offset and close2[2] ==px) and walkthrough == "No":
+                f = False
+                r = False
+                
+
+            # Detection for bottemright corner
+            if (int(dis[0]) <= offset and dis[2] ==py) and (close2[0] <= offset and close2[1] ==px) and walkthrough == "No":
+                b = False
+                r = False
+                
+
+            if (int(dis[0]) <= offset and dis[1] ==nx) and (close2[0] <= offset and close2[2] == py) and walkthrough == "No":
+                b = False
+                l = False
+                
+            return f,b,l,r
 
 
 
@@ -433,7 +483,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     up_and_down = False
     eraselocks = False
     hacks = False
-    
+    print(level)
     # gets and returns all of the data from the .txt files
     dama,obj_type,lo,chest_inventory,cords = get_level_data(leavel)
  
@@ -441,35 +491,16 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     lis = all_obj_list(lis,dama,obj_type,lo)
            
     close1,close2,close3 = get_closest_objectes(lis)
-    # Gets All of the atributes of the closest block
-    print(close1)
-    print(close2)
-    print(close3)
-    # closest1,closest2 = filter_closest_objects(close1,close2,close3)
-    # print(closest1)
-    # print(closest2)
-  
-
 
     # I cant replace dis, to many things of the code rely on it.
     dis = close1
-    # print(dis)
-  
-        
-    
-
+    print(dis)
   
     # Just here to chunk my code into functions
     f,l,b,r, nx,ny,px,py, x,y = walkthrough_list(dis,walkthrough)
-
-    
-   
-    
-    
+ 
     # Inside Perimiter Blocker
     error_bound =  17
-
-
 
     if walkthrough == "Yes":
         print("Walk")
@@ -683,11 +714,6 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             else:
                 write("         Door already open",.2)
                     
-            
-
-
-        
-
 
         # Lets you be ableto go through doors that are unlocked
         if (door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis) or (dis[0] <= go_throught_door_dis and dis[5] == 0):
@@ -734,52 +760,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             r = False
             b = False
             
-        else:   
-            #The colition detection code, allows you to walkthrough a block or not
-            if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":
-                f = False
-                a = 0
-            elif int(dis[0]) <= offset and dis[1] == nx and walkthrough == "No":
-                l = False
-                a = 0
-            elif int(dis[0]) <= offset and dis[2] == py and walkthrough == "No" or y <= -230:
-                b = False
-                a = 0
-            elif int(dis[0]) <= offset and dis[1] == px and walkthrough == "No":
-                r = False
-                a = 0
-       
-
-
-            # Colition part for corners
-            # Top left corners
-            print('\n' * 20)
-            
-            print(close1)
-            print(close2)
-
-            print(nx)
-            print(ny)
-            print(px)
-            print(py)
-            print('\n')
-            print(x)
-            print(y)
-            
-
-            # Detection for topleft corner
-            if (int(dis[0]) <= offset and dis[1] == nx) and (close2[0] <= offset and close2[2] == ny):
-                l = False
-                f = False
-                print("1")
-             
-            # Detection foro topright corner
-            if (int(dis[0]) <= offset and dis[2] ==ny) and (close2[0] <= offset and close2[2] ==px):
-                f = False
-                r = False
-                print("2")
-                
-
+        else: 
+            # Colition detection, says in the name bro
+            f,b,l,r = collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r)  
+           
                 # Detects if you glitch through a wall
         if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn":
                 print('\n' * 100)
@@ -793,16 +777,12 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
              player.forward(movement)
              held_item(selected_item,item_holder,"up")
              up_and_down = False
-            
-
 
     if keyboard.is_pressed("S") and b == True or up_and_down == True and keyboard.is_pressed("S"):
             player.forward(-(movement))
             held_item(selected_item,item_holder,"down")
             up_and_down = False
             
-
-
     if keyboard.is_pressed("A") and l == True or l_and_r == True and keyboard.is_pressed("A"):
     
             x = player.xcor()
@@ -813,7 +793,6 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             held_item(selected_item,item_holder,"left")
             l_and_r = False
             
-
     if keyboard.is_pressed("D") and r == True or l_and_r == True and keyboard.is_pressed("D"):
       
             x = player.xcor()
@@ -1447,9 +1426,6 @@ def goto_spawn(level):
 
 
 
-# Scraped idea
-# lives = lives_bar(-280,-300,3)
-# print(indecator)
 
 # Draws the inventory frames and the turtles
 icon_inventory_list,selected_slot_list = inventory_frame()
@@ -1502,24 +1478,13 @@ while True:
 
     # Level Switch button, only temporary for testing, will make it when you go off screen of something
     if keyboard.is_pressed("T"):
-        li, all_turd_obj = level_switch(stop,0,1)
+        li, all_turd_obj,whole_many = level_switch(stop,0,1)
      
         leavel = 1
 
     elif keyboard.is_pressed("esc"):
         print("Trying to make a menue of something")
     
-    # Give and take away health, just here for testing feaetures
-    # if keyboard.is_pressed("R"):
-    #     cur_health = heath_change(HCT, cur_health, 1,max_health)
-       
-    #     sleep(.2)
-    # if keyboard.is_pressed("F"):
-    #     cur_health = heath_change(HCT, cur_health, -1,max_health)
-        
-    #     sleep(.2)
-    
-
     if keyboard.is_pressed("L"):
         inventory = give_item(lcok_pick_item_skin,icon_inventory_list,inventory)
 

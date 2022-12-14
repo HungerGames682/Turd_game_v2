@@ -31,7 +31,7 @@ all_turd_obj = []
 hacks = False
 goto_spawn_start = [1]
 # For now 1 is lowest and 2 is highest... idk why you would need this, im just board
-game_quality = 2
+game_quality = 1
 
 pin_locks = []
 livet = []
@@ -58,6 +58,7 @@ for kjh in range(len(shape_list)):
     sc.register_shape(hehe)
 
 skin = 0
+
 # Defines all of the skins here
 null_skin = edit_shape_list[skin]
 skin = skin + 1
@@ -361,6 +362,7 @@ def level_switch(stop,buildspeed,level):
     cords = cur_level + 'cords.txt'
     colli = cur_level + 'colli.txt'
     coller = cur_level + 'color.txt'
+    types = cur_level + 'type.txt'
     print(cords)
     print(colli)
     print(coller)
@@ -416,12 +418,26 @@ def level_switch(stop,buildspeed,level):
             color = col[coli_many]
             color = color.strip('\n')
 
+        if game_quality == 2:
+            with open(types, 'r') as t:
+                type = t.readlines()
+                ctype = type[coli_many]
+                ctype = ctype.replace('\n',"")
+                texture = ctype
+        else:
+            texture = 0
+
+
+            
+        
+        texture = add_textures(texture)
+
         
           
 
 
         # Actully creats the object and the saves it to see if has colliotion or not(Clearly)
-        has_colition = object("square",color,coli, line[which],newx,newy,stop)
+        has_colition = object("square",color,coli, line[which],newx,newy,stop,texture)
         print(has_colition)
         obj_count_num = obj_count_num + 1
 
@@ -462,7 +478,7 @@ def level_switch(stop,buildspeed,level):
         
     return li, all_turd_obj,whole_many
 
-
+# Just here to split up the code and stuff
 def collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r):
      #The colition detection code, allows you to walkthrough a block or not
             if int(dis[0]) <= offset and dis[2] == ny and walkthrough == "No":

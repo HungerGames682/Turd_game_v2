@@ -24,9 +24,10 @@ Wall
 Wall
 Wall
 Wall
-Wall
+Level_switch_1
 Wall
 Wall
 Door_lr
 Door_lr
 Spawn
+Chest

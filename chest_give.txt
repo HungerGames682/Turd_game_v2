@@ -30,3 +30,4 @@ Wall
 Door
 Door
 Spawn
+lockpick

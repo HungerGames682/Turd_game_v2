@@ -49,7 +49,7 @@ go_throught_door_dis = 22
 sc = turtle.Screen()
 
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+shape_list = ['null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
 edit_shape_list = []
 for kjh in range(len(shape_list)):
     hehe = shape_list[kjh]
@@ -57,14 +57,26 @@ for kjh in range(len(shape_list)):
     edit_shape_list.append(hehe)
     sc.register_shape(hehe)
 
+skin = 0
 # Defines all of the skins here
-bottem_lock_pick = edit_shape_list[0]
-pins_skin = edit_shape_list[1]
-stat_line_skin = edit_shape_list[2]
-heart_skin = edit_shape_list[3]
-inventory_frame_skin = edit_shape_list[4]
-lcok_pick_item_skin = edit_shape_list[5]
-selected_inventory_frame_skin = edit_shape_list[6]
+null_skin = edit_shape_list[skin]
+skin = skin + 1
+base_chest_skin = edit_shape_list[skin]
+skin = skin + 1
+bottem_lock_pick = edit_shape_list[skin]
+skin = skin + 1
+pins_skin = edit_shape_list[skin]
+skin = skin + 1
+stat_line_skin = edit_shape_list[skin]
+skin = skin + 1
+heart_skin = edit_shape_list[skin]
+skin = skin + 1
+inventory_frame_skin = edit_shape_list[skin]
+skin = skin + 1
+lcok_pick_item_skin = edit_shape_list[skin]
+skin = skin + 1
+selected_inventory_frame_skin = edit_shape_list[skin]
+skin = skin + 1
 
 
 # Customize some settings here
@@ -111,7 +123,7 @@ def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     #     line[how_obj] = turtle.Turtle()
     #     line[how_obj].speed(buildspeed)
         balls = turtle.Turtle()
-        object(stat_line_skin,statcolor,player, balls,0,statyline,stop)
+        object(stat_line_skin,statcolor,player, balls,0,statyline,stop,stat_line_skin)
         
 # Decides if the closest object if you can walkthrough it or not
 def walkthrough_list(dis,walkthrough):
@@ -243,7 +255,20 @@ def filter_closest_objects(close1,close2,close3):
         error("Filter Failure",0)
         return "null","null"
         
+# Adds texture to blocks
+def add_textures(texture):
+    if texture != 0:
+        if texture == "Chest":
+            texture = base_chest_skin
 
+        else:
+            texture_error = "null"
+            return texture_error
+
+        return texture
+
+    else:
+        print("No texture for type " + str(texture))
  
 
 
@@ -285,12 +310,22 @@ def obj_create(stop,buildspeed,many):
             color = col[coli_many]
             color = color.strip('\n')
 
-            
-          
+        if game_quality == 2:
+            with open("type.txt", 'r') as t:
+                type = t.readlines()
+                ctype = type[coli_many]
+                ctype = ctype.replace('\n',"")
+                texture = ctype
+        else:
+            texture = 0
 
+
+            
+        
+        texture = add_textures(texture)
 
         # Actully creats the object and the saves it to see if has colliotion or not(Clearly)
-        has_colition = object("square",color,coli, line[which],newx,newy,stop)
+        has_colition = object("square",color,coli, line[which],newx,newy,stop,texture)
         print(has_colition)
         name_list.append(line[which])
         # Sees if the object can be walked through or not
@@ -715,6 +750,11 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 write("         Door already open",.2)
                     
 
+
+
+
+
+
         # Lets you be ableto go through doors that are unlocked
         if (door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis) or (dis[0] <= go_throught_door_dis and dis[5] == 0):
             player_x = player.xcor()
@@ -809,13 +849,24 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
 
 # Object creator
-def object(shape,coler,colition,name,x,y, stop):
+def object(shape,coler,colition,name,x,y, stop,texture):
     
     
     name.penup()
-    name.shape(str(shape))
-    name.color(str(coler))
+    if game_quality == 1: 
+        name.color(str(coler))
+        name.shape(str(shape))
+
+    elif texture == "null":
+        name.shape(null_skin)
+        
+    
+    elif texture != "null":
+        name.shape(texture)
+
+    
     name.goto(x,y)
+   
 
     if colition == "0" or colition == 0 or colition == "0\n":
         return "No"

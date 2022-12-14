@@ -31,7 +31,7 @@ all_turd_obj = []
 hacks = False
 goto_spawn_start = [1]
 # For now 1 is lowest and 2 is highest... idk why you would need this, im just board
-game_quality = 1
+game_quality = 2
 
 pin_locks = []
 livet = []
@@ -49,7 +49,7 @@ go_throught_door_dis = 22
 sc = turtle.Screen()
 
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+shape_list = ['Door_lr.gif','Door.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
 edit_shape_list = []
 for kjh in range(len(shape_list)):
     hehe = shape_list[kjh]
@@ -60,6 +60,10 @@ for kjh in range(len(shape_list)):
 skin = 0
 
 # Defines all of the skins here
+base_lr_door_skin = edit_shape_list[skin]
+skin = skin + 1
+base_door_skin = edit_shape_list[skin]
+skin = skin + 1
 null_skin = edit_shape_list[skin]
 skin = skin + 1
 base_chest_skin = edit_shape_list[skin]
@@ -124,7 +128,7 @@ def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     #     line[how_obj] = turtle.Turtle()
     #     line[how_obj].speed(buildspeed)
         balls = turtle.Turtle()
-        object(stat_line_skin,statcolor,player, balls,0,statyline,stop,stat_line_skin)
+        object(stat_line_skin,statcolor,player, balls,0,statyline,stop,stat_line_skin,1,1)
         
 # Decides if the closest object if you can walkthrough it or not
 def walkthrough_list(dis,walkthrough):
@@ -168,10 +172,6 @@ def walkthrough_list(dis,walkthrough):
     return f,l,b,r, nx,ny,px,py, x,y
 
     
-
-
-
-
 
 #  Generates all of the objects list, then it will have to get sorted out
 def all_obj_list(lis,dama,obj_type,lo,):
@@ -259,17 +259,34 @@ def filter_closest_objects(close1,close2,close3):
 # Adds texture to blocks
 def add_textures(texture):
     if texture != 0:
+        size_x = 1
+        size_y = 1
         if texture == "Chest":
             texture = base_chest_skin
+            size_x = 1
+            size_y = 1
+        
+        elif texture == "Door_ud":
+            texture = base_door_skin
+            size_x = 1
+            size_y = 1
+
+        elif texture == "Door_lr":
+            texture = base_lr_door_skin
+            size_x = 1
+            size_y = 1
 
         else:
             texture_error = "null"
-            return texture_error
-
-        return texture
+            size_x = 1
+            size_y = 1
+            return texture_error,size_x,size_y
+        
+        return texture,size_x,size_y
 
     else:
         print("No texture for type " + str(texture))
+        return "null",1,1
  
 
 
@@ -319,14 +336,19 @@ def obj_create(stop,buildspeed,many):
                 texture = ctype
         else:
             texture = 0
+            size_x = 1
+            size_y = 1
+
+    
 
 
             
         
-        texture = add_textures(texture)
+        texture,size_x,size_y = add_textures(texture)
+        print(size_x,size_y)
 
         # Actully creats the object and the saves it to see if has colliotion or not(Clearly)
-        has_colition = object("square",color,coli, line[which],newx,newy,stop,texture)
+        has_colition = object("square",color,coli, line[which],newx,newy,stop,texture,size_x,size_y)
         print(has_colition)
         name_list.append(line[which])
         # Sees if the object can be walked through or not
@@ -865,20 +887,34 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
 
 # Object creator
-def object(shape,coler,colition,name,x,y, stop,texture):
+def object(shape,coler,colition,name,x,y, stop,texture,size_x,size_y):
     
     
     name.penup()
     if game_quality == 1: 
         name.color(str(coler))
         name.shape(str(shape))
+        name.shapesize(int(size_x),int(size_y))
 
     elif texture == "null":
         name.shape(null_skin)
         
+
+        
     
     elif texture != "null":
+        if size_x == 1 and size_y == 1:
+            name.shape(texture)
+        elif size_x > 1 or size_y > 1:
+            name.shapesize(int(size_x),int(size_y))
+            name.shape(texture)
+            
+        else:
+            error("Invaled size error",1)
+
+    elif size_x == 1 and size_y == 1:
         name.shape(texture)
+        
 
     
     name.goto(x,y)

@@ -31,6 +31,54 @@ type_list = []
 lock_difficulty_list = []
 item_list = []
 chest_list = []
+
+sc = turtle.Screen()
+shape_list = ['Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+edit_shape_list = []
+base_names_list = []
+for kjh in range(len(shape_list)):
+    hehe = shape_list[kjh]
+    ddd = hehe.replace(".gif","")
+    base_names_list.append(ddd)
+    hehe = './sprits/' + hehe
+    edit_shape_list.append(hehe)
+    sc.register_shape(hehe)
+
+skin = 0
+
+
+# Defines all of the skins here
+mossy_wall_skin = edit_shape_list[skin]
+skin = skin + 1
+base_lr_door_skin = edit_shape_list[skin]
+skin = skin + 1
+base_door_skin = edit_shape_list[skin]
+skin = skin + 1
+null_skin = edit_shape_list[skin]
+skin = skin + 1
+base_chest_skin = edit_shape_list[skin]
+skin = skin + 1
+bottem_lock_pick = edit_shape_list[skin]
+skin = skin + 1
+pins_skin = edit_shape_list[skin]
+skin = skin + 1
+stat_line_skin = edit_shape_list[skin]
+skin = skin + 1
+heart_skin = edit_shape_list[skin]
+skin = skin + 1
+inventory_frame_skin = edit_shape_list[skin]
+skin = skin + 1
+lcok_pick_item_skin = edit_shape_list[skin]
+skin = skin + 1
+selected_inventory_frame_skin = edit_shape_list[skin]
+skin = skin + 1
+
+
+
+
+
+
+
 # Draws the statline
 def statline2(how_obj,stop,statcolor,statyline,buildspeed):
     for he in range(-500,500,20):
@@ -396,10 +444,10 @@ def lockswitch(lock_difficulty):
 
 # Displays which way the door should open
 def door_switch(door_open):
-    if door_open == "lr":
-        door_open = "ud"
-    elif door_open == "ud":
-        door_open = "lr"
+    if door_open == "lrt":
+        door_open = "udt"
+    elif door_open == "udt":
+        door_open = "lrt"
 
     dooricon.clear()
     dooricon.write("Door status is " + door_open)
@@ -557,6 +605,32 @@ def load_level(level):
     print(chest_list)
 
 
+# Lets you switch your texture
+def texture_switch(ud,texture,value):
+    stop = len(base_names_list) - 1
+    if ud == "t" and value != stop:
+        value = value + 1
+      
+        texture = base_names_list[value]
+
+    elif ud == "g" and value !=0:
+        value = value -1
+        texture = base_names_list[value]
+
+    elif value == 0 and ud == "g":
+        value = stop
+        texture = base_names_list[value]
+
+    elif value == stop and ud == "t":
+        value = 0
+        texture = base_names_list[value]
+        
+
+
+  
+    return texture,value
+
+
     
         
     
@@ -608,6 +682,7 @@ typeicon.penup()
 typeicon.hideturtle()
 typeicon.goto(-200,-225)
 typeicon.write("Type is Chest")
+new_type = "Null"
 
 # Chest attribute icon
 chest = turtle.Turtle()
@@ -635,8 +710,17 @@ dooricon.penup()
 dooricon.hideturtle()
 dooricon.goto(-100,-225)
 dooricon.write("")
-door_open = "lr"
+door_open = "lrt"
 
+# Texture icon
+textureicon = turtle.Turtle()
+textureicon.speed(0)
+textureicon.penup()
+textureicon.hideturtle()
+textureicon.goto(-100,-250)
+textureicon.write("Texture  = null")
+texture = "null"
+value = 0
 
 
 
@@ -685,7 +769,19 @@ while True:
     if keyboard.is_pressed("v") and type == "Door":
         door_open =  door_switch(door_open)
 
+    # Switches the texture
+    if keyboard.is_pressed("t"):
+        texture,value = texture_switch("t",texture,value)
+        builder.shape(edit_shape_list[value])
+        sleep(.2)
 
+    elif keyboard.is_pressed("g"):
+        texture,value = texture_switch("g",texture,value)
+        builder.shape(edit_shape_list[value])
+        sleep(.2)
+
+
+    
 
 # Enables erease mode
     if keyboard.is_pressed("e"):
@@ -698,7 +794,10 @@ while True:
     # Switches the type of object
     elif keyboard.is_pressed("r"):
         type,cur_item = typeswitch(type,cur_item)
+        
         chest.clear()
+        print(type)
+        
         sleep(.2)
 
 
@@ -706,7 +805,13 @@ while True:
 
     else:    
         speed = 20
-        start(speed,curcolor,collition,damage,type,lock_difficulty)
+        start(speed,curcolor,collition,damage,new_type,lock_difficulty)
         sleep(.05)
+        if type == "Spawn":
+            print("Spq")
+            new_type = type
+        else:
+            new_type = type + "_" + str(texture)
+        print(new_type,texture)
         
 

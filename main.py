@@ -1,3 +1,8 @@
+#---------------------------
+# Crap game
+# Made By Ricker
+# People told me I could not make a game in python, well guess who did... me
+#---------------------------
 
 import turtle
 import keyboard
@@ -49,7 +54,7 @@ go_throught_door_dis = 22
 sc = turtle.Screen()
 
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['Mossy_brick.gif','Door_lr.gif','Door_ud.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+shape_list = ['Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
 edit_shape_list = []
 for kjh in range(len(shape_list)):
     hehe = shape_list[kjh]
@@ -261,20 +266,25 @@ def filter_closest_objects(close1,close2,close3):
 # Adds texture to blocks
 def add_textures(texture):
     if texture != 0:
+        texture = texture.replace("Chest","")
+        texture = texture.replace("Door_","")
+        texture = texture.replace("Door_","")
+        texture = texture.replace("Wall","")
+        print(texture)
         
-        if texture == "Chest":
-            texture = base_chest_skin
+        if texture == "_Mossy_brick":
+            texture = mossy_wall_skin
             
         
-        elif texture == "Door_ud":
+        elif texture == "udt":
             texture = base_door_skin
            
-        elif texture == "Door_lr":
+        elif texture == "lrt":
             texture = base_lr_door_skin
            
 
-        elif texture == "Wall":
-            texture = mossy_wall_skin
+        elif texture == "_base_chest":
+            texture = base_chest_skin
             
             
 

@@ -132,24 +132,24 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
 
                 if keyboard.is_pressed("0"):
                     level = 0
-                    cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt'
-                    colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/colli.txt'
-                    coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/color.txt'
-                    dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
-                    ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
-                    lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
-                    give = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
+                    cords = './level_0/cords.txt'
+                    colli = './level_0/colli.txt'
+                    coller = './level_0/color.txt'
+                    dam = './level_0/damage.txt'
+                    ty = './level_0/type.txt'
+                    lik = './level_0/lock.txt'
+                    give = './level_0/chest_give.txt'
                     break
 
                 if keyboard.is_pressed("1"):
                     level = 1
-                    cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/cords.txt'
-                    colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/colli.txt'
-                    coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/color.txt'
-                    dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/damage.txt'
-                    ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/type.txt'
-                    lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/lock.txt'
-                    give = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/chest_give.txt'
+                    cords = './level_' + str(level) + '/cords.txt'
+                    colli = './level_' + str(level) + '/colli.txt'
+                    coller = './level_' + str(level) + '/color.txt'
+                    dam = './level_' + str(level) + '/damage.txt'
+                    ty = './level_' + str(level) + '/type.txt'
+                    lik = './level_' + str(level) + '/lock.txt'
+                    give = './level_' + str(level) + '/chest_give.txt'
                     break
 
             

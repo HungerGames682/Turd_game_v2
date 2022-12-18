@@ -15,7 +15,7 @@ created_turd = []
 gains = []
 
 # NOW THE CODE IS FULLY AUTOMATIC BESIDES HAVE TO SPECIFY WHERE THE OBJECT IS AND STUFF LIKE THAT 
-with open('cords.txt','r') as howlines:
+with open('./level_0/cords.txt','r') as howlines:
     length = howlines.readlines()
     length = len(length)
    
@@ -161,11 +161,11 @@ def skin_maker():
 def get_level_data(level):
 
     if level == 0:
-        dama = './damage.txt'
-        lo = './lock.txt'
-        obj_type = './type.txt'
-        chest_inventory = './chest_give.txt'
-        cords = './cords.txt'
+        dama = './level_0/damage.txt'
+        lo = './level_0/lock.txt'
+        obj_type = './level_0/type.txt'
+        chest_inventory = './level_0/chest_give.txt'
+        cords = './level_0/cords.txt'
 
     else:
         dama = './level_' + str(level) +'/damage.txt'
@@ -393,25 +393,25 @@ def obj_create(stop,buildspeed,many):
         
         # Creats the object at the cords givin, every 2 lines is a pare of cords
         # EX: line 1 = x-cord, line2 = y-cord, line 3 = x-cord, line 4 = y-cord
-        with open('cords.txt','r') as cord:
+        with open('./level_0/cords.txt','r') as cord:
             main = cord.readlines()
             newx = int(main[x])
             newy = int(main[y])
             print(newx,newy)
 
         # Opens the collitions file, 0 = walkthrough, 1 = collitions
-        with open('colli.txt','r') as f:
+        with open('./level_0/colli.txt','r') as f:
             mc = f.readlines()
             coli = mc[coli_many]
             
         # Takes in color for the color.txt file and make the object color that is specified
-        with open('color.txt','r') as colo:
+        with open('./level_0/color.txt','r') as colo:
             col =  colo.readlines()
             color = col[coli_many]
             color = color.strip('\n')
 
         if game_quality == 2:
-            with open("type.txt", 'r') as t:
+            with open("./level_0/type.txt", 'r') as t:
                 type = t.readlines()
                 ctype = type[coli_many]
                 ctype = ctype.replace('\n',"")
@@ -1001,8 +1001,7 @@ def object(shape,coler,colition,name,x,y, stop,texture):
         name.shape(texture)
 
 
-    elif size_x == 1 and size_y == 1:
-        name.shape(texture)
+  
         
 
     

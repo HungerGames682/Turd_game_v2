@@ -32,6 +32,6 @@ Wall_Mossy_brick
 Wall_Mossy_brick
 Wall_Mossy_brick
 Wall_Mossy_brick
-Door_lrt_Door_lr
+Door_Door_lrt
 Spawn
 Chest_base_chest

@@ -20,7 +20,7 @@ Wall
 Wall
 Wall
 Wall
-Chest
+lockpick
 Spawn
 Door
 Door

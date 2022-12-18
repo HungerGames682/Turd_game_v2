@@ -241,8 +241,9 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
                 damage = 0
             else:
                 b.color(curcolor)
+                b.shape(edit_shape_list[value])
             b.speed(0)
-            b.shape("square")
+            
             b.penup()
             b.goto(x,y)
             hehe = [name]

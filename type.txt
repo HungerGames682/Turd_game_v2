@@ -19,7 +19,7 @@ Wall_Mossy_brick
 Wall_Mossy_brick
 Wall_Mossy_brick
 Wall_Mossy_brick
-Wall_Mossy_brick
+Level_switch_1
 Chest_base_chest
 Spawn
 Door_Door_lrt

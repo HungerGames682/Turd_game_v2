@@ -1,7 +1,7 @@
 #---------------------------
 # Crap game
 # Made By Ricker
-# People told me I could not make a game in python, well guess who did... me
+# People told me I could not make a game in python, well guess who did... me *cough cough Kevin
 #---------------------------
 
 import turtle
@@ -22,6 +22,7 @@ with open('cords.txt','r') as howlines:
     length = length / 2
     length = int(length)
 howlines.close()
+
 # Defines a bunch of varibles for the game and stuff bc i am too lazy
 many = length
 whole_many = many * 2
@@ -54,7 +55,7 @@ go_throught_door_dis = 22
 sc = turtle.Screen()
 
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+shape_list = ['Level_switch.gif','Spawn.gif','Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
 edit_shape_list = []
 for kjh in range(len(shape_list)):
     hehe = shape_list[kjh]
@@ -64,7 +65,11 @@ for kjh in range(len(shape_list)):
 
 skin = 0
 
-# Defines all of the skins here
+# Defines all of the skins here, sadly i can't really auto mate this
+level_switch_skin = edit_shape_list[skin]
+skin = skin + 1
+spawn_skin = edit_shape_list[skin]
+skin = skin + 1
 mossy_wall_skin = edit_shape_list[skin]
 skin = skin + 1
 base_lr_door_skin = edit_shape_list[skin]
@@ -104,6 +109,53 @@ indecator = []
 how_obj = 1
 statcolor = "black"
 statyline = -300
+
+
+# Just lets me minimize a bunch of lines of code so it doesnot get too crowded
+def skin_maker():
+        # All of this is addign custom skins into the game, i will have to make them tho
+    shape_list = ['Level_switch.gif','Spawn.gif','Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+    edit_shape_list = []
+    for kjh in range(len(shape_list)):
+        hehe = shape_list[kjh]
+        hehe = './sprits/' + hehe
+        edit_shape_list.append(hehe)
+        sc.register_shape(hehe)
+
+    skin = 0
+
+    # Defines all of the skins here, sadly i can't really auto mate this
+    level_switch_skin = edit_shape_list[skin]
+    skin = skin + 1
+    spawn_skin = edit_shape_list[skin]
+    skin = skin + 1
+    mossy_wall_skin = edit_shape_list[skin]
+    skin = skin + 1
+    base_lr_door_skin = edit_shape_list[skin]
+    skin = skin + 1
+    base_door_skin = edit_shape_list[skin]
+    skin = skin + 1
+    null_skin = edit_shape_list[skin]
+    skin = skin + 1
+    base_chest_skin = edit_shape_list[skin]
+    skin = skin + 1
+    bottem_lock_pick = edit_shape_list[skin]
+    skin = skin + 1
+    pins_skin = edit_shape_list[skin]
+    skin = skin + 1
+    stat_line_skin = edit_shape_list[skin]
+    skin = skin + 1
+    heart_skin = edit_shape_list[skin]
+    skin = skin + 1
+    inventory_frame_skin = edit_shape_list[skin]
+    skin = skin + 1
+    lcok_pick_item_skin = edit_shape_list[skin]
+    skin = skin + 1
+    selected_inventory_frame_skin = edit_shape_list[skin]
+    skin = skin + 1
+
+
+
 
 # Defines all of the varibles for the files, just so i only have to configure this once, also gives all of the data needed
 def get_level_data(level):
@@ -198,6 +250,12 @@ def all_obj_list(lis,dama,obj_type,lo,):
             shi = str(shit[ddd])
             
             shi = shi.replace("\n","")
+            shi = shi.replace("Door_","")
+            shi = shi.replace("_Mossy_brick","")
+            shi = shi.replace("_base_chest","")
+            
+            
+            
             type_of_object = shi
 
             
@@ -265,11 +323,18 @@ def filter_closest_objects(close1,close2,close3):
         
 # Adds texture to blocks
 def add_textures(texture):
+    # This whole code gets the information of what type of block it is and then assigns a texture to it, im proud of this little code
+
     if texture != 0:
         texture = texture.replace("Chest","")
         texture = texture.replace("Door_","")
         texture = texture.replace("Door_","")
         texture = texture.replace("Wall","")
+        texture = texture.replace("_switch_1","")
+        texture = texture.replace("_switch_2","")
+        texture = texture.replace("_switch_3","")
+        texture = texture.replace("_switch_4","")
+        texture = texture.replace("_switch_5","")
         print(texture)
         
         if texture == "_Mossy_brick":
@@ -285,6 +350,12 @@ def add_textures(texture):
 
         elif texture == "_base_chest":
             texture = base_chest_skin
+
+        elif texture == "Spawn":
+            texture = spawn_skin
+        
+        elif texture == "Level":
+            texture = level_switch_skin
             
             
 
@@ -464,6 +535,7 @@ def level_switch(stop,buildspeed,level):
             
         
         texture = add_textures(texture)
+        picked_list = [["False",3921039210,145743535]]
 
         
           
@@ -559,6 +631,7 @@ def collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r):
 
 # V2, go back to origanal if it does not work
 # Basicly the start of the program, controls the player and its collitions with other objects
+# This is what puts it all together, nothing would work without this funtion
 def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,picked_list,inventory,selected_item):
     
     # Hopfully imporved laggy ness
@@ -582,16 +655,20 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
   
     # Just here to chunk my code into functions
     f,l,b,r, nx,ny,px,py, x,y = walkthrough_list(dis,walkthrough)
- 
+
+
+    start_switch = Level_Switch_trigger(dis)
+
     # Inside Perimiter Blocker
     error_bound =  17
 
     if walkthrough == "Yes":
-        print("Walk")
+        nothing()
 
     else:
         #This is the interact button :)
         if keyboard.is_pressed("e"):
+         
         
          
            
@@ -618,6 +695,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                     
                 
             chosen = min(new_picked_list)
+            print(picked_list,chosen, new_picked_list)
             # Gives you the item in the cheast if it does not have a lock or something
             if dis[0] <= interact_dis and type_s == "Chest" and dis[5] == 0:
                        # Gives them items based on what is determined in the list
@@ -770,7 +848,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 player.clear()
           
         #   Detects if you are close to a door
-          if dis[0] <= door_interact_dis and (type_s == "Door_lr" or type_s == "Door_ud"):
+          if dis[0] <= door_interact_dis and (type_s == "lrt" or type_s == "udt"):
           
             # Sees if you alredy unlocked it
             if door_unlocked_list.count(dis[6]) > 0:
@@ -808,10 +886,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         if (door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis) or (dis[0] <= go_throught_door_dis and dis[5] == 0):
             player_x = player.xcor()
             player_y = player.ycor()
-            if dis[4] == "Door_ud":
+            if dis[4] == "udt":
                 up_and_down = True
 
-            elif dis[4] == "Door_lr":
+            elif dis[4] == "lrt":
                 l_and_r = True
 
 
@@ -830,34 +908,36 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
         
         # Makes the player take damage if they are close to a obj that damages them
-        if dis[0] <= offset and dis[3] == 1:
-            cur_health = heath_change(HCT, cur_health, -1,max_health)
-            sleep(.1)
+        if dis[4] != "Spawn":
 
-        if l_and_r == True:
-            print("L and R")
-            f = False
-            l = False
-            r = False
-            b = False
-           
+            if dis[0] <= offset and dis[3] == 1:
+                cur_health = heath_change(HCT, cur_health, -1,max_health)
+                sleep(.1)
+
+            if l_and_r == True:
+                print("L and R")
+                f = False
+                l = False
+                r = False
+                b = False
             
-        elif up_and_down == True:
-            print("UP and down")
-            f = False
-            l = False
-            r = False
-            b = False
+                
+            elif up_and_down == True:
+                print("UP and down")
+                f = False
+                l = False
+                r = False
+                b = False
+                
+            else: 
+                # Colition detection, says in the name bro
+                f,b,l,r = collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r)  
             
-        else: 
-            # Colition detection, says in the name bro
-            f,b,l,r = collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r)  
-           
-                # Detects if you glitch through a wall
-        if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn":
-                print('\n' * 100)
-                error("Glitch Through wall",0)
-                goto_spawn(level)
+                    # Detects if you glitch through a wall
+            if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn":
+                    print('\n' * 100)
+                    error("Glitch Through wall",0)
+                    goto_spawn(level)
 
         
     # Makes player move and shit
@@ -894,7 +974,11 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             
 
             
-    return cur_health,eraselocks,picked_list,inventory,selected_item
+    return cur_health,eraselocks,picked_list,inventory,selected_item,start_switch
+
+
+
+
 
 
 # Object creator
@@ -937,8 +1021,8 @@ def start(speed, movement,chunk,offset,stop,li,cur_health,leavel,picked_list,inv
 
       
         
-    cur_health,eraselocks,picked_list,inventory,selected_item = playermove(speed,movement,"No",offset,stop,li,cur_health,leavel,picked_list,inventory,selected_item)
-    return cur_health,eraselocks,picked_list,inventory,selected_item
+    cur_health,eraselocks,picked_list,inventory,selected_item,start_switch = playermove(speed,movement,"No",offset,stop,li,cur_health,leavel,picked_list,inventory,selected_item)
+    return cur_health,eraselocks,picked_list,inventory,selected_item,start_switch
 
 # Draws the heath bar
 def health_bar(x,y,max_health,cur_health):
@@ -997,6 +1081,7 @@ def heath_change(HCT,cur_health,add, max_health):
         HCT[cur_health].showturtle()
        
         cur_health = cur_health + 1
+        player.color("green")
         print(cur_health)
 
 
@@ -1011,6 +1096,7 @@ def heath_change(HCT,cur_health,add, max_health):
        
         cur_health = cur_health - 1
         print(cur_health)
+        player.color("Red")
 
 
     return cur_health
@@ -1492,9 +1578,9 @@ def lives_change(livet,value,lives):
 
     return lives
 
-# Just there as a place holder
+# Just there as a place holder idk
 def nothing():
-    print("")
+    fjkalruieqwoghdjas=1
 
 # Make user goto the spawn set
 def goto_spawn(level):
@@ -1531,6 +1617,49 @@ def goto_spawn(level):
         error("Spawn is not defined",1)
 
    
+# Detects level Switch
+def Level_Switch_trigger(dis):
+    type = dis[4]
+    for i in range(1,10):
+        if dis[0] <= 23 and type == "Level_switch_" + str(i):
+            print("Should switch levels")
+            return i
+           
+        
+        else:
+           nothing()
+           return 0 
+    
+            
+# Shows the death screen
+def death_screen(exits,message):
+    # A little bit meassy or something
+    word = turtle.Turtle()
+    hide = turtle.Turtle()
+    hide.speed(0)
+    word.speed(0)
+    hide.penup()
+    word.penup()
+    hide.shape("square")
+    hide.color("white")
+    hide.shapesize(200,200)
+    word.goto(0,260)
+    word.write(message,align="center",font=90)
+    word.goto(0,0)
+    word.write("You Suck bro", align="center",font=10)
+    word.goto(70,250)
+    word.settiltangle(50)
+    word.write("Imagin Dying")
+    word.goto(0,-200)
+    word.write("Go outside",align="center")
+    word.hideturtle()
+    sleep(5)
+    if exits == 1:
+        exit()
+    
+
+
+    
 
 
 
@@ -1568,12 +1697,16 @@ goto_spawn(level=0)
 # Main loop
 # ALL BUTTONS ARE THERE FOR FEATURS THAT I CAN ADD, I WILL REMOVE THEM ONCE THEY ARE FULLY OPERATIONAL
 while True:
+    # Constaly changes the player to black bc of health and stuff
+    player.color("black")
+
     # ends the game if there health is zero... aka you died dumbass
     if cur_health == -1:
         print('\n' * 20)
         print("Game over")
         print("You Died bozo")
-        exit()
+        death_screen(1,"How Did you die??")
+        
 
      # Changes selected item aka lets you select the item of choic
     if keyboard.is_pressed("1"):
@@ -1602,7 +1735,15 @@ while True:
 
         
 
-    cur_health,eraselocks,picked_list,inventory,selected_item = start(1,10, 1, 23,stop,li,cur_health,leavel,picked_list,inventory,selected_item)
+    cur_health,eraselocks,picked_list,inventory,selected_item,start_switch = start(1,10, 1, 23,stop,li,cur_health,leavel,picked_list,inventory,selected_item)
+    if start_switch != 0:
+        li, all_turd_obj,whole_many = level_switch(stop,0,start_switch)
+        leavel = start_switch
+        start_switch = 0
+   
+   
+   
+   
     # This happends every time a lock is picked to restart the game
     if eraselocks == True:
         erase_lock = []

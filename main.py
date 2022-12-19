@@ -30,7 +30,7 @@ name_list = []
 name_list_num = 0
 obj_num = length
 heath_turd_name = ["1","2","3","4","5","6","7","8","9","10"]
-cur_health = 5
+cur_health = 10
 max_health = 10
 leavel = 0
 all_turd_obj = []
@@ -50,6 +50,7 @@ item_holder.speed(10)
 interact_dis = 24
 door_interact_dis = interact_dis + 10
 door_unlocked_list = []
+door_unlocked_list2 = []
 go_throught_door_dis = 22
 
 sc = turtle.Screen()
@@ -775,6 +776,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
     # Inside Perimiter Blocker
     error_bound =  17
+    error_bound2 = 19
 
     if walkthrough == "Yes":
         nothing()
@@ -786,7 +788,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         
           
          
-
+                
 
             # Detects if you are close to a chest
           type_s = str(dis[4])
@@ -800,8 +802,11 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
           type_s2 = type_s2.replace("_left_right","")
           print(type_s)
 
-          if (dis[0] <= interact_dis and type_s == "Chest") or (close2[0] <= interact_dis and close2[4] == "Chest"):
+
+            # Looks for chest with them by themselfes
+          if (dis[0] <= interact_dis and type_s == "Chest"):
             fff = -1
+           
             new_picked_list = []
               # Builds the list of locks that you have already picked
             for shits in range(0,len(picked_list)):
@@ -817,7 +822,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             chosen = min(new_picked_list)
             print(picked_list,chosen, new_picked_list)
             # Gives you the item in the cheast if it does not have a lock or something
-            if dis[0] <= interact_dis and type_s == "Chest" and dis[5] == 0:
+            if (dis[0] <= interact_dis and type_s == "Chest" and dis[5] == 0):
                        # Gives them items based on what is determined in the list
                             with open(chest_inventory,'r') as cinven:
                                 give_what = cinven.readlines()
@@ -851,7 +856,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                                         break
 
             #   Detects if you have the lockpick in your inventory
-            if dis[0] <= interact_dis and type_s == "Chest" and dis[5] != 0:
+            if (dis[0] <= interact_dis and type_s == "Chest" and dis[5] != 0):
               if inventory[0] == lcok_pick_item_skin:
                         
 
@@ -859,12 +864,13 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 if selected_item == lcok_pick_item_skin:
 
                     # Detects if you have already picked this chest
-                    if dis[0] <= 24 and type_s == "Chest" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]:
+                    if (dis[0] <= 24 and type_s == "Chest" and chosen[1] == True and dis[1] == chosen[2] and dis[2] == chosen[3]):
                         player.write("      You have already picked this")
                         sleep(.2)
                         player.clear()
+
                     # Lets you pick this chest
-                    elif dis[0] <= 24 and type_s == "Chest" and dis[5] != 0:
+                    elif (dis[0] <= 24 and type_s == "Chest" and dis[5] != 0):
                         unlocked = lockpick(dis[5],5)
                         if unlocked == True:
                             # Gives them items based on what is determined in the list
@@ -967,8 +973,186 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 sleep(.2)
                 player.clear()
           
-        #   Detects if you are close to a door
-          elif (dis[0] <= door_interact_dis and (type_s == "lrt" or type_s == "udt")) or (close2[0] <= door_interact_dis and (type_s2 == "lrt" or type_s2== "udt")):
+
+            # Looks for chest with with another object:)
+          elif (close2[0] <= interact_dis and type_s2 == "Chest"):
+            fff = -1
+           
+            new_picked_list2 = []
+              # Builds the list of locks that you have already picked
+            for shits in range(0,len(picked_list)):
+                    shitt = shits + 1
+                    fff = fff + 1
+                    holy = picked_list[fff]
+                    jfk = player.distance(holy[1],holy[2])
+                    goofy = [holy[0],holy[1],holy[2]]
+                    goofy.insert(0,jfk)
+                    new_picked_list2.append(goofy)
+                    
+                
+            chosen = min(new_picked_list2)
+            print(picked_list,chosen, new_picked_list2)
+            # Gives you the item in the cheast if it does not have a lock or something
+            if (close2[0] <= interact_dis and type_s2 == "Chest" and close2[5] == 0):
+                       # Gives them items based on what is determined in the list
+                            with open(chest_inventory,'r') as cinven:
+                                give_what = cinven.readlines()
+                                gives = give_what[close2[6]]
+                                
+                                
+                                # Sees if the player already has that item
+                                if len(gains) == 0:
+                                        player.write("Gained " + str(gives))
+                            
+                                        inventory = give_item(gives,icon_inventory_list,inventory)
+                                        sleep(1.2)
+                                        player.clear()
+                                        gains.append(close2[6])
+                                        print(gains)
+
+
+                                for help in range(len(gains)):
+                                    if gains[help] == close2[6]:
+                                        print("Already searched")
+                                        break
+                                    else:
+                                
+                                        player.write("Gained " + str(gives))
+                            
+                                        inventory = give_item(gives,icon_inventory_list,inventory)
+                                        sleep(1.2)
+                                        player.clear()
+                                        gains.append(close2[6])
+                                        print(gains)
+                                        break
+
+            #   Detects if you have the lockpick in your inventory
+            if (close2[0] <= interact_dis and type_s2 == "Chest" and close2[5] != 0):
+              if inventory[0] == lcok_pick_item_skin:
+                        
+
+                print(selected_item)
+                if selected_item == lcok_pick_item_skin:
+
+                    # Detects if you have already picked this chest
+                    if (close2[0] <= 24 and type_s2 == "Chest" and chosen[1] == True and close2[1] == chosen[2] and close2[2] == chosen[3]):
+                        player.write("      You have already picked this")
+                        sleep(.2)
+                        player.clear()
+
+                    # Lets you pick this chest
+                    elif (close2[0] <= 24 and type_s2 == "Chest" and close2[5] != 0):
+                        unlocked = lockpick(close2[5],5)
+                        if unlocked == True:
+                            # Gives them items based on what is determined in the list
+                            with open(chest_inventory,'r') as cinven:
+                                give_what = cinven.readlines()
+                                gives = give_what[close2[6]]
+                                player.write("Gained " + str(gives))
+                            
+                                inventory = give_item(gives,icon_inventory_list,inventory)
+                                sleep(1.2)
+                                player.clear()
+
+
+                                unlockeds = [unlocked,close2[1],close2[2]]
+                                picked_list.append(unlockeds)
+                    
+                                eraselocks = True
+                        # There is no lock to pick
+                    else:
+                        player.write("      There is no lock to pick")
+                        sleep(.2)
+                        player.clear()
+                else:
+                    write("         Equip Lockpick",.2)           
+              elif inventory[1] == lcok_pick_item_skin:
+
+                                        
+
+                print(selected_item)
+                if selected_item == lcok_pick_item_skin:
+
+                    # Detects if you have already picked this chest
+                    if close2[0] <= 24 and type_s2 == "Chest" and chosen[1] == True and close2[1] == chosen[2] and close2[2] == chosen[3]:
+                        player.write("      You have already picked this")
+                        sleep(.2)
+                        player.clear()
+                    # Lets you pick this chest
+                    elif close2[0] <= 24 and type_s2 == "Chest" and close2[5] != 0:
+                        unlocked = lockpick(close2[5],5)
+                        if unlocked == True:
+                            # Gives them items based on what is determined in the list
+                            with open(chest_inventory,'r') as cinven:
+                                give_what = cinven.readlines()
+                                gives = give_what[close2[6]]
+                                player.write("Gained " + str(gives))
+                            
+                                inventory = give_item(gives,icon_inventory_list,inventory)
+                                sleep(1.2)
+                                player.clear()
+
+
+                                unlockeds = [unlocked,close2[1],close2[2]]
+                                picked_list.append(unlockeds)
+                    
+                                eraselocks = True
+                        # There is no lock to pick
+                    else:
+                        write("         There is no lock to pick", .2)
+                else:
+                    write("         Equip Lockpick",.2)
+              elif inventory[2] == lcok_pick_item_skin:
+                                        
+
+                print(selected_item)
+                if selected_item == lcok_pick_item_skin:
+
+                    # Detects if you have already picked this chest
+                    if close2[0] <= 24 and type_s2 == "Chest" and chosen[1] == True and close2[1] == chosen[2] and close2[2] == chosen[3]:
+                        player.write("      You have already picked this")
+                        sleep(.2)
+                        player.clear()
+                    # Lets you pick this chest
+                    elif close2[0] <= 24 and type_s2 == "Chest" and close2[5] != 0:
+                        unlocked = lockpick(close2[5],5)
+                        if unlocked == True:
+                            # Gives them items based on what is determined in the list
+                            with open(chest_inventory,'r') as cinven:
+                                give_what = cinven.readlines()
+                                gives = give_what[close2[6]]
+                                player.write("Gained " + str(gives))
+                            
+                                inventory = give_item(gives,icon_inventory_list,inventory)
+                                sleep(1.2)
+                                player.clear()
+
+
+                                unlockeds = [unlocked,close2[1],close2[2]]
+                                picked_list.append(unlockeds)
+                    
+                                eraselocks = True
+                        # There is no lock to pick
+                    else:
+                        player.write("      There is no lock to pick")
+                        sleep(.2)
+                        player.clear()
+                else:
+                    write("         Equip Lockpick",.2)
+              else:
+                player.write("          Need lock pick")
+                sleep(.2)
+                player.clear()
+
+
+
+
+
+
+
+
+        #   Detects if you are close to a door only for 1st closeest object
+          elif (dis[0] <= door_interact_dis and (type_s == "lrt" or type_s == "udt")):
            
             # Sees if you alredy unlocked it
             if door_unlocked_list.count(dis[6]) > 0:
@@ -996,6 +1180,43 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             else:
                 write("         Door already open",.2)
         
+
+        #   Detects if you are close to a door only for 2st closeest object
+          elif (close2[0] <= door_interact_dis and (type_s2 == "lrt" or type_s2 == "udt")):
+           
+            # Sees if you alredy unlocked it
+            if door_unlocked_list.count(close2[6]) > 0:
+                write("         Door already unlocked",.2)
+
+            # Sees if you have a lock pick and its equiped
+            elif close2[5] != 0 and door_unlocked_list.count(close2[6]) == 0 and selected_item == lcok_pick_item_skin:
+                door_unlocked = lockpick(close2[5],5)
+
+                if door_unlocked == True:
+                    write("         Door unlocked",.2)
+                    door_unlocked_list.append(close2[6])
+                    eraselocks = True
+
+            # Looks and sees if you need a lockpick
+            elif inventory.count(lcok_pick_item_skin) == 0:
+                write("         Need Lock pick",.2)
+
+            # Seese if you need to select the lock pick
+            elif inventory.count(lcok_pick_item_skin) > 0 and selected_item != lcok_pick_item_skin:
+                write("         Select Lock pick",.2)
+            
+                
+
+            else:
+                write("         Door already open",.2)
+
+
+
+
+
+
+
+
         #  Detects if its colse to a sign
           elif dis[4] == "Sign" and dis[0] <= offset and close2[4] != "udt" and close2[4] != "Chest" and close2[4] != "lrt":
                 sign_display(dis[6])
@@ -1006,7 +1227,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
 
 
-        # Lets you be ableto go through doors that are unlocked
+        # Lets you be ableto go through doors that are unlocked, only for first closest object
         if (door_unlocked_list.count(dis[6]) == 1 and dis[0] <= go_throught_door_dis) or (dis[0] <= go_throught_door_dis and dis[5] == 0):
             player_x = player.xcor()
             player_y = player.ycor()
@@ -1014,6 +1235,18 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 up_and_down = True
 
             elif dis[4] == "lrt":
+                l_and_r = True
+
+
+
+        # Lets you be ableto go through doors that are unlocked, only for second closest object
+        if (door_unlocked_list.count(close2[6]) == 1 and close2[0] <= go_throught_door_dis) or (close2[0] <= go_throught_door_dis and close2[5] == 0):
+            player_x = player.xcor()
+            player_y = player.ycor()
+            if close2[4] == "udt":
+                up_and_down = True
+
+            elif close2[4] == "lrt":
                 l_and_r = True
 
       
@@ -1040,7 +1273,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
         
         # Makes the player take damage if they are close to a obj that damages them
-        if dis[4] != "Spawn":
+        if (dis[4] != "Spawn") or (close2[4] != "Spawn"):
 
             if dis[0] <= offset and dis[3] == 1:
                 cur_health = heath_change(HCT, cur_health, -1,max_health)
@@ -1066,10 +1299,11 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 f,b,l,r = collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r)  
             
                     # Detects if you glitch through a wall
-            if dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn":
-                    print('\n' * 100)
-                    error("Glitch Through wall",0)
-                    goto_spawn(level)
+            if (dis[0] <= error_bound and hacks == False and l_and_r == False and up_and_down == False and dis[4] != "Spawn"):
+               
+                        print('\n' * 100)
+                        error("Glitch Through wall",0)
+                        goto_spawn(level)
 
         
     # Makes player move and shit

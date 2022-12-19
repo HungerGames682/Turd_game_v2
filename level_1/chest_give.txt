@@ -78,7 +78,7 @@ Wall
 Wall
 Wall
 Wall
-Chest
+lockpick
 Wall
 Wall
 Wall

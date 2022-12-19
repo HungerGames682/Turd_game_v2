@@ -55,7 +55,7 @@ go_throught_door_dis = 22
 sc = turtle.Screen()
 
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['Level_switch.gif','Spawn.gif','Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+shape_list = ['sign_backgroud.gif','Level_switch.gif','Spawn.gif','Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
 edit_shape_list = []
 for kjh in range(len(shape_list)):
     hehe = shape_list[kjh]
@@ -66,6 +66,8 @@ for kjh in range(len(shape_list)):
 skin = 0
 
 # Defines all of the skins here, sadly i can't really auto mate this
+sign_background_skin = edit_shape_list[skin]
+skin = skin + 1
 level_switch_skin = edit_shape_list[skin]
 skin = skin + 1
 spawn_skin = edit_shape_list[skin]
@@ -115,13 +117,113 @@ def sign_display(sign_num):
     dama,obj_type,lo,chest_inventory,cords,sign_text = get_level_data(leavel)
     with open(sign_text, 'r') as text:
         main_text = text.readlines()
-        main_text = main_text[sign_num]
-        print(main_text)
+        message = main_text[sign_num]
+        message = message.replace("\n","")
+        list_message = list(message)
+        str_message = str(message)
+        print(str_message)
+       
+    sign_background = turtle.Turtle()
+    line1 = turtle.Turtle()
+    line2 = turtle.Turtle()
+    line3 = turtle.Turtle()
+    line4 = turtle.Turtle()
+    line5 = turtle.Turtle()
+    sign_background.shape(sign_background_skin)
+    sign_background.penup()
+    sign_background.speed(0)
+    sign_background.goto(0,-200)
+    # sign_background.shapesize(20,20)
+    # # sign_background.color("white")
+
+    line1.penup()
+    line2.penup()
+    line3.penup()
+    line4.penup()
+    line4.penup()
+    line5.penup()
+
+    line1.speed(0)
+    line2.speed(0)
+    line3.speed(0)
+    line4.speed(0)
+    line5.speed(0)
+
+    line1.hideturtle()
+    line2.hideturtle()
+    line3.hideturtle()
+    line4.hideturtle()
+    line5.hideturtle()
+
+    line1.goto(0,200)
+    line2.goto(0,100)
+    line3.goto(0,0)
+    line4.goto(0,-100)
+    line5.goto(0,-200)
+    lengthm = len(list_message)
+    # All of these just chop up the message so it can be seen all at once, yay
+    if lengthm >=550:
+        error("Too Many Words for the sign to display",1)
+
+    elif lengthm >=400:
+        line1.write(str_message[0:100],font=200,align="center")
+        line2.write(str_message[100:200],font=100,align="center")
+        line3.write(str_message[200:300],font=100,align="center")
+        line4.write(str_message[300:400],font=100,align="center")
+        line5.write(str_message[400:lengthm],font=100,align="center")
+
+
+    elif lengthm >= 300:
+
+        line1.write(str_message[0:100],font=100,align="center")
+        line2.write(str_message[100:200],font=100,align="center")
+        line3.write(str_message[200:300],font=100,align="center")
+        line4.write(str_message[300:lengthm],font=100,align="center")
+        
+
+    elif lengthm >=200:
+        
+        line1.write(str_message[0:100],font=100,align="center")
+        line2.write(str_message[100:200],font=100,align="center")
+        line3.write(str_message[200:lengthm],font=100,align="center")
+       
+       
+       
+
+    elif lengthm >= 100:
+        line2.write(str_message[0:100],font=200,align="center")
+        line3.write(str_message[100:lengthm],font=100,align="center")
+
+       
+
+    else:
+        line3.write(str_message,font=200,align="center")
+    
+    while True:
+        if keyboard.is_pressed("e") or keyboard.is_pressed("esc"):
+            sleep(.2)
+            break
+
+    line1.clear()
+    line2.clear()
+    line3.clear()
+    line4.clear()
+    line5.clear()
+    sign_background.hideturtle()
+
+    
+
+    
+
+
+    
+    
+
         
 
 
 
-# Just lets me minimize a bunch of lines of code so it doesnot get too crowded
+# Just lets me minimize a bunch of lines of code so it doesnot get too crowded BROKEN
 def skin_maker():
         # All of this is addign custom skins into the game, i will have to make them tho
     shape_list = ['Level_switch.gif','Spawn.gif','Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
@@ -683,8 +785,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
          
         
           
-          if dis[4] == "Sign" and dis[0] <= offset:
-                sign_display(dis[6])
+         
 
 
             # Detects if you are close to a chest
@@ -692,9 +793,14 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
           type_s = type_s.replace("\n","")
           type_s = type_s.replace("_up_down","")
           type_s = type_s.replace("_left_right","")
+
+          type_s2 = str(close2[4])
+          type_s2 = type_s2.replace("\n","")
+          type_s2 = type_s2.replace("_up_down","")
+          type_s2 = type_s2.replace("_left_right","")
           print(type_s)
 
-          if dis[0] <= interact_dis and type_s == "Chest":
+          if (dis[0] <= interact_dis and type_s == "Chest") or (close2[0] <= interact_dis and close2[4] == "Chest"):
             fff = -1
             new_picked_list = []
               # Builds the list of locks that you have already picked
@@ -862,8 +968,8 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
                 player.clear()
           
         #   Detects if you are close to a door
-          if dis[0] <= door_interact_dis and (type_s == "lrt" or type_s == "udt"):
-          
+          elif (dis[0] <= door_interact_dis and (type_s == "lrt" or type_s == "udt")) or (close2[0] <= door_interact_dis and (type_s2 == "lrt" or type_s2== "udt")):
+           
             # Sees if you alredy unlocked it
             if door_unlocked_list.count(dis[6]) > 0:
                 write("         Door already unlocked",.2)
@@ -889,8 +995,12 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
 
             else:
                 write("         Door already open",.2)
-                    
+        
+        #  Detects if its colse to a sign
+          elif dis[4] == "Sign" and dis[0] <= offset and close2[4] != "udt" and close2[4] != "Chest" and close2[4] != "lrt":
+                sign_display(dis[6])
 
+          
 
 
 
@@ -906,7 +1016,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             elif dis[4] == "lrt":
                 l_and_r = True
 
-
+      
             
 
 

@@ -31,6 +31,7 @@ type_list = []
 lock_difficulty_list = []
 item_list = []
 chest_list = []
+sign_text_list = []
 
 sc = turtle.Screen()
 shape_list = ['Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
@@ -113,7 +114,7 @@ def object(shape,coler,colition,name,x,y, stop):
         return x,y
     
 
-# Places the blocks... like minecraft 
+# Places the blocks... like minecraft... hee hee hee ha 
 def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
 
     
@@ -139,6 +140,7 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
                     ty = './level_0/type.txt'
                     lik = './level_0/lock.txt'
                     give = './level_0/chest_give.txt'
+                    sign_write = './level_0/sign_texts.txt'
                     break
 
                 if keyboard.is_pressed("1"):
@@ -150,6 +152,7 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
                     ty = './level_' + str(level) + '/type.txt'
                     lik = './level_' + str(level) + '/lock.txt'
                     give = './level_' + str(level) + '/chest_give.txt'
+                    sign_write = './level_' + str(level) + '/sign_texts.txt'
                     break
 
             
@@ -210,8 +213,12 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
                     jotor = chest_list[jojo]
                     jotor = str(jotor) + '\n'
                     gi.write(jotor)
-                    
-
+            # Writes the signs messages and stuff
+            with open(sign_write, 'w') as signs:
+                for deez in range(len(sign_text_list)):
+                    bob = sign_text_list[deez]
+                    bob = str(bob) + '\n'
+                    signs.write(bob)
 
 
 
@@ -258,6 +265,13 @@ def blockplace(x, y,curcolor,collition,damage,type,lock_difficulty):
             # Adds the different values to a list
             if type == "Door":
                 type = type + "_" + door_open
+
+            if type == "Sign":
+                sign_text_list.append("Sign")
+            else:
+                sign_text_list.append("0")
+
+            
             obj_list.append(x)
             obj_list.append(y)
             color_list.append(curcolor)
@@ -385,6 +399,10 @@ def typeswitch(type,cur_item):
         cur_item = "Spawn"
     
     elif type == "Spawn":
+        type = "Sign"
+        cur_item = "Sign"
+
+    elif type == "Sign":
         type = "Chest"
         cur_item = "Chest"
     
@@ -470,24 +488,27 @@ def start(speed,curcolor,collition,damage,type,lock_difficulty):
 # Lets you load a level to add to it
 def load_level(level):
     if level == 0:
-        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/cords.txt'
-        colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/colli.txt'
-        coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/color.txt'
-        dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/damage.txt'
-        ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/type.txt'
-        lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/lock.txt'
-        give = '/Users/rwilkes/vscode_projects/Turd_game_v2/chest_give.txt'
+                   
+                    cords = './level_0/cords.txt'
+                    colli = './level_0/colli.txt'
+                    coller = './level_0/color.txt'
+                    dam = './level_0/damage.txt'
+                    ty = './level_0/type.txt'
+                    lik = './level_0/lock.txt'
+                    give = './level_0/chest_give.txt'
+                    sign_text = './level_0/sign_texts.txt'
         
 
 
     else:
-        cords = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/cords.txt'
-        colli = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/colli.txt'
-        coller = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/color.txt'
-        dam = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/damage.txt'
-        ty = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/type.txt'
-        lik = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_' + str(level) + '/lock.txt'
-        give = '/Users/rwilkes/vscode_projects/Turd_game_v2/level_'  + str(level) + '/chest_give.txt'
+                    cords = './level_' + str(level) + '/cords.txt'
+                    colli = './level_' + str(level) + '/colli.txt'
+                    coller = './level_' + str(level) + '/color.txt'
+                    dam = './level_' + str(level) + '/damage.txt'
+                    ty = './level_' + str(level) + '/type.txt'
+                    lik = './level_' + str(level) + '/lock.txt'
+                    give = './level_' + str(level) + '/chest_give.txt'
+                    sign_text = './level_' + str(level) + '/sign_texts.txt'
 
 
 # Draws them on screen
@@ -517,6 +538,8 @@ def load_level(level):
                 cj = cj + 1
     k.close()
     f.close()
+
+    
 
 
 #    Adds the values to the list
@@ -597,6 +620,15 @@ def load_level(level):
             g = g.replace("\n","")
             chest_list.append(g)
     gg.close()
+
+    with open(sign_text, 'r') as ahh:
+        hh = ahh.readlines()
+        for help in range(0,mid,1):
+            ggg = hh[help]
+            ggg = ggg.replace("\n","")
+            sign_text_list.append(ggg)
+    ahh.close()
+
     print(obj_list)
     print(collition_list)
     print(color_list)
@@ -811,6 +843,10 @@ while True:
         if type == "Spawn":
             print("Spq")
             new_type = type
+        elif type == "Sign":
+            print("Sign")
+            new_type = type
+
         else:
             new_type = type + "_" + str(texture)
         print(new_type,texture)

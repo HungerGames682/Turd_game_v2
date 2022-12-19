@@ -110,6 +110,16 @@ how_obj = 1
 statcolor = "black"
 statyline = -300
 
+# Lets you see a sign if you click it, aka press e
+def sign_display(sign_num):
+    dama,obj_type,lo,chest_inventory,cords,sign_text = get_level_data(leavel)
+    with open(sign_text, 'r') as text:
+        main_text = text.readlines()
+        main_text = main_text[sign_num]
+        print(main_text)
+        
+
+
 
 # Just lets me minimize a bunch of lines of code so it doesnot get too crowded
 def skin_maker():
@@ -155,8 +165,6 @@ def skin_maker():
     skin = skin + 1
 
 
-
-
 # Defines all of the varibles for the files, just so i only have to configure this once, also gives all of the data needed
 def get_level_data(level):
 
@@ -166,6 +174,7 @@ def get_level_data(level):
         obj_type = './level_0/type.txt'
         chest_inventory = './level_0/chest_give.txt'
         cords = './level_0/cords.txt'
+        sign_text = './level_0/sign_texts.txt'
 
     else:
         dama = './level_' + str(level) +'/damage.txt'
@@ -173,9 +182,10 @@ def get_level_data(level):
         lo = './level_' + str(level) +'/lock.txt'
         chest_inventory = './level_' + str(level) +'/chest_give.txt'
         cords = "./level_" + str(level) + "/cords.txt"
+        sign_text = "./level_" + str(level) + "/sign_texts.txt"
 
 
-    return dama,obj_type,lo,chest_inventory,cords
+    return dama,obj_type,lo,chest_inventory,cords,sign_text
 
 
 # Draws the stat line for the game
@@ -609,10 +619,10 @@ def collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r):
                 f = False
                 
              
-            # Detection for topright corner
-            if (int(dis[0]) <= offset and dis[2] ==ny) and (close2[0] <= offset and close2[2] ==px) and walkthrough == "No":
-                f = False
-                r = False
+            # Detection for bottemleft corner
+            if (int(dis[0]) <= offset and dis[1] ==nx) and (close2[0] <= offset and close2[2] ==py) and walkthrough == "No":
+                b = False
+                l = False
                 
 
             # Detection for bottemright corner
@@ -620,10 +630,12 @@ def collition_detection(offset,dis,close2,walkthrough,ny,nx,py,px,y,f,b,l,r):
                 b = False
                 r = False
                 
+            # Top Right
+            if (int(dis[0]) <= offset and dis[2] ==ny) and (close2[0] <= offset and close2[1] == px) and walkthrough == "No":
+                f = False
+                r = False
 
-            if (int(dis[0]) <= offset and dis[1] ==nx) and (close2[0] <= offset and close2[2] == py) and walkthrough == "No":
-                b = False
-                l = False
+           
                 
             return f,b,l,r
 
@@ -642,7 +654,7 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
     hacks = False
     print(level)
     # gets and returns all of the data from the .txt files
-    dama,obj_type,lo,chest_inventory,cords = get_level_data(leavel)
+    dama,obj_type,lo,chest_inventory,cords,sign_text = get_level_data(leavel)
  
     # Generates the entire obj_list
     lis = all_obj_list(lis,dama,obj_type,lo)
@@ -670,8 +682,10 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
         if keyboard.is_pressed("e"):
          
         
-         
-           
+          
+          if dis[4] == "Sign" and dis[0] <= offset:
+                sign_display(dis[6])
+
 
             # Detects if you are close to a chest
           type_s = str(dis[4])
@@ -903,6 +917,14 @@ def playermove(speed,movement,walkthrough, offset, stop,li,cur_health,level,pick
             godoor = False
             hacks = False
 
+        print(close2)
+        print(nx)
+        print(ny)
+        print(px)
+        print(py)
+        print('\n')
+        print(x)
+        print(y)
 
         
 
@@ -1583,7 +1605,7 @@ def nothing():
 
 # Make user goto the spawn set
 def goto_spawn(level):
-    dama,type,lo,chest_inventory,cords = get_level_data(level)
+    dama,type,lo,chest_inventory,cords,sign_text = get_level_data(level)
 
     with open(type,'r') as jk:
         line = jk.readlines()

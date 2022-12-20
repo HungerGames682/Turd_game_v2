@@ -54,9 +54,9 @@ door_unlocked_list2 = []
 go_throught_door_dis = 22
 
 sc = turtle.Screen()
-
+sc.bgpic("./sprits/background.gif")
 # All of this is addign custom skins into the game, i will have to make them tho
-shape_list = ['sign_backgroud.gif','Level_switch.gif','Spawn.gif','Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+shape_list = ['basic_sign.gif','sign_backgroud.gif','Level_switch.gif','Spawn.gif','Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
 edit_shape_list = []
 for kjh in range(len(shape_list)):
     hehe = shape_list[kjh]
@@ -67,6 +67,8 @@ for kjh in range(len(shape_list)):
 skin = 0
 
 # Defines all of the skins here, sadly i can't really auto mate this
+base_sign_skin = edit_shape_list[skin]
+skin = skin + 1
 sign_background_skin = edit_shape_list[skin]
 skin = skin + 1
 level_switch_skin = edit_shape_list[skin]
@@ -469,6 +471,9 @@ def add_textures(texture):
         
         elif texture == "Level":
             texture = level_switch_skin
+
+        elif texture == "Sign":
+            texture = base_sign_skin
             
             
 
@@ -1516,7 +1521,7 @@ def lockpick(locks,pick_speed):
     all_lock_turd_obj.append(hide)
     erase_lock.append(hide)
     hide.shape("square")
-    hide.color("white")
+    hide.color("grey")
     hide.shapesize(50)
     locked = True
     x = -150
@@ -1752,7 +1757,8 @@ def inventory_frame():
 # Lets you give the them the item,
 # It is goofy, the skin is the item in the inventory list
 def give_item(item,icon_inventory_list,inventory):
-        if item == "lockpick\n":
+    # This is where you add new items to the game
+        if item == "lockpick\n" or item == "lockpick":
             print("Lockpick give")
             item = lcok_pick_item_skin
         elif item == "nothing\n":

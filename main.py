@@ -1,7 +1,7 @@
 #---------------------------
 # Crap game
 # Made By Ricker
-# People told me I could not make a game in python, well guess who did... me *cough cough Kevin
+# People told me I could not make a game in python *cough cough Kevin, well look at me now!! 
 #---------------------------
 
 import turtle
@@ -51,7 +51,7 @@ interact_dis = 24
 door_interact_dis = interact_dis + 10
 door_unlocked_list = []
 door_unlocked_list2 = []
-go_throught_door_dis = 22
+go_throught_door_dis = 20
 
 sc = turtle.Screen()
 sc.bgpic("./sprits/background.gif")

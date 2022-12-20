@@ -34,7 +34,8 @@ chest_list = []
 sign_text_list = []
 
 sc = turtle.Screen()
-shape_list = ['Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
+# All of this is addign custom skins into the game, i will have to make them tho
+shape_list = ['basic_sign.gif','Level_switch.gif','Spawn.gif','Mossy_brick.gif','Door_lrt.gif','Door_udt.gif','null.gif','base_chest.gif','bottom_pick.gif','pins.gif','stats_line.gif','heart.gif','Inventory Frame.gif','Lock Pick.gif','Selected Inventory Frame.gif']
 edit_shape_list = []
 base_names_list = []
 for kjh in range(len(shape_list)):
@@ -47,8 +48,13 @@ for kjh in range(len(shape_list)):
 
 skin = 0
 
-
-# Defines all of the skins here
+# Defines all of the skins here, sadly i can't really auto mate this
+base_sign_skin = edit_shape_list[skin]
+skin = skin + 1
+level_switch_skin = edit_shape_list[skin]
+skin = skin + 1
+spawn_skin = edit_shape_list[skin]
+skin = skin + 1
 mossy_wall_skin = edit_shape_list[skin]
 skin = skin + 1
 base_lr_door_skin = edit_shape_list[skin]
@@ -387,6 +393,7 @@ def typeswitch(type,cur_item):
     if type == "Chest":
         type = "Wall"
         cur_item = "Wall"
+        
 
     elif type == "Wall":
         type = "Door"
@@ -403,6 +410,10 @@ def typeswitch(type,cur_item):
         cur_item = "Sign"
 
     elif type == "Sign":
+        type = "Level_switch_"
+        cur_item = "Level_switch_"
+
+    elif type == "Level_switch_":
         type = "Chest"
         cur_item = "Chest"
     

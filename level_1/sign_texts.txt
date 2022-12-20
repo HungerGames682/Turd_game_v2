@@ -89,9 +89,9 @@
 0
 0
 0
-Sign
-Sign
-Sign
+One last thing i forgot to mention, please don't go into the game files to edit this, i mean there not encrypted, there literally just .txt files, however, to edit them to your advantage your going to have to figure out how the game interprects those .txt files, or you will just break the game :)
+Hmm, seems like were trapped in this room, and the door apperise to be locked
+If only there was a chest in the topright corner of this room that could hold something for you... that would be helpful to break out of here
 0
 0
 0

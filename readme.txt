@@ -1,4 +1,4 @@
-This game was created by RW
+
 
 For your safty, please don't mess with any of the files in this game
 
